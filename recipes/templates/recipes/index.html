@@ -7,9 +7,10 @@
     <body>
         <h1>Word of Mouth</h1>
         {% if user.is_authenticated %}
-            <p>Welcome, You are logged in as {{ user.username }}</p>
+            <p><b>Yo {{ user.username }}, you're logged into to our website!</b></p>
             <a href="{% provider_login_url 'google' %}">Manage Account</a>
-        {% else %}
+        {% else %}    
+            <p><b>HEY!</b> You're not logged in... but you should because this website is really cool.</p>
             <a href="{% provider_login_url 'google' %}">Login With Google</a>
         {% endif %}
     </body>
