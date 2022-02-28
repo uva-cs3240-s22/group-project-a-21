@@ -1,9 +1,16 @@
+{% load socialaccount %}
 <!DOCTYPE html>
 <html>
     <head>
         <meta>
     </head>
     <body>
-        <h1>This is the homepage!</h1>
+        <h1>Word of Mouth</h1>
+        {% if user.is_authenticated %}
+            <p>Welcome, You are logged in as {{ user.username }}</p>
+            <a href="{% provider_login_url 'google' %}">Manage Account</a>
+        {% else %}
+            <a href="{% provider_login_url 'google' %}">Login With Google</a>
+        {% endif %}
     </body>
 </html>

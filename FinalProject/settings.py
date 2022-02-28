@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites', # Add this
     'recipes',
 
     # from tutorial  https://dev.to/mdrhmn/django-google-authentication-using-django-allauth-18f8
