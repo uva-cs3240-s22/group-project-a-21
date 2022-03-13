@@ -98,19 +98,6 @@ DATABASES = {
    }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'HOST': 'ec2-3-219-204-29.compute-1.amazonaws.com',
-#         'NAME': 'd9s8fat2ug8j0u',
-#         'USER': 'pwyjvrknzqbbiu',
-#         'PASSWORD': '0038dec87dff7ae19226f0a9c544ce11c9f00f50af96018f67c91c27dbed3013',
-#         'PORT': '5432',
-#          #... # hidden because this is my actualy django website
-#          # you should have a tag for 'HOST', 'NAME', 'USER', 'PASSWORD', and 'PORT'
-#      }
-# }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
