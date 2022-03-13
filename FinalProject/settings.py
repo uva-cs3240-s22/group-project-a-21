@@ -91,25 +91,25 @@ WSGI_APPLICATION = 'FinalProject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': BASE_DIR / 'db.sqlite3',
-#    }
-#}
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'HOST': 'ec2-3-219-204-29.compute-1.amazonaws.com',
-        'NAME': 'd9s8fat2ug8j0u',
-        'USER': 'pwyjvrknzqbbiu',
-        'PASSWORD': '0038dec87dff7ae19226f0a9c544ce11c9f00f50af96018f67c91c27dbed3013',
-        'PORT': '5432',
-         #... # hidden because this is my actualy django website
-         # you should have a tag for 'HOST', 'NAME', 'USER', 'PASSWORD', and 'PORT'
-     }
+   'default': {
+       'ENGINE': 'django.db.backends.sqlite3',
+       'NAME': BASE_DIR / 'db.sqlite3',
+   }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'HOST': 'ec2-3-219-204-29.compute-1.amazonaws.com',
+#         'NAME': 'd9s8fat2ug8j0u',
+#         'USER': 'pwyjvrknzqbbiu',
+#         'PASSWORD': '0038dec87dff7ae19226f0a9c544ce11c9f00f50af96018f67c91c27dbed3013',
+#         'PORT': '5432',
+#          #... # hidden because this is my actualy django website
+#          # you should have a tag for 'HOST', 'NAME', 'USER', 'PASSWORD', and 'PORT'
+#      }
+# }
 
 
 # Password validation
@@ -184,6 +184,6 @@ SOCIALACCOUNT_PROVIDERS = {
 try:
     # Configure Django App for Heroku.
     import django_heroku
-    django_heroku.settings(locals())
+    django_heroku.settings(locals(), test_runner=False)
 except ImportError:
     found = False
