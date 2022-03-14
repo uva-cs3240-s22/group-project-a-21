@@ -168,6 +168,8 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+SOCIALACCOUNT_LOGIN_ON_GET=True
+
 try:
     # Configure Django App for Heroku.
     import django_heroku
