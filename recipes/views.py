@@ -8,5 +8,5 @@ def IndexView(requests):
 def UserView(requests):
     return render(requests, 'recipes/user.html', {})
 
-# def RecipeView(requests):
-#     return render(request, 'recipes/')
+def RecipeGalleryView(requests):
+     return render(requests, 'recipes/recipeGallery.html', {})
