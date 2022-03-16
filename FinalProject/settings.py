@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google', # for Google OAuth 2.0
+
+    'bootstrap5', # for Bootstrap
 ]
 
 MIDDLEWARE = [
@@ -140,7 +142,9 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend'
 ]
 
-SITE_ID = 1
+# SITE_ID = 1
+SITE_ID = 2
+
 LOGIN_REDIRECT_URL = '/'
 
 # additional configuration settings
