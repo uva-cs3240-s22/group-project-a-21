@@ -10,3 +10,6 @@ def UserView(requests):
 
 def RecipeGalleryView(requests):
      return render(requests, 'recipes/recipeGallery.html', {})
+
+def RecipeView(requests):
+     return render(requests, 'recipes/recipe.html', {})
