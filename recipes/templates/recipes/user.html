@@ -31,12 +31,30 @@
                     <p>Email: {{ object.email }}</p>
                     <p>Cooking experience: {{ object.cooking_experience }}</p>
                 </div>
-                <div class="col-4">
-                    <ul>
+                <div class="col-4 border">
+                    <h3>Friends</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for friend in object.friends.all %}
+                            <tr>
+                                <td>{{ friend.name }}</td>
+                                <td>{{ friend.email }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        
+                    </table>
+                    <!-- <ul>
                         {% for friend in object.friends.all %}
                             <li>{{ friend.name }} -- {{ friend.email }}</li>
                         {% endfor %}
-                    </ul>
+                    </ul> -->
                 </div>
             </div>
             
