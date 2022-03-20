@@ -21,6 +21,25 @@
                 </div>
             </nav>
         </header>
-        <h1>User Profile Page</h1>
+        <div class="container-fluid">
+            <div class="row">
+                <h1>User Profile Page</h1>
+            </div>
+            <div class="row">
+                <div class="col-8">
+                    <p>Name: {{ object.name }}</p>
+                    <p>Email: {{ object.email }}</p>
+                    <p>Cooking experience: {{ object.cooking_experience }}</p>
+                </div>
+                <div class="col-4">
+                    <ul>
+                        {% for friend in object.friends.all %}
+                            <li>{{ friend.name }} -- {{ friend.email }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            
+        </div>
     </body>
 </html>
