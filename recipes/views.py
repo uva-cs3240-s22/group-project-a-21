@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from .models import Recipe
 from django.views import generic
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 # Create your views here.
 
 # both of these should be classes? or at least UserView should be a DetailView maybe
@@ -21,5 +23,35 @@ class RecipeGalleryView(generic.ListView):
 class RecipeView(generic.DetailView):
     model = Recipe
     template_name = 'recipes/recipe.html'
-
     # return render(requests, 'recipes/recipe.html', {})
+
+class EnterRecipeView(generic.ListView):
+    model = Recipe
+    template_name = 'recipes/enterRecipe.html'
+
+def newRecipe(request):
+    try:
+        title = request.POST['title']
+        ingredientsList = request.POST['ingredientsList']
+        directionsList = request.POST['directionsList']
+        dietaryRestrictions = request.POST['dietaryRestrictions']
+        time = request.POST['time']
+        servingSize = request.POST['servingSize']
+    except (KeyError):
+        # Redisplay the question voting form.
+        return render(request, 'recipes/enterRecipe.html', {
+            # 'error_message': "Something went wrong.",
+        })
+    else:
+        if(title != "" and ingredientsList != ""):
+            recipe = Recipe(title = title,
+                            ingredientsList = ingredientsList,
+                            directionsList = directionsList,
+                            dietaryRestrictions = dietaryRestrictions,
+                            time = time,
+                            servingSize = servingSize)
+            recipe.save()
+        # Always return an HttpResponseRedirect after successfully dealing
+        # with POST data. This prevents data from being posted twice if a
+        # user hits the Back button.
+        return HttpResponseRedirect(reverse('recipes:recipeGallery'))

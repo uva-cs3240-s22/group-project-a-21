@@ -1,0 +1,55 @@
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta>
+    <title>Recipe</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-light bg-light">
+            <div class="container-fluid">
+                <div class="navbar-brand ml-1">Individual Recipe Page</div>
+                <div class="nav">
+                    <a class="nav-link" href="/">Home</a>
+                    <a class="nav-link" href="/recipes/">Recipes</a>
+                    <a class="nav-link active" href="#">User Profile</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <h1>Enter Recipe Page</h1>
+    <form action="{% url 'recipes:newRecipe' %}" method="post">
+        {% csrf_token %}
+
+        <div class="form-group p-3">
+            {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+            <label for="title" class="h4">Title:</label>
+            <input type="text" name="title">
+            <br>
+            <label for="ingredientsList" class="h4">Ingredient List:</label>
+            <input type="text" name="ingredientsList">
+            <br>
+            <label for="directionsList" class="h4">Directions:</label>
+            <input type="text" name="directionsList">
+            <br>
+            <label for="dietaryRestrictions" class="h4">Dietary Restrictions:</label>
+            <input type="text" name="dietaryRestrictions">
+            <br>
+            <label for="time" class="h4">Time:</label>
+            <input type="text" name="time">
+            <br>
+            <label for="servingSize" class="h4">Serving Size:</label>
+            <input type="text" name="servingSize">
+
+        </div>
+        <input type="submit" value="Create Recipe">
+    </form>
+</body>
+
+</html>
