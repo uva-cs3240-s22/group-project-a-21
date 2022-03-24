@@ -10,8 +10,13 @@ def IndexView(requests):
 def UserView(requests):
     return render(requests, 'recipes/user.html', {})
 
-def RecipeGalleryView(requests):
-     return render(requests, 'recipes/recipeGallery.html', {})
+# def RecipeGalleryView(requests):
+#      return render(requests, 'recipes/recipeGallery.html', {})
+class RecipeGalleryView(generic.ListView):
+    template_name = 'recipes/recipeGallery.html'
+    context_object_name = 'latest_recipe_list'
+    def get_queryset(self):
+        return Recipe.objects.all()
 
 class RecipeView(generic.DetailView):
     model = Recipe
