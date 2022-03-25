@@ -1,0 +1,35 @@
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta>
+    <title>Recipe</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-light bg-light">
+            <div class="container-fluid">
+                <div class="navbar-brand ml-1">Individual Recipe Page</div>
+                <div class="nav">
+                    <a class="nav-link" href="/">Home</a>
+                    <a class="nav-link" href="/recipes/">Recipes</a>
+                    <a class="nav-link active" href="#">User Profile</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <h1>Individual Recipe Page</h1>
+    <h1>{{ recipe.title }}</h1>
+    <h2>Ingredients: </h2>
+    <h4>{{ recipe.ingredientsList }}</h4>
+
+    <h2>Directions: </h2>
+    <h4>{{ recipe.directionsList }}</h4>
+</body>
+
+</html>

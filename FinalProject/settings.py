@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google', # for Google OAuth 2.0
+
+    'bootstrap5', # for Bootstrap
 ]
 
 MIDDLEWARE = [
@@ -97,6 +99,16 @@ DATABASES = {
        'NAME': BASE_DIR / 'db.sqlite3',
    }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'd9s8fat2ug8j0u',
+#         'USER': 'pwyjvrknzqbbiu',
+#         'PASSWORD': '0038dec87dff7ae19226f0a9c544ce11c9f00f50af96018f67c91c27dbed3013',
+#         'HOST': 'ec2-3-219-204-29.compute-1.amazonaws.com',
+#         'PORT': '5432'
+#     }
+# }
 
 
 # Password validation
@@ -148,11 +160,14 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SITE_ID = 1
+# SITE_ID = 2
+
 LOGIN_REDIRECT_URL = '/'
 
 # additional configuration settings
 SOCIALACCOUNT_QUERY_EMAIL = True
 ACCOUNT_LOGOUT_ON_GET= True
+SOCIALACCOUNT_LOGIN_ON_GET=True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True  
 
