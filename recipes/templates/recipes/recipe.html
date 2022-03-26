@@ -2,6 +2,8 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 
+{% load recipe_tags %}
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -42,8 +44,6 @@
                 
                     <div id="collapseIngredients" class="collapse show" aria-labelledby="collapseIngredientsHeading">
                         <div class="card-body">
-                            Iterate through ingredients/ amounts; one row per
-                            <br>
                             Ingredients for {{ recipe.servingSize }} serving(s)
                             <br>
                             <p>Add option for different servings</p>
@@ -64,30 +64,44 @@
                                                 </div>
                                             </div>
                                         </th>
+                                        <th scope="col">Size</th>
                                         <th scope="col">Ingredient</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td></td>
-                                        <td>{{ recipe.ingredientsList }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1 cup</td>
+                                    <!-- {% for ingredient in recipe.ingredientsList|split:"," %}
+                                        <tr>
+                                            <td></td>
+                                            <td>{{ ingredient }}</td>
+                                        </tr>
+                                    {% endfor %} -->
+                                    {% for ingredient in recipe.ingredientsList|split:"," %}
+                                        <tr>
+                                            {% for ingredient_parts in ingredient|split:" " %}
+                                                <td>{{ ingredient_parts }}</td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                    <!-- <tr>
+                                        <td>1</td>
+                                        <td>cup</td>
                                         <td>Milk</td>
                                     </tr>
                                     <tr>
-                                        <td>2 cups</td>
+                                        <td>2</td>
+                                        <td>cups</td>
                                         <td>Flour</td>
                                     </tr>
                                     <tr>
-                                        <td>1 tbs</td>
+                                        <td>1</td>
+                                        <td>tbs</td>
                                         <td>Baking soda</td>
                                     </tr>
                                     <tr>
-                                        <td>1/2 cup</td>
+                                        <td>1/2</td>
+                                        <td>cup</td>
                                         <td>Sugar</td>
-                                    </tr>
+                                    </tr> -->
                                 </tbody>
                             </table>
                         </div>
@@ -103,13 +117,13 @@
                     </div>
                     <div id="collapseDirections" class="collapse show" aria-labelledby="collapseDirectionsHeading">
                         <div class="card-body">
-                            Iterate through directions; one list item (li) per
                             <ol>
-                                <li>{{ recipe.directionsList }}</li>
-                                <li>Step 1</li>
-                                <li>Step 2</li>
-                                <li>Step 3</li>
+                                {% for direction in recipe.directionsList|split:"," %}
+                                    <li>{{ direction }}</li>
+                                {% endfor %}
                             </ol>
+                            <!-- https://stackoverflow.com/questions/45020984/looping-through-csv-string-in-django-template -->
+                            <!-- https://docs.djangoproject.com/en/4.0/howto/custom-template-tags/ -->
                         </div>
                     </div>
                     </div>
