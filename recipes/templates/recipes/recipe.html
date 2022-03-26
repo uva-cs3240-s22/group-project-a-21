@@ -25,88 +25,111 @@
             </nav>
         </header>
         <div class="container-fluid">
-            <h1>Individual Recipe Page</h1>
             <h2>{{ recipe.title }}</h2>
             <p>Stars for recipe rating</p>
+            <p>Difficulty rating: {{ recipe.difficultyRating }}</p>
+            <p>Dietary restrictions: {{ recipe.dietaryRestrictions }}</p>
             <p>Estimated preparation time: {{ recipe.time }}</p>
-            <div class="row">
-                <div class="col-8 border">
-                    <h3>Ingredients</h3>
-                    Iterate through ingredients/ amounts; one row per
-                    <br>
-                    Ingredients for {{ recipe.servingSize }} serving(s)
-                    <br>
-                    <p>Add option for different servings &#9660;</p>
+            <div id="accordion" class="accordion accordion-flush">
+                <div class="card">
+                    <div class="card-header" id="collapseIngredientsHeading">
+                        <h5 class="mb-0">
+                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseIngredients" aria-expanded="true" aria-controls="collapseIngredients">
+                            Ingredients
+                        </button>
+                        </h5>
+                    </div>
+                
+                    <div id="collapseIngredients" class="collapse show" aria-labelledby="collapseIngredientsHeading">
+                        <div class="card-body">
+                            Iterate through ingredients/ amounts; one row per
+                            <br>
+                            Ingredients for {{ recipe.servingSize }} serving(s)
+                            <br>
+                            <p>Add option for different servings</p>
 
-                    <table class="table table-hover table-striped">
-                        <thead>
-                            <tr class="table-light">
-                                <th scope="col dropdown">
-                                    Amount (for one serving)
-                                    <a href="#" class="dropdown text-reset text-decoration-none" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9660;</a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <div class="dropdown-item">
-                                            Implement some way to change serving size here
-                                        </div>
-                                        <div class="dropdown-item text-decoration-none">
-                                            <label for="servingSize" class="form-label">Example range</label>
-                                            <input type="range" class="form-range" min="1" max="10" step="0.5" id="servingSize">
-                                        </div>
-                                    </div>
-                                </th>
-                                <th scope="col">Ingredient</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    {{ recipe.ingredientsList }}
-                                </td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>1 cup</td>
-                                <td>Milk</td>
-                            </tr>
-                            <tr>
-                                <td>2 cups</td>
-                                <td>Flour</td>
-                            </tr>
-                            <tr>
-                                <td>1 tbs</td>
-                                <td>Baking soda</td>
-                            </tr>
-                            <tr>
-                                <td>1/2 cup</td>
-                                <td>Sugar</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr class="table-light">
+                                        <th scope="col dropdown">
+                                            Amount (for one serving)
+                                            <a href="#" class="dropdown text-reset text-decoration-none" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9660;</a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <div class="dropdown-item">
+                                                    Implement some way to change serving size here
+                                                </div>
+                                                <div class="dropdown-item text-decoration-none">
+                                                    <label for="servingSize" class="form-label">Example range</label>
+                                                    <input type="range" class="form-range" min="1" max="10" step="0.5" id="servingSize">
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th scope="col">Ingredient</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td>{{ recipe.ingredientsList }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1 cup</td>
+                                        <td>Milk</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2 cups</td>
+                                        <td>Flour</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1 tbs</td>
+                                        <td>Baking soda</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1/2 cup</td>
+                                        <td>Sugar</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="card">
+                    <div class="card-header" id="collapseDirectionsHeading">
+                        <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseDirections" aria-expanded="true" aria-controls="collapseDirections">
+                            Directions
+                        </button>
+                        </h5>
+                    </div>
+                    <div id="collapseDirections" class="collapse show" aria-labelledby="collapseDirectionsHeading">
+                        <div class="card-body">
+                            Iterate through directions; one list item (li) per
+                            <ol>
+                                <li>{{ recipe.directionsList }}</li>
+                                <li>Step 1</li>
+                                <li>Step 2</li>
+                                <li>Step 3</li>
+                            </ol>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="card">
+                    <div class="card-header" id="collapseBlurbHeading">
+                        <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseBlurb" aria-expanded="true" aria-controls="collapseBlurb">
+                            Recipe Blurb
+                        </button>
+                        </h5>
+                    </div>
+                    <div id="collapseBlurb" class="collapse show" aria-labelledby="blurbCollapseHeading">
+                        <div class="card-body">
+                            {{ recipe.blurb }}
+                        </div>
+                    </div>
+                    </div>
             </div>
-            <div class="row">
-                <div class="col-8 border">
-                    <h3>Directions</h3>
-                    Iterate through directions; one list item (li) per
-                    <ol>
-                        <li>{{ recipe.directionsList }}</li>
-                        <li>Step 1</li>
-                        <li>Step 2</li>
-                        <li>Step 3</li>
-                    </ol>
-                </div>
-            </div>
-            <div class="row border">
-                <div class="col-8">
-                    Dietary Restrictions
-                    {{ recipe.dietaryRestrictions }}
-                </div>
-            </div>
-            <div class="row border">
-                <div class="col-8">
-                    Recipe blurb from creator
-                </div>
-            </div>
+            <!-- https://getbootstrap.com/docs/4.0/components/collapse/ -->
+            <!-- https://stackoverflow.com/questions/15696365/twitter-bootstrap-collapse-plugin-how-to-enable-multiple-groups-to-be-opened -->
             <div class="row">
                 <div>
                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#reviewsCollapsible" aria-expanded="false" aria-controls="reviewsCollapsible">
@@ -122,39 +145,3 @@
         </div>
     </body>
 </html>
-
-<!-- {% load bootstrap5 %}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta>
-    <title>Recipe</title>
-</head>
-
-<body>
-    <header>
-        <nav class="navbar navbar-light bg-light">
-            <div class="container-fluid">
-                <div class="navbar-brand ml-1">Individual Recipe Page</div>
-                <div class="nav">
-                    <a class="nav-link" href="/">Home</a>
-                    <a class="nav-link" href="/recipes/">Recipes</a>
-                    <a class="nav-link active" href="#">User Profile</a>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <h1>Individual Recipe Page</h1>
-    <h1>{{ recipe.title }}</h1>
-    <h2>Ingredients: </h2>
-    <h4>{{ recipe.ingredientsList }}</h4>
-
-    <h2>Directions: </h2>
-    <h4>{{ recipe.directionsList }}</h4>
-</body>
-
-</html> -->
