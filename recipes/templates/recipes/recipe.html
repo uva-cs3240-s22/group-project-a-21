@@ -4,6 +4,131 @@
 
 <!DOCTYPE html>
 <html>
+    <head>
+        <meta>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <title>Recipe</title>
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-light bg-light">
+                <div class="container-fluid">
+                    <div class="navbar-brand ml-1">Individual Recipe Page</div>
+                    <div class="nav">
+                        <a class="nav-link" href="/">Home</a>
+                        <a class="nav-link" href="/recipes/">Recipes</a>
+                        <a class="nav-link active" href="/user/">User Profile</a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="container-fluid">
+            <h1>Individual Recipe Page</h1>
+            <h2>{{ recipe.title }}</h2>
+            <p>Stars for recipe rating</p>
+            <p>Estimated preparation time: {{ recipe.time }}</p>
+            <div class="row">
+                <div class="col-8 border">
+                    <h3>Ingredients</h3>
+                    Iterate through ingredients/ amounts; one row per
+                    <br>
+                    Ingredients for {{ recipe.servingSize }} serving(s)
+                    <br>
+                    <p>Add option for different servings &#9660;</p>
+
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr class="table-light">
+                                <th scope="col dropdown">
+                                    Amount (for one serving)
+                                    <a href="#" class="dropdown text-reset text-decoration-none" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9660;</a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <div class="dropdown-item">
+                                            Implement some way to change serving size here
+                                        </div>
+                                        <div class="dropdown-item text-decoration-none">
+                                            <label for="servingSize" class="form-label">Example range</label>
+                                            <input type="range" class="form-range" min="1" max="10" step="0.5" id="servingSize">
+                                        </div>
+                                    </div>
+                                </th>
+                                <th scope="col">Ingredient</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    {{ recipe.ingredientsList }}
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>1 cup</td>
+                                <td>Milk</td>
+                            </tr>
+                            <tr>
+                                <td>2 cups</td>
+                                <td>Flour</td>
+                            </tr>
+                            <tr>
+                                <td>1 tbs</td>
+                                <td>Baking soda</td>
+                            </tr>
+                            <tr>
+                                <td>1/2 cup</td>
+                                <td>Sugar</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8 border">
+                    <h3>Directions</h3>
+                    Iterate through directions; one list item (li) per
+                    <ol>
+                        <li>{{ recipe.directionsList }}</li>
+                        <li>Step 1</li>
+                        <li>Step 2</li>
+                        <li>Step 3</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="row border">
+                <div class="col-8">
+                    Dietary Restrictions
+                    {{ recipe.dietaryRestrictions }}
+                </div>
+            </div>
+            <div class="row border">
+                <div class="col-8">
+                    Recipe blurb from creator
+                </div>
+            </div>
+            <div class="row">
+                <div>
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#reviewsCollapsible" aria-expanded="false" aria-controls="reviewsCollapsible">
+                        Explore Reviews
+                    </button>
+                    <div class="collapse" id="reviewsCollapsible">
+                        <div class="card card-body">
+                            Insert reviews and discussion here
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+
+<!-- {% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<!DOCTYPE html>
+<html>
 
 <head>
     <meta>
@@ -32,4 +157,4 @@
     <h4>{{ recipe.directionsList }}</h4>
 </body>
 
-</html>
+</html> -->
