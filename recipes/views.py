@@ -1,4 +1,6 @@
+from distutils.errors import LibError
 from django.shortcuts import render
+# from numpy import diff
 from .models import Recipe
 from django.views import generic
 from django.http import HttpResponseRedirect
@@ -37,6 +39,8 @@ def newRecipe(request):
         dietaryRestrictions = request.POST['dietaryRestrictions']
         time = request.POST['time']
         servingSize = request.POST['servingSize']
+        blurb = request.POST['blurb']
+        difficultyRating = request.POST['difficultyRating']
     except (KeyError):
         # Redisplay the question voting form.
         return render(request, 'recipes/enterRecipe.html', {
@@ -49,7 +53,9 @@ def newRecipe(request):
                             directionsList = directionsList,
                             dietaryRestrictions = dietaryRestrictions,
                             time = time,
-                            servingSize = servingSize)
+                            servingSize = servingSize,
+                            blurb = blurb,
+                            difficultyRating = difficultyRating)
             recipe.save()
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
