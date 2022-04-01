@@ -34,8 +34,25 @@ class EnterRecipeView(generic.ListView):
 def newRecipe(request):
     try:
         title = request.POST['title']
-        ingredientsList = request.POST['ingredientsList']
-        directionsList = request.POST['directionsList']
+        # ingredientsList = request.POST['ingredientsList']
+            
+        ingredientsList = ""
+
+        ingredientsQuantities = request.POST.getlist('ingredientQuant')
+        ingredientsUnits = request.POST.getlist('ingredientUnit')
+        ingredientsNames = request.POST.getlist('ingredientName')
+        for i in range(0, len(ingredientsQuantities)):
+            ingredientsList += ingredientsQuantities[i] + " " + ingredientsUnits[i] + " " + ingredientsNames[i] + ","
+        ingredientsList = ingredientsList[:-1] # remove last comma
+
+        # directionsList = request.POST['directionsList']
+
+        directionsList = ""
+        directions = request.POST.getlist('direction')
+        for d in directions:
+            directionsList += d + ","
+        directionsList = directionsList[:-1] # remove last comma
+
         dietaryRestrictions = request.POST['dietaryRestrictions']
         time = request.POST['time']
         servingSize = request.POST['servingSize']
