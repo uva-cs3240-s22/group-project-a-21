@@ -98,10 +98,11 @@
     </div>
 
     <script>
-        var numIngredients = 1;
+        var ingredientsIndex = 1;
         function addIngredient() {
             let ingredients_tb = document.getElementById("ingredients_tb");
             let row = ingredients_tb.insertRow(); // default adds to end
+            row.id = ingredientsIndex;
 
             // quantity
             let input = document.createElement("input");
@@ -125,19 +126,20 @@
             let btn = document.createElement("button");
             btn.innerHTML = "Remove"
             btn.type = "button";
-            btn.classList = "btn btn-danger";
-            // btn.onclick = removeIngredient(++numIngredients);
-            btn.onclick = function() {
-                document.getElementById("ingredients_tb").deleteRow(--numIngredients); // zero indexed
+            btn.classList = "btn btn-danger ingredients-remove-btn";
+            btn.name = ingredientsIndex;
+            btn.onclick = function() { // remove this row
+                ingredientsIndex--;
+                ingredients_tb.deleteRow(this.name);
+
+                removeButtons = document.getElementsByClassName("ingredients-remove-btn");
+                for(var i = 0; i < removeButtons.length; i++)
+                    removeButtons[i].setAttribute("name", i+1);
             }
             row.insertCell(3).appendChild(btn);
 
-            numIngredients++;
+            ingredientsIndex++;
         }
-
-        // function removeIngredient(index) {
-        //     document.getElementById("ingredients_tb").deleteRow(index-1); // zero indexed
-        // }
 
         function addDirection() {
             let directions_list = document.getElementById("directions_list");
