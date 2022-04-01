@@ -45,8 +45,6 @@ def newRecipe(request):
             quantEmpty = len(ingredientsQuantities[i]) == 0 or ingredientsQuantities[i].isspace()
             unitEmpty = len(ingredientsUnits[i]) == 0 or ingredientsUnits[i].isspace()
             nameEmpty = len(ingredientsNames[i]) == 0 or ingredientsNames[i].isspace()
-            # empty = len(ingredientsQuantities[i]) == 0 and len(ingredientsUnits[i]) == 0 and len(ingredientsNames[i]) == 0
-            # whitespace = ingredientsQuantities[i].isspace() and ingredientsUnits[i].isspace() and ingredientsNames[i].isspace()
             if not (quantEmpty and unitEmpty and nameEmpty):
                 ingredientsList += ingredientsQuantities[i].replace(" ", "*") + " " + ingredientsUnits[i].replace(" ", "*") + " " + ingredientsNames[i].replace(" ", "*") + ","
         ingredientsList = ingredientsList[:-1] # remove last comma
