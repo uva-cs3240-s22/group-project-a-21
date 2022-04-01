@@ -49,9 +49,9 @@
                 <input type="text" name="ingredientsList">
                 <br> -->
 
-                <label for="ingredientsList" class="h4">Ingredient List (separate each ingredient with a comma):</label>
+                <label for="ingredientsList" class="h4">Ingredient List:</label>
                 <br>
-                <span class="text-gray">Example: 1 cup flour,2 cups milk</span>
+                <!-- <span class="text-gray">Example: 1 cup flour,2 cups milk</span> -->
 
                 <table class="table table-hover table-striped">
                     <thead>
@@ -59,6 +59,7 @@
                             <th scope="col">Quantity</th>
                             <th scope="col">Unit</th>
                             <th scope="col">Ingredient Name</th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody id="ingredients_tb">
@@ -66,6 +67,7 @@
                             <td><input type="text" name="ingredientQuant"></td>
                             <td><input type="text" name="ingredientUnit"></td>
                             <td><input type="text" name="ingredientName"></td>
+                            <td></td>
                         </tr>
                     </tbody>
                 </table>
@@ -73,7 +75,7 @@
 
                 <br>
                 <br>
-                <label for="directionsList" class="h4">Directions (separate each step with a comma):</label>
+                <label for="directionsList" class="h4">Directions:</label>
                 <div id="directions_list">
                     <input type="text" name="direction">
                     <br><br>
@@ -81,8 +83,8 @@
                 <button type="button" class="btn btn-primary" onclick="addDirection()">Add direction</button>
                 
                 <br>
-                <span class="text-gray">Example: Pour flour in mixing bowl,Pour milk in mixing bowl,Stir</span>
-                <br>
+                <!-- <span class="text-gray">Example: Pour flour in mixing bowl,Pour milk in mixing bowl,Stir</span>
+                <br> -->
 
                 
                 
@@ -96,9 +98,10 @@
     </div>
 
     <script>
+        var numIngredients = 1;
         function addIngredient() {
             let ingredients_tb = document.getElementById("ingredients_tb");
-            let row = ingredients_tb.insertRow(-1); // default adds to end
+            let row = ingredients_tb.insertRow(); // default adds to end
 
             // quantity
             let input = document.createElement("input");
@@ -117,7 +120,24 @@
             input.type = "text";
             input.name = "ingredientName";
             row.insertCell(2).appendChild(input);
+
+            // remove button
+            let btn = document.createElement("button");
+            btn.innerHTML = "Remove"
+            btn.type = "button";
+            btn.classList = "btn btn-danger";
+            // btn.onclick = removeIngredient(++numIngredients);
+            btn.onclick = function() {
+                document.getElementById("ingredients_tb").deleteRow(--numIngredients); // zero indexed
+            }
+            row.insertCell(3).appendChild(btn);
+
+            numIngredients++;
         }
+
+        // function removeIngredient(index) {
+        //     document.getElementById("ingredients_tb").deleteRow(index-1); // zero indexed
+        // }
 
         function addDirection() {
             let directions_list = document.getElementById("directions_list");

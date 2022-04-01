@@ -69,39 +69,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- {% for ingredient in recipe.ingredientsList|split:"," %}
-                                        <tr>
-                                            <td></td>
-                                            <td>{{ ingredient }}</td>
-                                        </tr>
-                                    {% endfor %} -->
                                     {% for ingredient in recipe.ingredientsList|split:"," %}
                                         <tr>
                                             {% for ingredient_parts in ingredient|split:" " %}
-                                                <td>{{ ingredient_parts }}</td>
+                                                <td>{{ ingredient_parts|replace:"*, " }}</td>
                                             {% endfor %}
                                         </tr>
                                     {% endfor %}
-                                    <!-- <tr>
-                                        <td>1</td>
-                                        <td>cup</td>
-                                        <td>Milk</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>cups</td>
-                                        <td>Flour</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>tbs</td>
-                                        <td>Baking soda</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1/2</td>
-                                        <td>cup</td>
-                                        <td>Sugar</td>
-                                    </tr> -->
                                 </tbody>
                             </table>
                         </div>

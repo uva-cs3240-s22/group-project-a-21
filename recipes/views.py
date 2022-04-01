@@ -42,7 +42,7 @@ def newRecipe(request):
         ingredientsUnits = request.POST.getlist('ingredientUnit')
         ingredientsNames = request.POST.getlist('ingredientName')
         for i in range(0, len(ingredientsQuantities)):
-            ingredientsList += ingredientsQuantities[i] + " " + ingredientsUnits[i] + " " + ingredientsNames[i] + ","
+            ingredientsList += ingredientsQuantities[i].replace(" ", "*") + " " + ingredientsUnits[i].replace(" ", "*") + " " + ingredientsNames[i].replace(" ", "*") + ","
         ingredientsList = ingredientsList[:-1] # remove last comma
 
         # directionsList = request.POST['directionsList']
