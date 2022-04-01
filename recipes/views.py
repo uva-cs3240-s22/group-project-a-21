@@ -77,3 +77,4 @@ def favoriteRecipe(request, pkRecipe, pkUser):
     currentRecipe.save()
 
     return HttpResponsePermanentRedirect('/recipes/' + str(pkRecipe)) # redirect back to current recipe
+    # https://stackoverflow.com/questions/51464131/multiple-parameters-url-pattern-django-2-0
