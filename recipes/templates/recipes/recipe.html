@@ -28,7 +28,15 @@
         </header>
         <div class="container-fluid">
             <h2>{{ recipe.title }}</h2>
+            <p>Created by: <a href="/user/{{ recipe.createdBy.pk }}">{{ recipe.createdBy }}</a></p>
             <p>Stars for recipe rating (insert later)</p>
+
+            <form action="/recipes/favorite-recipe/{{ recipe.pk }}/2" method="post">
+                {% csrf_token %}
+                <input type="submit" value="Favorite">
+            </form>
+            
+            <p>{{ recipe.favoritedBy.all|length }} favorites</p>
             <p>Difficulty rating: {{ recipe.difficultyRating }}</p>
             <p>Dietary restrictions: {{ recipe.dietaryRestrictions }}</p>
             <p>Estimated preparation time: {{ recipe.time }} minutes</p>
@@ -69,12 +77,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- {% for ingredient in recipe.ingredientsList|split:"," %}
-                                        <tr>
-                                            <td></td>
-                                            <td>{{ ingredient }}</td>
-                                        </tr>
-                                    {% endfor %} -->
                                     {% for ingredient in recipe.ingredientsList|split:"," %}
                                         <tr>
                                             {% for ingredient_parts in ingredient|split:" " %}
@@ -82,26 +84,6 @@
                                             {% endfor %}
                                         </tr>
                                     {% endfor %}
-                                    <!-- <tr>
-                                        <td>1</td>
-                                        <td>cup</td>
-                                        <td>Milk</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>cups</td>
-                                        <td>Flour</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>tbs</td>
-                                        <td>Baking soda</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1/2</td>
-                                        <td>cup</td>
-                                        <td>Sugar</td>
-                                    </tr> -->
                                 </tbody>
                             </table>
                         </div>

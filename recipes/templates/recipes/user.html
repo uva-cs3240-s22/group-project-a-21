@@ -30,7 +30,46 @@
                     <p>Name: {{ object.name }}</p>
                     <p>Email: {{ object.email }}</p>
                     <p>Cooking experience: {{ object.cooking_experience }}</p>
+                    <br>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">My Recipes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for recipe in object.create.all %}
+                                <tr>
+                                    <td>
+                                        <a href="/recipes/{{ recipe.pk }}">{{ recipe.title }}</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Favorite Recipes</th>
+                                <th scope="col">Author</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for favorite in object.favorites.all %}
+                                <tr>
+                                    <td>
+                                        <a href="/recipes/{{ favorite.pk }}">{{ favorite.title }}</a>
+                                    </td>
+                                    <td>
+                                        <a href="/user/{{ favorite.createdBy.pk }}">{{ favorite.createdBy }}</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
+
                 <div class="col-4 border">
                     <h3>Friends</h3>
                     <table class="table">
@@ -42,19 +81,16 @@
                         </thead>
                         <tbody>
                             {% for friend in object.friends.all %}
-                            <tr>
-                                <td>{{ friend.name }}</td>
-                                <td>{{ friend.email }}</td>
-                            </tr>
-                        {% endfor %}
+                                <tr>
+                                    <td>
+                                        <a href="/user/{{ friend.pk }}">{{ friend.name }}</a>
+                                    </td>
+                                    <td>{{ friend.email }}</td>
+                                </tr>
+                            {% endfor %}
                         </tbody>
                         
                     </table>
-                    <!-- <ul>
-                        {% for friend in object.friends.all %}
-                            <li>{{ friend.name }} -- {{ friend.email }}</li>
-                        {% endfor %}
-                    </ul> -->
                 </div>
             </div>
             

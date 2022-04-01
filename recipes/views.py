@@ -1,9 +1,11 @@
 from distutils.errors import LibError
 from django.shortcuts import render
+
+import recipes
 # from numpy import diff
 from .models import Recipe, User
 from django.views import generic
-from django.http import HttpResponseRedirect
+from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.urls import reverse
 # Create your views here.
 
@@ -46,6 +48,7 @@ def newRecipe(request):
         servingSize = request.POST['servingSize']
         blurb = request.POST['blurb']
         difficultyRating = request.POST['difficultyRating']
+        # createdBy = -----
     except (KeyError):
         # Redisplay the question voting form.
         return render(request, 'recipes/enterRecipe.html', {
@@ -66,3 +69,11 @@ def newRecipe(request):
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse('recipes:recipeGallery'))
+
+def favoriteRecipe(request, pkRecipe, pkUser):
+    currentRecipe = Recipe.objects.get(pk=pkRecipe)
+    currentUser = User.objects.get(pk=pkUser)
+    currentRecipe.favoritedBy.add(currentUser)
+    currentRecipe.save()
+
+    return HttpResponsePermanentRedirect('/recipes/' + str(pkRecipe)) # redirect back to current recipe

@@ -1,3 +1,5 @@
+{% load socialaccount %}
+
 {% load bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
@@ -19,6 +21,9 @@
                     <a class="nav-link" href="/">Home</a>
                     <a class="nav-link" href="/recipes/">Recipes</a>
                     <a class="nav-link active" href="#">User Profile</a>
+                    <span class="navbar-text">
+                        Logged in as <span name="username">{{user.username}}</span>
+                    </span>
                 </div>
             </div>
         </nav>
