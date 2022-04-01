@@ -2,10 +2,15 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 
+{% load recipe_tags %}
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <title>Recipe</title>
     </head>
     <body>
@@ -16,11 +21,141 @@
                     <div class="nav">
                         <a class="nav-link" href="/">Home</a>
                         <a class="nav-link" href="/recipes/">Recipes</a>
-                        <a class="nav-link active" href="#">User Profile</a>
+                        <a class="nav-link active" href="/user/">User Profile</a>
                     </div>
                 </div>
             </nav>
         </header>
-        <h1>Individual Recipe Page</h1>
+        <div class="container-fluid">
+            <h2>{{ recipe.title }}</h2>
+            <p>Stars for recipe rating (insert later)</p>
+            <p>Difficulty rating: {{ recipe.difficultyRating }}</p>
+            <p>Dietary restrictions: {{ recipe.dietaryRestrictions }}</p>
+            <p>Estimated preparation time: {{ recipe.time }} minutes</p>
+            <div id="accordion" class="accordion accordion-flush">
+                <div class="card">
+                    <div class="card-header" id="collapseIngredientsHeading">
+                        <h5 class="mb-0">
+                        <button class="btn btn-link text-decoration-none" data-toggle="collapse" data-target="#collapseIngredients" aria-expanded="true" aria-controls="collapseIngredients">
+                            Ingredients
+                        </button>
+                        </h5>
+                    </div>
+                
+                    <div id="collapseIngredients" class="collapse show" aria-labelledby="collapseIngredientsHeading">
+                        <div class="card-body">
+                            Ingredients for {{ recipe.servingSize }} serving(s)
+                            <br>
+                            <p>Add option for different servings</p>
+
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr class="table-light">
+                                        <th scope="col dropdown">
+                                            Amount (for one serving)
+                                            <a href="#" class="dropdown text-reset text-decoration-none" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9660;</a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <div class="dropdown-item">
+                                                    Implement some way to change serving size here
+                                                </div>
+                                                <div class="dropdown-item text-decoration-none">
+                                                    <label for="servingSize" class="form-label">Example range</label>
+                                                    <input type="range" class="form-range" min="1" max="10" step="0.5" id="servingSize">
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th scope="col">Size</th>
+                                        <th scope="col">Ingredient</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- {% for ingredient in recipe.ingredientsList|split:"," %}
+                                        <tr>
+                                            <td></td>
+                                            <td>{{ ingredient }}</td>
+                                        </tr>
+                                    {% endfor %} -->
+                                    {% for ingredient in recipe.ingredientsList|split:"," %}
+                                        <tr>
+                                            {% for ingredient_parts in ingredient|split:" " %}
+                                                <td>{{ ingredient_parts }}</td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                    <!-- <tr>
+                                        <td>1</td>
+                                        <td>cup</td>
+                                        <td>Milk</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>cups</td>
+                                        <td>Flour</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>tbs</td>
+                                        <td>Baking soda</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1/2</td>
+                                        <td>cup</td>
+                                        <td>Sugar</td>
+                                    </tr> -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="card">
+                    <div class="card-header" id="collapseDirectionsHeading">
+                        <h5 class="mb-0">
+                        <button class="btn btn-link text-decoration-none" data-toggle="collapse" data-target="#collapseDirections" aria-expanded="true" aria-controls="collapseDirections">
+                            Directions
+                        </button>
+                        </h5>
+                    </div>
+                    <div id="collapseDirections" class="collapse show" aria-labelledby="collapseDirectionsHeading">
+                        <div class="card-body">
+                            <ol>
+                                {% for direction in recipe.directionsList|split:"," %}
+                                    <li>{{ direction }}</li>
+                                {% endfor %}
+                            </ol>
+                            <!-- https://stackoverflow.com/questions/45020984/looping-through-csv-string-in-django-template -->
+                            <!-- https://docs.djangoproject.com/en/4.0/howto/custom-template-tags/ -->
+                        </div>
+                    </div>
+                    </div>
+                    <div class="card">
+                    <div class="card-header" id="collapseBlurbHeading">
+                        <h5 class="mb-0">
+                        <button class="btn btn-link text-decoration-none" data-toggle="collapse" data-target="#collapseBlurb" aria-expanded="true" aria-controls="collapseBlurb">
+                            Recipe Blurb
+                        </button>
+                        </h5>
+                    </div>
+                    <div id="collapseBlurb" class="collapse show" aria-labelledby="blurbCollapseHeading">
+                        <div class="card-body">
+                            {{ recipe.blurb }}
+                        </div>
+                    </div>
+                    </div>
+            </div>
+            <!-- https://getbootstrap.com/docs/4.0/components/collapse/ -->
+            <!-- https://stackoverflow.com/questions/15696365/twitter-bootstrap-collapse-plugin-how-to-enable-multiple-groups-to-be-opened -->
+            <div class="row">
+                <div>
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#reviewsCollapsible" aria-expanded="false" aria-controls="reviewsCollapsible">
+                        Explore Reviews
+                    </button>
+                    <div class="collapse" id="reviewsCollapsible">
+                        <div class="card card-body">
+                            Insert reviews and discussion here
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
