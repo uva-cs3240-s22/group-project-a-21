@@ -27,13 +27,14 @@ class RecipeView(generic.DetailView):
     template_name = 'recipes/recipe.html'
     # return render(requests, 'recipes/recipe.html', {})
     def post(self, request, *args, **kwargs):
-        if request.method == 'POST' and request.user.is_authenticated:
-            rating = request.POST.get('rating', 3)
+        rating = request.POST.get('rating', 3)
         review_text = request.POST.get('content', '')
         recipe = get_object_or_404(Recipe);
 
         review = Review.objects.create(recipe=recipe, rating=rating, review_text=review_text)
 
+        # returns to recipe gallery
+        # would be useful to redirect to a page which allows the user to share the recipe, since they used it
         return HttpResponseRedirect(reverse('recipes:recipeGallery'))
         
         

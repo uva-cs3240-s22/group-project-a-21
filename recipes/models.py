@@ -34,7 +34,7 @@ class Recipe(models.Model):
     
 
 ''' 
-Review
+Recipe Review
 Links back to specific recipe
 If Recipe is deleted, all related Reviews are deleted as well
 '''
