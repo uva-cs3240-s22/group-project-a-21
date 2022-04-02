@@ -31,6 +31,19 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title
+    
 
+''' 
+Review
+Links back to specific recipe
+If Recipe is deleted, all related Reviews are deleted as well
+'''
+class Review(models.Model):
+    recipe = models.ForeignKey(Recipe, related_name='reviews', on_delete=models.CASCADE);
+    
+    review_text = models.TextField(blank=True, null=True)
+    rating = models.IntegerField()
+    
+    
 
 

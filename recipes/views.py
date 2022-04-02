@@ -1,7 +1,7 @@
 from distutils.errors import LibError
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 # from numpy import diff
-from .models import Recipe
+from .models import Recipe, Review
 from django.views import generic
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -26,7 +26,20 @@ class RecipeView(generic.DetailView):
     model = Recipe
     template_name = 'recipes/recipe.html'
     # return render(requests, 'recipes/recipe.html', {})
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST' and request.user.is_authenticated:
+            rating = request.POST.get('rating', 3)
+        review_text = request.POST.get('content', '')
+        recipe = get_object_or_404(Recipe);
 
+        review = Review.objects.create(recipe=recipe, rating=rating, review_text=review_text)
+
+        return HttpResponseRedirect(reverse('recipes:recipeGallery'))
+        
+        
+        
+        
+        
 class EnterRecipeView(generic.ListView):
     model = Recipe
     template_name = 'recipes/enterRecipe.html'

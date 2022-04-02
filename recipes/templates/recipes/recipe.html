@@ -151,7 +151,61 @@
                     </button>
                     <div class="collapse" id="reviewsCollapsible">
                         <div class="card card-body">
-                            Insert reviews and discussion here
+                            <!-- Insert reviews and discussion here -->
+                            <h2 class="subtitle">Recipe Reviews</h2>
+                            {% for review in recipe.reviews.all %}
+
+                                <strong>Rating: </strong>{{review.rating}}  
+
+                                {{review.review_text}}
+
+                            {% empty %}
+
+                                <div class="notification">
+                                    No reviews yet. Be the first to review this recipe!
+                                </div>
+                            
+                            {% endfor %}
+                            
+                            {% if request.user.is_authenticated %}
+                                <form method="post" action=".">
+                                    {% csrf_token %}
+
+                                    <div class="field">
+                                        <label>Give it a rating! (1-5)</label>
+
+                                        <div class"control">
+                                            <div class="select">
+                                                <select name="rating">
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3" selected>3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="field">
+                                        <label>Review:</label>
+                                        <div class="control">
+                                            <textarea class="textarea" name="content"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="field">
+                                        <div class="control">
+                                            <button class="button is-success">Submit</button>
+                                        </div>
+                                    </div>
+
+                                </form>
+
+                            {% else %}
+                                <p>Please sign in to review this recipe</p>
+                            {% endif %}
+                            
                         </div>
                     </div>
                 </div>
