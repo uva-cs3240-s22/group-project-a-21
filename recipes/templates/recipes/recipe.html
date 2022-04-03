@@ -28,7 +28,7 @@
         </header>
         <div class="container-fluid">
             <h2>{{ recipe.title }}</h2>
-            <p>Stars for recipe rating (insert later)</p>
+            <p>Average rating: {{ recipe.get_avg_rating }}/5</p>
             <p>Difficulty rating: {{ recipe.difficultyRating }}</p>
             <p>Dietary restrictions: {{ recipe.dietaryRestrictions }}</p>
             <p>Estimated preparation time: {{ recipe.time }} minutes</p>

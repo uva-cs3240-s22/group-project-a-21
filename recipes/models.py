@@ -28,6 +28,14 @@ class Recipe(models.Model):
         ]
         # https://stackoverflow.com/questions/849142/how-to-limit-the-maximum-value-of-a-numeric-field-in-a-django-model
     )
+    
+    def get_avg_rating(self):
+        reviews = Review.objects.filter(recipe=self)
+        count = len(reviews)
+        sum = 0
+        for rvw in reviews:
+            sum += rvw.rating
+        return (sum/count)
 
     def __str__(self):
         return self.title
