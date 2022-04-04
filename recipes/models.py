@@ -1,11 +1,22 @@
 # from msilib.schema import Directory
 from email.policy import default
+from http.client import ImproperConnectionState
+import imp
 from django.db import models
 from django.contrib import admin
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.contrib.auth.models import User
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 # Create your models here.
-class User(models.Model):
+class Profile(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+
     name = models.CharField(max_length=30)
     email = models.CharField(max_length=50)
     cooking_experience = models.IntegerField()
@@ -16,26 +27,16 @@ class User(models.Model):
     def __str__(self):
         return self.name
 
-#pasted from tutorial, need to refine
-class Profile(models.Model):
-    user = models.OneToOneField(
-        User,
-        on_delete=models.CASCADE,
-        primary_key=True,
-    )
-    discord_id = models.TextField(blank=True, null=True)
-    zoom_id = models.TextField(blank=True, null=True)
-    birthdate = models.DateField(blank=True, null=True)
-
     class Meta:
         managed = False
-        db_table = 'person'
+        db_table = 'Profile'
 
 @receiver(post_save, sender=User)
 def update_profile_signal(sender, instance, created, **kwargs):
     if created:
-        Person.objects.create(user=instance)
-    instance.person.save()
+        Profile.objects.create(user=instance)
+    instance.Profile.save()        
+
 '''
 Note for future development:
     Separate models for Ingredients and Directions lists
