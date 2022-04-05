@@ -1,7 +1,6 @@
 # from msilib.schema import Directory
 from email.policy import default
-from http.client import ImproperConnectionState
-import imp
+import profile
 from django.db import models
 from django.contrib import admin
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -11,32 +10,26 @@ from django.db.models.signals import post_save
 
 # Create your models here.
 class Profile(models.Model):
-    user = models.OneToOneField(
-        User,
-        on_delete=models.CASCADE,
-        primary_key=True,
-    )
-
-    name = models.CharField(max_length=30)
-    email = models.CharField(max_length=50)
-    cooking_experience = models.IntegerField()
-    friends = models.ManyToManyField("self")
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50, blank=True)
+    cooking_experience = models.IntegerField(default=0)
+    friends = models.ManyToManyField("self", blank=True, symmetrical=False)
     # made_recipes = models.ManyToManyField(Recipe)
     # favorite_recipes = models.ManyToManyField(Recipe)
 
     def __str__(self):
-        return self.name
+        return str(self.user)
 
-    class Meta:
-        managed = False
-        db_table = 'Profile'
 
 @receiver(post_save, sender=User)
-def update_profile_signal(sender, instance, created, **kwargs):
+def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
-    instance.Profile.save()        
 
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
+    
 '''
 Note for future development:
     Separate models for Ingredients and Directions lists

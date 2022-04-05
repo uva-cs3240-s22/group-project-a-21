@@ -170,8 +170,9 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend'
 ]
 
-# SITE_ID = 1
-SITE_ID = 3
+SITE_ID = 5
+# SITE_ID = 2 # or 1?
+
 
 LOGIN_REDIRECT_URL = '/'
 
