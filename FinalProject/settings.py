@@ -171,7 +171,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # SITE_ID = 5
-SITE_ID = 2 # or 1?
+SITE_ID = 1 # or 2?
 
 
 LOGIN_REDIRECT_URL = '/'
