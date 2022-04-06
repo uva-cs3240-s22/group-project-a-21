@@ -13,7 +13,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=50, blank=True)
     cooking_experience = models.IntegerField(default=0)
-    friends = models.ManyToManyField("self", blank=True, symmetrical=False)
+    following = models.ManyToManyField("self", blank=True, symmetrical=False)
     # made_recipes = models.ManyToManyField(Recipe)
     # favorite_recipes = models.ManyToManyField(Recipe)
 
