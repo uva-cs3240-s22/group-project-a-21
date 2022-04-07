@@ -13,4 +13,6 @@ urlpatterns = [
     path('recipes/<int:pk>/', views.RecipeView.as_view(), name='recipe'),
     path('recipes/favorite-recipe/<int:pkRecipe>/<int:pkUser>', views.favoriteRecipe, name='favoriteRecipe'),
     path('user/follow-user/<int:pkFollow>/<int:pkUser>', views.followUser, name='followUser'),
+    path('user/update/name/<int:pkUser>', views.updateUserName, name='updateUserName'),
+    path('user/update/cook_exp/<int:pkUser>', views.updateUserCookExp, name='updateUserCookExp'),
 ]

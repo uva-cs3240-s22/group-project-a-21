@@ -101,4 +101,16 @@ def followUser(request, pkFollow, pkUser):
     currentUser = Profile.objects.get(pk=pkUser)
     currentUser.following.add(userToFollow)
     currentUser.save()
-    return HttpResponsePermanentRedirect('/user/' + str(pkFollow)) # redirect back to current recipe
+    return HttpResponsePermanentRedirect('/user/' + str(pkFollow)) # redirect back
+
+def updateUserName(request, pkUser):
+    currentUser = Profile.objects.get(pk=pkUser)
+    currentUser.name = request.POST['name']
+    currentUser.save()
+    return HttpResponsePermanentRedirect('/user/' + str(pkUser)) # redirect back
+
+def updateUserCookExp(request, pkUser):
+    currentUser = Profile.objects.get(pk=pkUser)
+    currentUser.cooking_experience = request.POST['cook_exp']
+    currentUser.save()
+    return HttpResponsePermanentRedirect('/user/' + str(pkUser)) # redirect back

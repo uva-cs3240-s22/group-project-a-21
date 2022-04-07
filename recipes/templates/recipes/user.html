@@ -29,10 +29,29 @@
             </div>
             <div class="row">
                 <div class="col-8">
+                    <!-- Can change name if this user is self -->
+                    {% if profile.pk == user.pk %}
+                    <form action="/user/update/name/{{ profile.pk }}" method="post">
+                        {% csrf_token %}
+                        Name:
+                        <input type="text" value="{{ profile.name }}" name="name">
+                        <input type="submit" value="Rename">
+                    </form>
+                    {% else %}
                     <p>Name: {{ profile.name }}</p>
+                    {% endif %}
                     <p>Email: {{ profile.email }}</p>
+                    <!-- Can change cooking experience if this user is self -->
+                    {% if profile.pk == user.pk %}
+                    <form action="/user/update/cook_exp/{{ profile.pk }}" method="post">
+                        {% csrf_token %}
+                        Cooking experience (Low(1) - High(10)):
+                        <input type="number" max="10" min="1" value="{{ profile.cooking_experience }}" name="cook_exp">
+                        <input type="submit" value="Update cooking experience">
+                    </form>
+                    {% else %}
                     <p>Cooking experience (Low(1) - High(10)): {{ profile.cooking_experience }}</p>
-                    <p>Add input text here to let user set cooking experience</p>
+                    {% endif %}
 
                     <br>
                     <table class="table">
@@ -86,11 +105,13 @@
                     </table>
                 </div>
 
-                Cannot follow yourself
+                <!-- Cannot follow yourself (follow button invisible) -->
+                {% if not profile.pk == user.pk %}
                 <form action="/user/follow-user/{{ profile.pk }}/{{ user.pk }}" method="post">
                     {% csrf_token %}
                     <input type="submit" value="Follow">
                 </form>
+                {% endif %}
             </div>
             
         </div>

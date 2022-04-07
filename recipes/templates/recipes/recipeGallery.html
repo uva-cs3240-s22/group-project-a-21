@@ -1,3 +1,5 @@
+{% load socialaccount %}
+
 {% load bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
@@ -18,7 +20,7 @@
                 <div class="nav">
                     <a class="nav-link" href="/">Home</a>
                     <a class="nav-link active" href="#">Recipes</a>
-                    <a class="nav-link" href="/user/">User Profile</a>
+                    <a class="nav-link" href="/user/{{ user.pk }}">User Profile</a>
                 </div>
             </div>
         </nav>
