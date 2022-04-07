@@ -1,3 +1,5 @@
+{% load socialaccount %}
+
 {% load bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
@@ -18,14 +20,14 @@
                 <div class="nav">
                     <a class="nav-link" href="/">Home</a>
                     <a class="nav-link" href="/recipes/">Recipes</a>
-                    <a class="nav-link active" href="#">User Profile</a>
+                    <a class="nav-link" href="/user/{{ user.pk }}">User Profile</a>
                 </div>
             </div>
         </nav>
     </header>
     <div class="container-fluid">
         <h1>Enter Recipe Page</h1>
-        <form action="{% url 'recipes:newRecipe' %}" method="post">
+        <form action="/recipes/new-recipe/{{ user.pk }}" method="post">
             {% csrf_token %}
 
             <div class="form-group p-3">
@@ -42,7 +44,7 @@
                 <label for="servingSize" class="h4">Serving Size:</label>
                 <input type="text" name="servingSize">
                 <br>
-                <label for="difficultyRating" class="h4">Difficulty Rating:</label>
+                <label for="difficultyRating" class="h4">Difficulty Rating (Low(1) - High(10)):</label>
                 <input type="text" name="difficultyRating">
                 <br>
 

@@ -51,6 +51,9 @@ class Recipe(models.Model):
         ]
         # https://stackoverflow.com/questions/849142/how-to-limit-the-maximum-value-of-a-numeric-field-in-a-django-model
     )
+    favoritedBy = models.ManyToManyField(Profile, related_name="favorites") # a User has many favorite Recipes; a Recipe is favorited by many Users
+    createdBy = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="create", default=1)
+    # https://stackoverflow.com/questions/13918968/multiple-many-to-many-relations-to-the-same-model-in-django
 
     def __str__(self):
         return self.title

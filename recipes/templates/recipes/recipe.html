@@ -1,3 +1,5 @@
+{% load socialaccount %}
+
 {% load bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
@@ -21,15 +23,24 @@
                     <div class="nav">
                         <a class="nav-link" href="/">Home</a>
                         <a class="nav-link" href="/recipes/">Recipes</a>
-                        <a class="nav-link active" href="/user/">User Profile</a>
+                        <a class="nav-link active" href="/user/{{ user.pk }}">User Profile</a>
                     </div>
                 </div>
             </nav>
         </header>
         <div class="container-fluid">
             <h2>{{ recipe.title }}</h2>
+            <p>Created by: <a href="/user/{{ recipe.createdBy.pk }}">{{ recipe.createdBy }}</a></p>
             <p>Stars for recipe rating (insert later)</p>
-            <p>Difficulty rating: {{ recipe.difficultyRating }}</p>
+
+            <form action="/recipes/favorite-recipe/{{ recipe.pk }}/{{ user.pk }}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="Favorite">
+            </form>
+
+            <p>{{ recipe.favoritedBy.all|length }} favorites</p>
+
+            <p>Difficulty rating (Low(1) - High(10)): {{ recipe.difficultyRating }}</p>
             <p>Dietary restrictions: {{ recipe.dietaryRestrictions }}</p>
             <p>Estimated preparation time: {{ recipe.time }} minutes</p>
             <div id="accordion" class="accordion accordion-flush">

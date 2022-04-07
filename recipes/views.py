@@ -2,7 +2,7 @@ from distutils.errors import LibError
 from django.shortcuts import render
 from .models import Recipe, Profile
 from django.views import generic
-from django.http import HttpResponseRedirect
+from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.urls import reverse
 # Create your views here.
 
@@ -34,13 +34,11 @@ class EnterRecipeView(generic.ListView):
     model = Recipe
     template_name = 'recipes/enterRecipe.html'
 
-def newRecipe(request):
+def newRecipe(request, pkUser):
     try:
         title = request.POST['title']
-        # ingredientsList = request.POST['ingredientsList']
-            
+        
         ingredientsList = ""
-
         ingredientsQuantities = request.POST.getlist('ingredientQuant')
         ingredientsUnits = request.POST.getlist('ingredientUnit')
         ingredientsNames = request.POST.getlist('ingredientName')
@@ -51,8 +49,6 @@ def newRecipe(request):
             if not (quantEmpty and unitEmpty and nameEmpty):
                 ingredientsList += ingredientsQuantities[i].replace(" ", "*") + " " + ingredientsUnits[i].replace(" ", "*") + " " + ingredientsNames[i].replace(" ", "*") + ","
         ingredientsList = ingredientsList[:-1] # remove last comma
-
-        # directionsList = request.POST['directionsList']
 
         directionsList = ""
         directions = request.POST.getlist('direction')
@@ -67,6 +63,8 @@ def newRecipe(request):
         servingSize = request.POST['servingSize']
         blurb = request.POST['blurb']
         difficultyRating = request.POST['difficultyRating']
+
+        createdBy = Profile.objects.get(pk=pkUser)
     except (KeyError):
         # Redisplay the question voting form.
         return render(request, 'recipes/enterRecipe.html', {
@@ -81,9 +79,26 @@ def newRecipe(request):
                             time = time,
                             servingSize = servingSize,
                             blurb = blurb,
-                            difficultyRating = difficultyRating)
+                            difficultyRating = difficultyRating,
+                            createdBy = createdBy)
             recipe.save()
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse('recipes:recipeGallery'))
+
+def favoriteRecipe(request, pkRecipe, pkUser):
+    currentRecipe = Recipe.objects.get(pk=pkRecipe)
+    currentUser = Profile.objects.get(pk=pkUser)
+    currentRecipe.favoritedBy.add(currentUser)
+    currentRecipe.save()
+
+    return HttpResponsePermanentRedirect('/recipes/' + str(pkRecipe)) # redirect back to current recipe
+    # https://stackoverflow.com/questions/51464131/multiple-parameters-url-pattern-django-2-0
+
+def followUser(request, pkFollow, pkUser):
+    userToFollow = Profile.objects.get(pk=pkFollow)
+    currentUser = Profile.objects.get(pk=pkUser)
+    currentUser.following.add(userToFollow)
+    currentUser.save()
+    return HttpResponsePermanentRedirect('/user/' + str(pkFollow)) # redirect back to current recipe
