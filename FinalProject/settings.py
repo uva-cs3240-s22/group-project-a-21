@@ -57,6 +57,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google', # for Google OAuth 2.0
 
     'bootstrap5', # for Bootstrap
+
+    # https://studygyaan.com/uncategorised/adding-a-social-share-button-to-your-django-website
+    'django_social_share',
 ]
 
 MIDDLEWARE = [
