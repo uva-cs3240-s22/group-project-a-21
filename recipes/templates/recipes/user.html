@@ -27,9 +27,9 @@
             </div>
             <div class="row">
                 <div class="col-8">
-                    <p>Name: {{ user.name }}</p>
-                    <p>Email: {{ user.email }}</p>
-                    <p>Cooking experience: {{ user.cooking_experience }}</p>
+                    <p>Name: {{ profile.name }}</p>
+                    <p>Email: {{ profile.email }}</p>
+                    <p>Cooking experience: {{ profile.cooking_experience }}</p>
                 </div>
                 <div class="col-4 border">
                     <h3>Following</h3>
@@ -37,14 +37,12 @@
                         <thead>
                             <tr>
                                 <th scope="col">Name</th>
-                                <th scope="col">Email</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for following in user.following.all %}
+                            {% for following in profile.following.all %}
                             <tr>
-                                <td>{{ following.name }}</td>
-                                <td>{{ following.email }}</td>
+                                <td><a href="/user/{{ following.pk }}">{{ following.name }}</a></td>
                             </tr>
                         {% endfor %}
                         </tbody>
