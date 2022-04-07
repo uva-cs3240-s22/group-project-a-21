@@ -19,7 +19,7 @@
                 <div class="nav">
                     <a class="nav-link active" href="#">Home</a>
                     <a class="nav-link" href="/recipes/">Recipes</a>
-                    <a class="nav-link" href="/user/">User Profile</a>
+                    <a class="nav-link" href="/user/{{ user.pk }}">User Profile</a>
                     {% if user.is_authenticated %}
                     <span class="navbar-text">Logged in as {{user.username}}</span>
                     {% else %}

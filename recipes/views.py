@@ -1,18 +1,21 @@
 from distutils.errors import LibError
 from django.shortcuts import render
-# from numpy import diff
-from .models import Recipe
+from .models import Recipe, Profile
 from django.views import generic
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 # Create your views here.
 
-# both of these should be classes? or at least UserView should be a DetailView maybe
 def IndexView(requests):
     return render(requests, 'recipes/index.html', {})
 
-def UserView(requests):
-    return render(requests, 'recipes/user.html', {})
+class UserView(generic.DetailView):
+    model = Profile
+    template_name = 'recipes/user.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 # def RecipeGalleryView(requests):
 #      return render(requests, 'recipes/recipeGallery.html', {})

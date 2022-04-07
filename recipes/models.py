@@ -14,8 +14,6 @@ class Profile(models.Model):
     name = models.CharField(max_length=50, blank=True)
     cooking_experience = models.IntegerField(default=0)
     following = models.ManyToManyField("self", blank=True, symmetrical=False)
-    # made_recipes = models.ManyToManyField(Recipe)
-    # favorite_recipes = models.ManyToManyField(Recipe)
 
     def __str__(self):
         return str(self.user)
