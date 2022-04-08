@@ -51,6 +51,14 @@
             <p>Dietary restrictions: {{ recipe.dietaryRestrictions }}</p>
             <p>Estimated preparation time: {{ recipe.time }} minutes</p>
 
+            <p>Recipe Images</p>
+            {% for recipeImage in recipe.images.all %}
+                <img src="{{ recipeImage.image.url }}" width="200" height="200">
+            {% endfor %}
+
+            <br>
+            <br>
+
             <button class="dropdown btn btn-primary" id="dropdownSocialMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Share this recipe &#9660;</button>
             <div class="dropdown-menu" aria-labelledby="dropdownSocialMenuButton">
                 <div class="dropdown-item text-decoration-none">

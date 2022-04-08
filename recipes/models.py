@@ -63,5 +63,9 @@ class Recipe(models.Model):
     def __str__(self):
         return self.title
 
+class RecipeImage(models.Model):
+    image = models.ImageField(upload_to="recipe_img/", storage=gd_storage, default="")
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="images", default=1)
 
-
+    def __str__(self):
+        return self.image

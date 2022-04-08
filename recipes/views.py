@@ -1,7 +1,7 @@
 from distutils.errors import LibError
 from wsgiref.util import request_uri
 from django.shortcuts import render
-from .models import Recipe, Profile
+from .models import Recipe, Profile, RecipeImage
 from django.views import generic
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.urls import reverse
@@ -65,6 +65,8 @@ def newRecipe(request, pkUser):
         blurb = request.POST['blurb']
         difficultyRating = request.POST['difficultyRating']
 
+        recipe_img = request.FILES.getlist('recipe_img', False)
+
         createdBy = Profile.objects.get(pk=pkUser)
     except (KeyError):
         # Redisplay the question voting form.
@@ -83,6 +85,11 @@ def newRecipe(request, pkUser):
                             difficultyRating = difficultyRating,
                             createdBy = createdBy)
             recipe.save()
+            for img in recipe_img:
+                if(img):
+                    recipeImage = RecipeImage(image=img, recipe=recipe)
+                    recipeImage.save()
+            
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
@@ -118,8 +125,8 @@ def updateUserCookExp(request, pkUser):
 
 def updateUserProfileImg(request, pkUser):
     currentUser = Profile.objects.get(pk=pkUser)
-    # img_upload = request.FILES.get('profile_img', False)
-    img_upload = request.FILES['profile_img']
+    img_upload = request.FILES.get('profile_img', False)
+    # img_upload = request.FILES['profile_img']
     if(img_upload):
         currentUser.profile_img = img_upload
         currentUser.save()
