@@ -23,43 +23,158 @@
             </div>
         </nav>
     </header>
-    <h1>Enter Recipe Page</h1>
-    <form action="{% url 'recipes:newRecipe' %}" method="post">
-        {% csrf_token %}
+    <div class="container-fluid">
+        <h1>Enter Recipe Page</h1>
+        <form action="{% url 'recipes:newRecipe' %}" method="post">
+            {% csrf_token %}
 
-        <div class="form-group p-3">
-            {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-            <label for="title" class="h4">Title:</label>
-            <input type="text" name="title">
-            <br>
-            <label for="ingredientsList" class="h4">Ingredient List (separate each ingredient with a comma):</label>
-            <input type="text" name="ingredientsList">
-            <br>
-            <span class="text-gray">Example: 1 cup flour,2 cups milk</span>
-            <br>
-            <label for="directionsList" class="h4">Directions (separate each step with a comma):</label>
-            <input type="text" name="directionsList">
-            <br>
-            <span class="text-gray">Example: Pour flour in mixing bowl,Pour milk in mixing bowl,Stir</span>
-            <br>
-            <label for="dietaryRestrictions" class="h4">Dietary Restrictions:</label>
-            <input type="text" name="dietaryRestrictions">
-            <br>
-            <label for="time" class="h4">Time (minutes):</label>
-            <input type="text" name="time">
-            <br>
-            <label for="servingSize" class="h4">Serving Size:</label>
-            <input type="text" name="servingSize">
-            <br>
-            <label for="blurb" class="h4">Blurb:</label>
-            <input type="text" name="blurb">
-            <br>
-            <label for="difficultyRating" class="h4">Difficulty Rating:</label>
-            <input type="text" name="difficultyRating">
+            <div class="form-group p-3">
+                {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+                <label for="title" class="h4">Title:</label>
+                <input type="text" name="title">
+                <br>
+                <label for="dietaryRestrictions" class="h4">Dietary Restrictions:</label>
+                <input type="text" name="dietaryRestrictions">
+                <br>
+                <label for="time" class="h4">Time (minutes):</label>
+                <input type="text" name="time">
+                <br>
+                <label for="servingSize" class="h4">Serving Size:</label>
+                <input type="text" name="servingSize">
+                <br>
+                <label for="difficultyRating" class="h4">Difficulty Rating:</label>
+                <input type="text" name="difficultyRating">
+                <br>
 
-        </div>
-        <input type="submit" value="Create Recipe">
-    </form>
+                <label for="ingredientsList" class="h4">Ingredient List:</label>
+                <br>
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr class="table-light">
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Unit</th>
+                            <th scope="col">Ingredient Name</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="ingredients_tb">
+                        <tr>
+                            <td><input type="text" name="ingredientQuant"></td>
+                            <td><input type="text" name="ingredientUnit"></td>
+                            <td><input type="text" name="ingredientName"></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-primary" onclick="addIngredient()">Add ingredient</button>
+
+                <br>
+                <br>
+                <label for="directionsList" class="h4">Directions:</label>
+                <br>
+                <div class="row">
+                    <div class="col-8">
+                        <table class="table table-hover table-striped">
+                            <tbody id="directions_tb">
+                                <tr>
+                                    <td><input type="text" name="direction"></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-4"></div>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="addDirection()">Add direction</button>
+                
+                <br>
+                <br>
+                <label for="blurb" class="h4">Blurb:</label>
+                <input type="text" name="blurb">
+                
+
+            </div>
+            <input type="submit" value="Create Recipe">
+        </form>
+    </div>
+
+    <script>
+        var ingredientsIndex = 1; // 1 instruction required on default which is index 0
+        var directionsIndex = 1; // 1 direction required on default which is index 0
+        
+        function addIngredient() {
+            let ingredients_tb = document.getElementById("ingredients_tb");
+            let row = ingredients_tb.insertRow(); // default adds to end
+            row.id = ingredientsIndex;
+
+            // quantity
+            let input = document.createElement("input");
+            input.type = "text";
+            input.name = "ingredientQuant";
+            row.insertCell(0).appendChild(input);
+
+            // unit
+            input = document.createElement("input");
+            input.type = "text";
+            input.name = "ingredientUnit";
+            row.insertCell(1).appendChild(input);
+
+            // name
+            input = document.createElement("input");
+            input.type = "text";
+            input.name = "ingredientName";
+            row.insertCell(2).appendChild(input);
+
+            // remove button
+            let btn = document.createElement("button");
+            btn.innerHTML = "Remove"
+            btn.type = "button";
+            btn.classList = "btn btn-danger ingredients-remove-btn";
+            btn.name = ingredientsIndex;
+            btn.onclick = function() { // remove this row
+                ingredientsIndex--;
+                ingredients_tb.deleteRow(this.name);
+
+                removeButtons = document.getElementsByClassName("ingredients-remove-btn");
+                for(var i = 0; i < removeButtons.length; i++)
+                    removeButtons[i].setAttribute("name", i+1);
+            }
+            row.insertCell(3).appendChild(btn);
+
+            ingredientsIndex++;
+        }
+
+        function addDirection() {
+            let directions_tb = document.getElementById("directions_tb");
+            let row = directions_tb.insertRow(); // default adds to end
+            row.id = directionsIndex;
+
+            // direction text
+            let input = document.createElement("input");
+            input.type = "text";
+            input.name = "direction";
+            row.insertCell(0).appendChild(input);
+
+            // remove button
+            let btn = document.createElement("button");
+            btn.innerHTML = "Remove"
+            btn.type = "button";
+            btn.classList = "btn btn-danger directions-remove-btn";
+            btn.name = directionsIndex;
+            btn.onclick = function() { // remove this row
+                directionsIndex--;
+                directions_tb.deleteRow(this.name);
+
+                removeButtons = document.getElementsByClassName("directions-remove-btn");
+                for(var i = 0; i < removeButtons.length; i++)
+                    removeButtons[i].setAttribute("name", i+1);
+            }
+            row.insertCell(1).appendChild(btn);
+
+            directionsIndex++;
+        }
+        // https://www.w3schools.com/jsref/met_table_insertrow.asp
+    </script>
 </body>
 
 </html>
