@@ -32,7 +32,13 @@
         </header>
         <div class="container-fluid">
             <h2>{{ recipe.title }}</h2>
-            <p>Created by: <a href="/user/{{ recipe.createdBy.pk }}">{{ recipe.createdBy }}</a></p>
+            <p>
+                Created by: 
+                <a href="/user/{{ recipe.createdBy.pk }}">
+                    {{ recipe.createdBy }}<br>
+                    <img src="{{ recipe.createdBy.profile_img.url }}" width="200" height="200">
+                </a>
+            </p>
             <p>Stars for recipe rating (insert later)</p>
             <form action="/recipes/favorite-recipe/{{ recipe.pk }}/{{ user.pk }}" method="post">
                 {% csrf_token %}
