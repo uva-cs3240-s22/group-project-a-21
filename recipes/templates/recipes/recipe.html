@@ -1,8 +1,9 @@
 {% load bootstrap5 %}
+{% load socialaccount %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
-
 {% load recipe_tags %}
+{% load static %}
 
 <!DOCTYPE html>
 <html>
@@ -11,6 +12,7 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
         <title>Recipe</title>
     </head>
     <body>
@@ -123,64 +125,90 @@
                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#reviewsCollapsible" aria-expanded="false" aria-controls="reviewsCollapsible">
                         Explore Reviews
                     </button>
+                    
                     <div class="collapse" id="reviewsCollapsible">
-                        <div class="card card-body">
-                            <!-- Insert reviews and discussion here -->
-                            <h2 class="subtitle">Recipe Reviews</h2>
-                            {% for review in recipe.reviews.all %}
 
-                                <strong>User: </strong>{{review.user}}
+                        <style>
+                            textarea {
+                                display: block;
+                                margin-left: auto;
+                                margin-right: auto;
+                            }
+                            
+                            select {
+                                display: block;
+                                margin-left: auto;
+                                margin-right: auto;
+                                text-align-last:center;
+                                -moz-text-align-last: center;
+                            }
+                        </style>
 
-                                <strong>Rating: </strong>{{review.rating}}  
-
-                                {{review.review_text}}
-
-                            {% empty %}
-
-                                <div class="notification">
-                                    No reviews yet. Be the first to review this recipe!
+                        {% if request.user.is_authenticated %}
+                            <h2 style="text-align: center;">Review this Recipe!</h2>
+                            <form method="post" action=".">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <textarea type="text" id="formControl" class="form-control w-25" style="display: block;" rows="3" name="content"/></textarea>
                                 </div>
+                                <div class="form-group">
+                                        <select class="form-select w-25" name="rating">
+                                        <option>1⭐</option>
+                                        <option>2⭐</option>
+                                        <option selected>3⭐</option>
+                                        <option>4⭐</option>
+                                        <option>5⭐</option>
+                                        </select>
+                                </div>
+                                <div class="col text-center">
+                                        <button type="submit" class="btn btn-primary mb-2">Submit Review</button>   
+                                </div>
+                            <form>
+                        {% else %}
+                            <p>Please sign in to review this recipe</p>
+                        {% endif %}
                             
-                            {% endfor %}
+                        <!-- Insert reviews and discussion here -->
+                        <h2 style="text-align: center;">Recipe Reviews</h2>
+                        {% for review in recipe.reviews.all %}
+
+                        <div class="card-group">
+                            <div class="card">
+                              <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">{{review.review_text}}</p>
+                              </div>
+                              <div class="card-footer">
+                                <small class="text-muted">{{review.user.username}}</small>
+                              </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                  <h5 class="card-title">Card title</h5>
+                                  <p class="card-text">{{review.review_text}}</p>
+                                </div>
+                                <div class="card-footer">
+                                  <small class="text-muted">{{review.user.username}}</small>
+                                </div>
+                              </div>
+                            <div class="card">
+                                <div class="card-body">
+                                  <h5 class="card-title">Card title</h5>
+                                  <p class="card-text">{{review.review_text}}</p>
+                                </div>
+                                <div class="card-footer">
+                                  <small class="text-muted">{{review.user.username}}</small>
+                                </div>
+                              </div>
+                          </div>
+                        {% empty %}
+                                
+                        <div class="notification">
+                                No reviews yet. Be the first to review this recipe!
+                            </div>
                             
-                            {% if request.user.is_authenticated %}
-                                <form method="post" action=".">
-                                    {% csrf_token %}
-
-                                    <div class="field">
-                                        <label>Give it a rating! (1-5)</label>
-
-                                        <div class"control">
-                                            <div class="select">
-                                                <select name="rating">
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3" selected>3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="field">
-                                        <label>Review:</label>
-                                        <div class="control">
-                                            <textarea class="textarea" name="content"></textarea>
-                                        </div>
-                                    </div>
-
-                                    <div class="field">
-                                        <div class="control">
-                                            <button class="button is-success">Submit</button>
-                                        </div>
-                                    </div>
-
-                                </form>
-
-                            {% else %}
-                                <p>Please sign in to review this recipe</p>
-                            {% endif %}
+                        {% endfor %}
+                            
                             
                         </div>
                     </div>

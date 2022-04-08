@@ -28,10 +28,12 @@ class RecipeView(generic.DetailView):
     # return render(requests, 'recipes/recipe.html', {})
     def post(self, request, *args, **kwargs):
         rating = request.POST.get('rating', 3)
+        rating = rating[0]
         review_text = request.POST.get('content', '')
         recipe = self.get_object()
+        user = self.request.user
 
-        review = Review.objects.create(recipe=recipe, rating=rating, review_text=review_text)
+        review = Review.objects.create(recipe=recipe, rating=rating, review_text=review_text, user=user)
 
         # returns to recipe gallery
         # would be useful to redirect to a page which allows the user to share the recipe, since they used it

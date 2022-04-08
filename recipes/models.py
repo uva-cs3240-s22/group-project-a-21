@@ -7,6 +7,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from django.conf import settings
 
 # Create your models here.
 class Profile(models.Model):
@@ -75,8 +76,7 @@ If Recipe is deleted, all related Reviews are deleted as well
 TODO: Incorporate user model so review is linked to user
 '''
 class Review(models.Model):
-    # confused on this (user)
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE, default="none")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     recipe = models.ForeignKey(Recipe, related_name='reviews', on_delete=models.CASCADE);
     review_text = models.TextField(blank=True, null=True)
     rating = models.IntegerField()
