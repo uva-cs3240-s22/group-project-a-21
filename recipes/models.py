@@ -56,6 +56,8 @@ class Recipe(models.Model):
     def get_avg_rating(self):
         reviews = Review.objects.filter(recipe=self)
         count = len(reviews)
+        if count == 0:
+            return "No reviews yet"
         sum = 0
         for rvw in reviews:
             sum += rvw.rating
@@ -74,7 +76,7 @@ TODO: Incorporate user model so review is linked to user
 '''
 class Review(models.Model):
     # confused on this (user)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, default="none")
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, default="none")
     recipe = models.ForeignKey(Recipe, related_name='reviews', on_delete=models.CASCADE);
     review_text = models.TextField(blank=True, null=True)
     rating = models.IntegerField()

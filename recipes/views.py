@@ -29,7 +29,7 @@ class RecipeView(generic.DetailView):
     def post(self, request, *args, **kwargs):
         rating = request.POST.get('rating', 3)
         review_text = request.POST.get('content', '')
-        recipe = get_object_or_404(Recipe);
+        recipe = self.get_object()
 
         review = Review.objects.create(recipe=recipe, rating=rating, review_text=review_text)
 
