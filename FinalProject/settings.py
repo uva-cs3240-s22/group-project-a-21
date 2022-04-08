@@ -9,13 +9,14 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import sys
 from pathlib import Path
 # Heroku
 import django_heroku
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
-import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -93,22 +94,28 @@ WSGI_APPLICATION = 'FinalProject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-   'default': {
-       'ENGINE': 'django.db.backends.sqlite3',
-       'NAME': BASE_DIR / 'db.sqlite3',
-   }
-}
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'd9s8fat2ug8j0u',
-#         'USER': 'pwyjvrknzqbbiu',
-#         'PASSWORD': '0038dec87dff7ae19226f0a9c544ce11c9f00f50af96018f67c91c27dbed3013',
-#         'HOST': 'ec2-3-219-204-29.compute-1.amazonaws.com',
-#         'PORT': '5432'
-#     }
-# }
+DATABASE_SELECTION = os.getenv("DATABASE_SELECTION")
+
+if DATABASE_SELECTION == "SQLite":
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+elif DATABASE_SELECTION == "postres":
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'd9s8fat2ug8j0u',
+            'USER': 'pwyjvrknzqbbiu',
+            'PASSWORD': '0038dec87dff7ae19226f0a9c544ce11c9f00f50af96018f67c91c27dbed3013',
+            'HOST': 'ec2-3-219-204-29.compute-1.amazonaws.com',
+            'PORT': '5432'
+        }
+    }
+else:
+    print("fail")
 
 # DATABASES = {
 #     'default': {
@@ -170,8 +177,8 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend'
 ]
 
-# SITE_ID = 5
-SITE_ID = 1 # or 2?
+SITE_ID = 5
+# SITE_ID = 1 # or 2?
 
 
 LOGIN_REDIRECT_URL = '/'
