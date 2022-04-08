@@ -51,18 +51,6 @@
             <p>Dietary restrictions: {{ recipe.dietaryRestrictions }}</p>
             <p>Estimated preparation time: {{ recipe.time }} minutes</p>
 
-            
-            {% if not recipe.images.all|length == 0 %}
-                <p>Recipe Images</p>
-                {% for recipeImage in recipe.images.all %}
-                    <img src="{{ recipeImage.image.url }}" width="200" height="200">
-                {% endfor %}
-            {% endif %}
-            
-
-            <br>
-            <br>
-
             <button class="dropdown btn btn-primary" id="dropdownSocialMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Share this recipe &#9660;</button>
             <div class="dropdown-menu" aria-labelledby="dropdownSocialMenuButton">
                 <div class="dropdown-item text-decoration-none">
@@ -77,7 +65,30 @@
                 <!-- https://pypi.org/project/django-social-share/ -->
             </div>
 
+            <br><br>
+
+            
+
             <div id="accordion" class="accordion accordion-flush mt-3">
+                {% if not recipe.images.all|length == 0 %}
+                <div class="card">
+                    <div class="card-header" id="collapseImagesHeading">
+                        <h5 class="mb-0">
+                        <button class="btn btn-link text-decoration-none" data-toggle="collapse" data-target="#collapseImages" aria-expanded="true" aria-controls="collapseImages">
+                            Recipe Images
+                        </button>
+                        </h5>
+                    </div>
+                    <div id="collapseImages" class="collapse show" aria-labelledby="collapseImagesHeading">
+                        <div class="card-body">
+                            {% for recipeImage in recipe.images.all %}
+                            <img src="{{ recipeImage.image.url }}" width="200" height="200">
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
                 <div class="card">
                     <div class="card-header" id="collapseIngredientsHeading">
                         <h5 class="mb-0">
@@ -124,7 +135,6 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
                     </div>
                     <div class="card">
                     <div class="card-header" id="collapseDirectionsHeading">
