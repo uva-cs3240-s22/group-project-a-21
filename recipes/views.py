@@ -1,4 +1,5 @@
 from distutils.errors import LibError
+from wsgiref.util import request_uri
 from django.shortcuts import render
 from .models import Recipe, Profile
 from django.views import generic
@@ -113,4 +114,13 @@ def updateUserCookExp(request, pkUser):
     currentUser = Profile.objects.get(pk=pkUser)
     currentUser.cooking_experience = request.POST['cook_exp']
     currentUser.save()
+    return HttpResponsePermanentRedirect('/user/' + str(pkUser)) # redirect back
+
+def updateUserProfileImg(request, pkUser):
+    currentUser = Profile.objects.get(pk=pkUser)
+    # img_upload = request.FILES.get('profile_img', False)
+    img_upload = request.FILES['profile_img']
+    if(img_upload):
+        currentUser.profile_img = img_upload
+        currentUser.save()
     return HttpResponsePermanentRedirect('/user/' + str(pkUser)) # redirect back

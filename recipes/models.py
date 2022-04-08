@@ -1,4 +1,5 @@
 # from msilib.schema import Directory
+from distutils.command.upload import upload
 from email.policy import default
 import profile
 from django.db import models
@@ -7,6 +8,9 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from gdstorage.storage import GoogleDriveStorage
+
+gd_storage = GoogleDriveStorage()
 
 # Create your models here.
 class Profile(models.Model):
@@ -15,6 +19,7 @@ class Profile(models.Model):
     email = models.EmailField(max_length=50, blank=True)
     cooking_experience = models.IntegerField(default=0)
     following = models.ManyToManyField("self", blank=True, symmetrical=False)
+    profile_img = models.ImageField(upload_to="profile_img/", storage=gd_storage, default="")
 
     def __str__(self):
         return str(self.user)

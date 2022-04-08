@@ -60,6 +60,9 @@ INSTALLED_APPS = [
 
     # https://studygyaan.com/uncategorised/adding-a-social-share-button-to-your-django-website
     'django_social_share',
+
+    # https://django-googledrive-storage.readthedocs.io/en/latest/
+    'gdstorage',
 ]
 
 MIDDLEWARE = [
@@ -206,3 +209,5 @@ try:
     django_heroku.settings(locals(), test_runner=False)
 except ImportError:
     found = False
+
+GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE = 'recipes/google_drive_key/cs-3240-project-346613-2db03865b1ef.json'

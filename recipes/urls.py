@@ -15,4 +15,5 @@ urlpatterns = [
     path('user/follow-user/<int:pkFollow>/<int:pkUser>', views.followUser, name='followUser'),
     path('user/update/name/<int:pkUser>', views.updateUserName, name='updateUserName'),
     path('user/update/cook_exp/<int:pkUser>', views.updateUserCookExp, name='updateUserCookExp'),
+    path('user/update/profile_img/<int:pkUser>', views.updateUserProfileImg, name='updateUserProfileImg'),
 ]
