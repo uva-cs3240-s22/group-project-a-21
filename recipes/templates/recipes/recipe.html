@@ -51,10 +51,14 @@
             <p>Dietary restrictions: {{ recipe.dietaryRestrictions }}</p>
             <p>Estimated preparation time: {{ recipe.time }} minutes</p>
 
-            <p>Recipe Images</p>
-            {% for recipeImage in recipe.images.all %}
-                <img src="{{ recipeImage.image.url }}" width="200" height="200">
-            {% endfor %}
+            
+            {% if not recipe.images.all|length == 0 %}
+                <p>Recipe Images</p>
+                {% for recipeImage in recipe.images.all %}
+                    <img src="{{ recipeImage.image.url }}" width="200" height="200">
+                {% endfor %}
+            {% endif %}
+            
 
             <br>
             <br>

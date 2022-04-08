@@ -85,10 +85,11 @@ def newRecipe(request, pkUser):
                             difficultyRating = difficultyRating,
                             createdBy = createdBy)
             recipe.save()
-            for img in recipe_img:
-                if(img):
-                    recipeImage = RecipeImage(image=img, recipe=recipe)
-                    recipeImage.save()
+            if(recipe_img):
+                for img in recipe_img:
+                    if(img):
+                        recipeImage = RecipeImage(image=img, recipe=recipe)
+                        recipeImage.save()
             
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
