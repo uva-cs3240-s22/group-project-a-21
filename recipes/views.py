@@ -1,4 +1,5 @@
 from distutils.errors import LibError
+from re import template
 from wsgiref.util import request_uri
 from django.shortcuts import render
 from .models import Recipe, Profile, RecipeImage
@@ -7,8 +8,13 @@ from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.urls import reverse
 # Create your views here.
 
-def IndexView(requests):
-    return render(requests, 'recipes/index.html', {})
+# def IndexView(requests):
+#     return render(requests, 'recipes/index.html', {})
+class IndexView(generic.ListView):
+    template_name='recipes/index.html'
+    context_object_name = 'latest_recipe_list'
+    def get_queryset(self):
+        return Recipe.objects.all()
 
 class UserView(generic.DetailView):
     model = Profile
