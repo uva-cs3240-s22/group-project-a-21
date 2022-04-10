@@ -89,29 +89,17 @@
                 
                     <div id="collapseIngredients" class="collapse show" aria-labelledby="collapseIngredientsHeading">
                         <div class="card-body">
-                            Ingredients for {{ recipe.servingSize }} serving(s)
-                            <button class="btn btn-primary" onclick="changeServingSize(2)">{% widthratio recipe.servingSize 1 2 %} serving(s)</button>
-                            <button class="btn btn-primary" onclick="changeServingSize(3)">{% widthratio recipe.servingSize 1 3 %} serving(s)</button>
-                            <button class="btn btn-primary" onclick="changeServingSize(5)">{% widthratio recipe.servingSize 1 5 %} serving(s)</button>
+                            <button class="btn btn-primary" id="servingSize1" onclick="changeServingSize(1)" disabled>Original size: ({{ recipe.servingSize }} servings)</button>
+                            <button class="btn btn-primary" id="servingSize2" onclick="changeServingSize(2)">x2 servings</button>
+                            <button class="btn btn-primary" id="servingSize3" onclick="changeServingSize(3)">x3 servings</button>
+                            <button class="btn btn-primary" id="servingSize5" onclick="changeServingSize(5)">x5 servings</button>
                             <br>
                             <p>Add option for different servings</p>
 
                             <table class="table table-hover table-striped">
                                 <thead>
                                     <tr class="table-light">
-                                        <th scope="col dropdown">
-                                            Quantity
-                                            <a href="#" class="dropdown text-reset text-decoration-none" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9660;</a>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <div class="dropdown-item">
-                                                    Implement some way to change serving size here
-                                                </div>
-                                                <div class="dropdown-item text-decoration-none">
-                                                    <label for="servingSize" class="form-label">Example range</label>
-                                                    <input type="range" class="form-range" min="1" max="10" step="0.5" id="servingSize">
-                                                </div>
-                                            </div>
-                                        </th>
+                                        <th scope="col">Quantity</th>
                                         <th scope="col">Unit</th>
                                         <th scope="col">Ingredient Name</th>
                                     </tr>
@@ -180,14 +168,28 @@
         </div>
     </body>
     <script>
+        var ingredientQuantitiesChanged = false;
+        var ingredientQuantitiesChangedLastFactor;
         function changeServingSize(factor) {
             let ingredients_tb = document.getElementById("ingredients_tb");
             for (r of ingredients_tb.rows) {
-                console.log("row");
-                console.log(parseInt(r.children[0].innerHTML) * factor);
-                // r.children[0] = parseInt(r.firstChild.value)*factor;
+                if(ingredientQuantitiesChanged) {
+                    r.children[0].innerHTML = parseInt(r.children[0].innerHTML) / ingredientQuantitiesChangedLastFactor;
+                }
                 r.children[0].innerHTML = parseInt(r.children[0].innerHTML) * factor;
             }
+
+            // update buttons
+            event.target.disabled = true;
+            if(ingredientQuantitiesChanged) {
+                document.getElementById("servingSize" + ingredientQuantitiesChangedLastFactor).disabled = false;
+            }
+            else {
+                document.getElementById("servingSize1").disabled = false;
+            }
+            
+            ingredientQuantitiesChangedLastFactor = factor;
+            ingredientQuantitiesChanged = true;
         }
     </script>
 </html>
