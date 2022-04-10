@@ -21,38 +21,45 @@
         {% include "recipes/navbar.html" %}
         <div class="container-fluid">
             <h2>{{ recipe.title }}</h2>
-            <p>
-                Created by: 
-                <a href="/user/{{ recipe.createdBy.pk }}">
-                    {{ recipe.createdBy }}<br>
-                    <img src="{{ recipe.createdBy.profile_img.url }}" width="200" height="200">
-                </a>
-            </p>
-            <p>Stars for recipe rating (insert later)</p>
-            <form action="/recipes/favorite-recipe/{{ recipe.pk }}/{{ user.pk }}" method="post">
-                {% csrf_token %}
-                <input type="submit" value="Favorite">
-            </form>
-
-            <p>{{ recipe.favoritedBy.all|length }} favorites</p>
-
-            <p>Difficulty rating (Low(1) - High(10)): {{ recipe.difficultyRating }}</p>
-            <p>Dietary restrictions: {{ recipe.dietaryRestrictions }}</p>
-            <p>Estimated preparation time: {{ recipe.time }} minutes</p>
-
-            <button class="dropdown btn btn-primary" id="dropdownSocialMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Share this recipe &#9660;</button>
-            <div class="dropdown-menu" aria-labelledby="dropdownSocialMenuButton">
-                <div class="dropdown-item text-decoration-none">
-                    {% send_email "{{ recipe.title }} recipe by {{ recipe.createdBy }}" "Check out this {{ recipe.title }} recipe by {{ recipe.createdBy }}!" object_or_url "Email" "text-decoration-none" %}
+            <div class="row">
+                <div class="col-8">
+                    <p>Stars for recipe rating (insert later)</p>
+                    <form action="/recipes/favorite-recipe/{{ recipe.pk }}/{{ user.pk }}" method="post">
+                        {% csrf_token %}
+                        {{ recipe.favoritedBy.all|length }} favorites  <input type="submit" value="Favorite">
+                    </form>
+        
+                    
+        
+                    <p>Difficulty rating (Low(1) - High(10)): {{ recipe.difficultyRating }}</p>
+                    <p>Dietary restrictions: {{ recipe.dietaryRestrictions }}</p>
+                    <p>Estimated preparation time: {{ recipe.time }} minutes</p>
                 </div>
-                <div class="dropdown-item text-decoration-none">
-                    {% post_to_twitter "Check out this {{ recipe.title }} recipe by {{ recipe.createdBy }}!" object_or_url "Twitter" "text-decoration-none" %}
+                <div class="col-4">
+                    <p>
+                        Created by: 
+                        <a href="/user/{{ recipe.createdBy.pk }}">
+                            {{ recipe.createdBy }}<br>
+                            <img src="{{ recipe.createdBy.profile_img.url }}" width="200" height="200">
+                        </a>
+                    </p>
+                    <button class="dropdown btn btn-primary" id="dropdownSocialMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Share this recipe</button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownSocialMenuButton">
+                        <div class="dropdown-item text-decoration-none">
+                            {% send_email "{{ recipe.title }} recipe by {{ recipe.createdBy }}" "Check out this {{ recipe.title }} recipe by {{ recipe.createdBy }}!" object_or_url "Email" "text-decoration-none" %}
+                        </div>
+                        <div class="dropdown-item text-decoration-none">
+                            {% post_to_twitter "Check out this {{ recipe.title }} recipe by {{ recipe.createdBy }}!" object_or_url "Twitter" "text-decoration-none" %}
+                        </div>
+                        <div class="dropdown-item text-decoration-none">
+                            {% post_to_reddit "Check out this {{ recipe.title }} recipe by {{ recipe.createdBy }}!" object_or_url "Reddit" "text-decoration-none" %}
+                        </div>
+                        <!-- https://pypi.org/project/django-social-share/ -->
+                    </div>
                 </div>
-                <div class="dropdown-item text-decoration-none">
-                    {% post_to_reddit "Check out this {{ recipe.title }} recipe by {{ recipe.createdBy }}!" object_or_url "Reddit" "text-decoration-none" %}
-                </div>
-                <!-- https://pypi.org/project/django-social-share/ -->
             </div>
+            
+            
 
             <br><br>
 

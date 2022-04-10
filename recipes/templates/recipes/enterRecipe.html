@@ -68,7 +68,7 @@
                         <table class="table table-hover table-striped">
                             <tbody id="directions_tb">
                                 <tr>
-                                    <td><input type="text" name="direction"></td>
+                                    <td><textarea type="text" name="direction" rows="3" cols="50"></textarea></td>
                                     <td></td>
                                 </tr>
                             </tbody>
@@ -166,10 +166,18 @@
             row.id = directionsIndex;
 
             // direction text
-            let input = document.createElement("input");
+            // let input = document.createElement("input");
+            // input.type = "text";
+            // input.name = "direction";
+            // row.insertCell(0).appendChild(input);
+
+            let input = document.createElement("textarea");
             input.type = "text";
             input.name = "direction";
+            input.rows = "3";
+            input.cols = "50";
             row.insertCell(0).appendChild(input);
+            // <td><textarea type="text" name="direction" rows="3" cols="50"></textarea></td>
 
             // remove button
             let btn = document.createElement("button");
