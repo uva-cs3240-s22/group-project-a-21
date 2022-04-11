@@ -109,7 +109,7 @@ if DATABASE_SELECTION == "SQLite":
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-elif DATABASE_SELECTION == "postres":
+elif DATABASE_SELECTION == "postgres":
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
