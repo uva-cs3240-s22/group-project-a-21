@@ -42,7 +42,7 @@
                     <p>Cooking experience (Low(1) - High(10)): {{ profile.cooking_experience }}</p>
                     {% endif %}
 
-                    {% if profile.profile_img.url %}
+                    {% if profile.profile_img %}
                     <img src="{{ profile.profile_img.url }}" width="200" height="200">
                     {% else %}
                     <p>No profile image uploaded</p>
