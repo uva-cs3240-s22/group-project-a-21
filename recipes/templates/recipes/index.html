@@ -12,24 +12,9 @@
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-light bg-light">
-            <div class="container-fluid">
-                <div class="navbar-brand ml-1">Word of Mouth Home Page</div>
-                <div class="nav">
-                    <a class="nav-link active" href="#">Home</a>
-                    <a class="nav-link" href="/recipes/">Recipes</a>
-                    <a class="nav-link" href="/user/">User Profile</a>
-                    {% if user.is_authenticated %}
-                    <span class="navbar-text">Logged in as {{user.username}}</span>
-                    {% else %}
-                    <a class="nav-link" href="{% provider_login_url 'google' %}">Login With Google</a>
-                    {% endif %}
-                </div>
-            </div>
-        </nav>
-    </header>
+    {% include "recipes/navbar.html" %}
     <div class="container-fluid">
+        <h1>Home Page</h1>
         <div class="row">
             {% if user.is_authenticated %}
             <p><b>Yo {{ user.username }}, you're logged into to our website!</b></p>
@@ -40,12 +25,10 @@
             <p><a href="{% provider_login_url 'google' %}">Login With Google</a></p>
             {% endif %}
         </div>
-        <div class="row">
-            <span class="ml-1">add recipe gallery here</span>
-            <p><a href="/recipe/">Link to individual recipe page (doesn't work)</a></p>
-            <p><a href="/recipes/new-recipe">Make a new recipe</a></p>
-        </div>
+        <h3>Begin exploring recipes</h3>
+        {% include "recipes/recipeGrid.html" %}
     </div>
+    
 </body>
 
 </html>

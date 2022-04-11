@@ -1,4 +1,5 @@
 # from msilib.schema import Directory
+from distutils.command.upload import upload
 from email.policy import default
 import profile
 from django.db import models
@@ -7,15 +8,18 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from gdstorage.storage import GoogleDriveStorage
+
+gd_storage = GoogleDriveStorage()
 
 # Create your models here.
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=50, blank=True)
+    email = models.EmailField(max_length=50, blank=True)
     cooking_experience = models.IntegerField(default=0)
     following = models.ManyToManyField("self", blank=True, symmetrical=False)
-    # made_recipes = models.ManyToManyField(Recipe)
-    # favorite_recipes = models.ManyToManyField(Recipe)
+    profile_img = models.ImageField(upload_to="profile_img/", storage=gd_storage, default="")
 
     def __str__(self):
         return str(self.user)
@@ -24,7 +28,7 @@ class Profile(models.Model):
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        Profile.objects.create(user=instance)
+        Profile.objects.create(user=instance, name=instance.username, email=instance.email)
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
@@ -52,9 +56,16 @@ class Recipe(models.Model):
         ]
         # https://stackoverflow.com/questions/849142/how-to-limit-the-maximum-value-of-a-numeric-field-in-a-django-model
     )
+    favoritedBy = models.ManyToManyField(Profile, related_name="favorites") # a User has many favorite Recipes; a Recipe is favorited by many Users
+    createdBy = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="create", default=1)
+    # https://stackoverflow.com/questions/13918968/multiple-many-to-many-relations-to-the-same-model-in-django
 
     def __str__(self):
         return self.title
 
+class RecipeImage(models.Model):
+    image = models.ImageField(upload_to="recipe_img/", storage=gd_storage, default="")
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="images", default=1)
 
-
+    def __str__(self):
+        return self.image

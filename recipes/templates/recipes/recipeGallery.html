@@ -1,3 +1,5 @@
+{% load socialaccount %}
+
 {% load bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
@@ -11,28 +13,10 @@
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-light bg-light">
-            <div class="container-fluid">
-                <div class="navbar-brand ml-1">Recipes</div>
-                <div class="nav">
-                    <a class="nav-link" href="/">Home</a>
-                    <a class="nav-link active" href="#">Recipes</a>
-                    <a class="nav-link" href="/user/">User Profile</a>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <h1>Recipe Gallery Page</h1>
-
-    {% if latest_recipe_list %}
-    {% for recipe in latest_recipe_list %}
-    <h4 class="font-weight-bold"><a href="{% url 'recipes:recipe' recipe.id %}">{{ recipe.title }}</a></h4>
-    {% endfor %}
-    {% else %}
-    <p>No recipes are available.</p>
-    {% endif %}
-
+    {% include "recipes/navbar.html" %}
+    <div class="container-fluid">
+        <h1>Recipe Gallery Page</h1>
+        {% include "recipes/recipeGrid.html" %}
+    </div>
 </body>
-
 </html>
