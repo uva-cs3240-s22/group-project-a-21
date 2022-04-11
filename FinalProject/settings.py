@@ -110,6 +110,7 @@ if DATABASE_SELECTION == "SQLite":
         }
     }
 elif DATABASE_SELECTION == "postgres":
+    print("postgres")
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
