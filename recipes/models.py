@@ -76,7 +76,7 @@ If Recipe is deleted, all related Reviews are deleted as well
 TODO: Incorporate user model so review is linked to user
 '''
 class Review(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, related_name='reviews', on_delete=models.CASCADE);
     review_text = models.TextField(blank=True, null=True)
     rating = models.IntegerField()
