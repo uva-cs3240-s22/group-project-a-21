@@ -72,8 +72,6 @@ class Recipe(models.Model):
 Recipe Review
 Links back to specific recipe
 If Recipe is deleted, all related Reviews are deleted as well
-
-TODO: Incorporate user model so review is linked to user
 '''
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
