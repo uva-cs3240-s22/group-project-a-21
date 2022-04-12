@@ -20,7 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('recipes.urls')),
     path('accounts/', include('allauth.urls')),
-    path('ratings/', include('star_ratings.urls', namespace='ratings')),
 ]
 
 # Lilian's test comment
