@@ -3,6 +3,18 @@ from recipes.models import Recipe, Profile;
 from django.contrib.auth.models import User
 
 
+"""
+TEST SUMMARY
+
+SETUP:
+    - creates user1 and user2
+    - create a recipe that is fully filled with dummy information, created by user1 and followed by user1 and user2
+
+TESTS:
+    - test that the recipe is correctly inserted, and that all infomration in DB is correct and accessible (10 tests)
+    
+"""
+
 class RecipeTests(TestCase):
 
     @classmethod
