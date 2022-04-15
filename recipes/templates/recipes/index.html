@@ -3,6 +3,8 @@
 {% load bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 
@@ -14,7 +16,14 @@
 <body>
     {% include "recipes/navbar.html" %}
     <div class="container-fluid">
-        <h1>Home Page</h1>
+        <div class="pimg1">
+            <div class="ptext">
+                <span class="border">
+                    Word of Mouth
+                </span>
+            </div>
+        </div>
+        <!-- <h1>Home Page</h1>
         <div class="row">
             {% if user.is_authenticated %}
             <p><b>Yo {{ user.username }}, you're logged into to our website!</b></p>
@@ -24,11 +33,40 @@
             <p><b>HEY!</b> You're not logged in... but you should because this website is really cool.</p>
             <p><a href="{% provider_login_url 'google' %}">Login With Google</a></p>
             {% endif %}
-        </div>
+        </div> -->
         <h3>Begin exploring recipes</h3>
         {% include "recipes/recipeGrid.html" %}
     </div>
-    
+
 </body>
+<style>
+    .pimg1 {
+        position: relative;
+        opacity: 0.8;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+
+        background-attachment: fixed;
+        min-height: 100%;
+    }
+
+    .ptext {
+        position: absolute;
+        font-size: 27px;
+        top: 50%;
+        width: 100%;
+        text-align: center;
+        font-weight: bold;
+        opacity: 0.75;
+        letter-spacing: 5px;
+    }
+
+    .ptext .border {
+        background-color: #111;
+        color: white;
+        padding: 10px;
+    }
+</style>
 
 </html>
