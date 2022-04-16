@@ -23,11 +23,7 @@
             <h2>{{ recipe.title }}</h2>
             <div class="row">
                 <div class="col-8">
-                    {%  if recipe.get_avg_rating != 404 %}
-                    <p>Average Rating: {{recipe.get_avg_rating|floatformat}} ⭐</p>
-                    {% else %}
-                    <p>No reviews for this recipe</p>
-                    {% endif %}
+                    <p>Stars for recipe rating (insert later)</p>
                     <form action="/recipes/favorite-recipe/{{ recipe.pk }}/{{ user.pk }}" method="post">
                         {% csrf_token %}
                         {{ recipe.favoritedBy.all|length }} favorites  <input type="submit" value="Favorite">
@@ -172,75 +168,9 @@
                         Explore Reviews
                     </button>
                     <div class="collapse" id="reviewsCollapsible">
-                        <style>
-                            textarea {
-                                display: block;
-                                margin-left: auto;
-                                margin-right: auto;
-                            }
-                            
-                            select {
-                                display: block;
-                                margin-left: auto;
-                                margin-right: auto;
-                                text-align-last:center;
-                                -moz-text-align-last: center;
-                            }
-                            a {
-                                color: inherit;
-                                text-decoration:none;
-                              }
-
-                            
-                        </style>
-
-                        {% if request.user.is_authenticated %}
-                            <h2 style="text-align: center;">Review this Recipe!</h2>
-                            <form method="post" action=".">
-                                {% csrf_token %}
-                                <div class="form-group">
-                                    <textarea type="text" id="formControl" class="form-control w-50" style="display: block;" rows="3" name="content"/></textarea>
-                                </div>
-                                <div class="form-group">
-                                        <select class="form-select w-25" name="rating">
-                                        <option>1⭐</option>
-                                        <option>2⭐</option>
-                                        <option selected>3⭐</option>
-                                        <option>4⭐</option>
-                                        <option>5⭐</option>
-                                        </select>
-                                </div>
-                                <div class="col text-center">
-                                        <button type="submit" class="btn btn-primary mb-2">Submit Review</button>   
-                                </div>
-                            <form>
-                        {% else %}
-                            <p>Please sign in to review this recipe</p>
-                        {% endif %}
-                            
-                        <!-- Insert reviews and discussion here -->
-                        <h2 style="text-align: center;">Recipe Reviews</h2>
-                        <div class="container">
-                            {%  for review in recipe.reviews.all  %}
-                                {% if forloop.counter0|divisibleby:3 %} <div class="row text-center"> {%  endif %}
-                                <div class="col-md-4" style="cursor: pointer">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h4 class="card-title">{{ review.rating }} ⭐</h4>
-                                            <p class="card-text">{{ review.review_text }}<p>
-                                            <div class="card-footer text-muted">
-                                                by
-                                                <a href="/user/{{ review.user.pk }}">{{ review.user.username }}</a>
-                                            </div>
-                                                
-                
-                                        </div><!-- card content -->
-                                    </div><!-- card -->
-                                </div><!-- col-md-4 -->
-                            {%  if forloop.counter|divisibleby:3 or forloop.last %}</div><!-- row closing --><hr>{%  endif %}
-                            {%  endfor %}
-                         </div><!-- container -->
-                        
+                        <div class="card card-body">
+                            Insert reviews and discussion here
+                        </div>
                     </div>
                 </div>
             </div>
