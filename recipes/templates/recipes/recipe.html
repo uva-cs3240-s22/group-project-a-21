@@ -4,6 +4,7 @@
 {% load bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
+{% load static %}
 
 {% load recipe_tags %}
 
@@ -22,46 +23,107 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Recipe</title>
-    <style>
-        body {
-            background-color: lightblue;
-        }
+    <title>{{ recipe.title }}</title>
+    <link rel="icon" href="{% static 'recipes/wom_logo.png' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Encode+Sans:wght@800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-        h2 {
-            color: #213037;
-            margin-left: 40px;
-            font-family: "Georgia";
-            font-weight: bold;
-        }
-
-        hr.new1 {
-            border-top: 1px solid gray;
-        }
-
-        .div1 {
-            margin: auto;
-            width: 50%;
-            border: 2px solid gray;
-            padding: 10px;
-            text-align: center;
-            box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
-        }
-
-        .checked {
-            color: orange;
-        }
-
-        p {
-            font-family: "Georgia";
-        }
-    </style>
 </head>
+
+<style>
+    body {
+        background-color: lightblue;
+    }
+
+    h2 {
+        color: #213037;
+        margin-left: 40px;
+        font-family: 'Encode Sans', sans-serif;
+        font-weight: bold;
+    }
+
+    hr.new1 {
+        border-top: 1px solid gray;
+    }
+
+    .div1 {
+        margin: auto;
+        width: 50%;
+        border: 2px solid gray;
+        padding: 10px;
+        text-align: center;
+        box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    }
+
+    .checked {
+        color: orange;
+    }
+
+    p {
+        font-family: "Georgia";
+    }
+
+    ol {
+        text-align: left;
+    }
+
+    p a {
+        color: black;
+    }
+
+    fontsetting {
+        font-family: Georgia;
+    }
+
+    .button {
+        background-color: #D98076FF;
+        border: none;
+        color: white;
+        padding: 10px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 3px 2px;
+        cursor: pointer;
+        font-family: "Georgia";
+    }
+
+    .dropdown {
+        background-color: #D98076FF;
+        border: none;
+        color: white;
+        padding: 10px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 3px 2px;
+        cursor: pointer;
+        font-family: "Georgia";
+    }
+</style>
 
 <body>
     {% include "recipes/navbar.html" %}
     <div class="div1">
         <h2>{{ recipe.title }}</h2>
+        <p>Stars for recipe rating (DOESN'T FULLY WORK YET)</p>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star"></span>
+        <span class="fa fa-star"></span>
+        <p>
+            Created by:
+            <a href="/user/{{ recipe.createdBy.pk }}">
+                {{ recipe.createdBy }}
+                <br>
+                {% if recipe.createdBy.profile_img %}
+                <img src="{{ recipe.createdBy.profile_img.url }}" width="200" height="200">
+                {% endif %}
+            </a>
+        </p>
         <hr class="new1">
         {% if not recipe.images.all|length == 0 %}
         <div class="card">
@@ -99,33 +161,24 @@
         </div>
         <div class="row">
             <div class="col">
-                <p>
-                    Created by:
-                    <a href="/user/{{ recipe.createdBy.pk }}">
-                        {{ recipe.createdBy }}<br>
-                        {% if recipe.createdBy.profile_img %}
-                        <img src="{{ recipe.createdBy.profile_img.url }}" width="200" height="200">
-                        {% endif %}
-                    </a>
-                </p>
 
                 <p>Dietary restrictions: {{ recipe.dietaryRestrictions }}</p>
-                <p>Estimated preparation time: {{ recipe.time }} minutes</p>
+                <div>
+                    <i class="material-icons" style="float:left;">timer</i>
+                    <span class="time" style="float:left;">Estimated preparation time: {{ recipe.time }} min</span>
+                </div>
+                <br>
+                <p>Difficulty rating (Low(1) - High(10)): {{ recipe.difficultyRating }}</p>
+
             </div>
             <div class="col">
-                <p>Stars for recipe rating (DOESN'T FULLY WORK YET)</p>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star"></span>
-                <span class="fa fa-star"></span>
                 <form action="/recipes/favorite-recipe/{{ recipe.pk }}/{{ user.pk }}" method="post">
                     {% csrf_token %}
                     {{ recipe.favoritedBy.all|length }} favorites <input type="submit" value="Favorite">
                 </form>
-                <p>Difficulty rating (Low(1) - High(10)): {{ recipe.difficultyRating }}</p>
-                <button class="dropdown btn btn-primary" id="dropdownSocialMenuButton" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">Share this recipe</button>
+
+                <button class="button" id="dropdownSocialMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">Share this recipe</button>
                 <div class="dropdown-menu" aria-labelledby="dropdownSocialMenuButton">
                     <div class="dropdown-item text-decoration-none">
                         {% send_email "{{ recipe.title }} recipe by {{ recipe.createdBy }}" "Check out this {{ recipe.title }} recipe by {{ recipe.createdBy }}!" object_or_url "Email" "text-decoration-none" %}
@@ -156,16 +209,15 @@
 
                 <div id="collapseIngredients" class="collapse show" aria-labelledby="collapseIngredientsHeading">
                     <div class="card-body">
-                        <button class="btn btn-primary" id="servingSize1" onclick="changeServingSize(1)"
-                            disabled>Original size: ({{ recipe.servingSize }} servings)</button>
-                        <button class="btn btn-primary" id="servingSize2" onclick="changeServingSize(2)">x2
+                        <button class="button" id="servingSize1" onclick="changeServingSize(1)" disabled>Original size:
+                            ({{ recipe.servingSize }} servings)</button>
+                        <button class="button" id="servingSize2" onclick="changeServingSize(2)">x2
                             servings</button>
-                        <button class="btn btn-primary" id="servingSize3" onclick="changeServingSize(3)">x3
+                        <button class="button" id="servingSize3" onclick="changeServingSize(3)">x3
                             servings</button>
-                        <button class="btn btn-primary" id="servingSize5" onclick="changeServingSize(5)">x5
+                        <button class="button" id="servingSize5" onclick="changeServingSize(5)">x5
                             servings</button>
                         <br>
-                        <p>Add option for different servings</p>
 
                         <table class="table table-hover table-striped">
                             <thead>

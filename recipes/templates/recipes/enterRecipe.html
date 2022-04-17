@@ -3,13 +3,16 @@
 {% load bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
+{% load static %}
+
 
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta>
-    <title>Recipe</title>
+    <title>Enter Recipe</title>
+    <link rel="icon" href="{% static 'recipes/wom_logo.png' %}">
     <link href="https://fonts.googleapis.com/css2?family=Encode+Sans:wght@800&display=swap" rel="stylesheet">
 
 </head>
@@ -48,7 +51,7 @@
             <div class="form-group p-3">
                 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
                 <label for="title" class="h6">Title:</label>
-                <input type="text" class="form-control" name="title">
+                <input type="text" name="title">
                 <br>
                 <label for="blurb" class="h6">Description:</label>
                 <input type="text" name="blurb">
@@ -65,7 +68,6 @@
                 <label for="difficultyRating" class="h6">Difficulty Rating (Low(1) - High(10)):</label>
                 <input type="text" name="difficultyRating">
                 <br>
-
 
                 <label for="ingredientsList" class="h4">Ingredient List:</label>
                 <br>
