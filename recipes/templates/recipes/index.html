@@ -14,13 +14,47 @@
 </head>
 
 <body>
-    {% include "recipes/navbar.html" %}
     <div class="container-fluid">
-        <div class="pimg1">
-            <div class="ptext">
-                <span class="border">
-                    Word of Mouth
+        <div class="bgimg trans">
+            <nav class="navbar">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="/"> <img class="logo" src="{% static 'recipes/wom_logo.png' %}"
+                            width="70" height="70" alt="Logo"> Word of
+                        Mouth</a>
+                    <div class="nav">
+                        <a class="nav-link" href="/recipes/">Recipes</a>
+                        {% if user.is_authenticated %}
+                        <a class="nav-link" href="/recipes/enter-recipe/">New Recipe</a>
+                        <a href="/user/{{ user.pk }}">
+                            {% if user.profile_img %}
+                            <img class="profilePic" src="{{ profile.profile_img.url }}" width="60" height="60">
+                            {% endif %}
+                        </a>
+                        {% else %}
+                        <a class="nav-link text-muted">New Recipe</a>
+                        <a class="nav-link" href="{% provider_login_url 'google' %}">Login With Google</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </nav>
+            <div class="ptext1">
+                <span class="parText">
+                    Insert Cheesy Catchphrase Here
                 </span>
+            </div>
+            <div class="ptext2">
+                <span class="parText">
+                    Begin exploring recipes
+                </span>
+                <a href="#">
+                    <h3>&#129171;</h3>
+                </a>
+            </div>
+            <div>
+                <a href="#">&#129171;</a>
+                <!-- <a class="parText"> -->
+                <!-- <a class="arrow" href="#">v</a> -->
+                <!-- </a> -->
             </div>
         </div>
         <!-- <h1>Home Page</h1>
@@ -34,38 +68,121 @@
             <p><a href="{% provider_login_url 'google' %}">Login With Google</a></p>
             {% endif %}
         </div> -->
-        <h3>Begin exploring recipes</h3>
         {% include "recipes/recipeGrid.html" %}
     </div>
 
 </body>
 <style>
-    .pimg1 {
+    .ct-btn-scroll {
+        width: 49px;
+        height: 49px;
+        position: absolute;
+        bottom: 30px;
+        left: 0;
+        right: 0;
+        margin: auto;
+        padding-top: 500px;
+        z-index: 9;
+        border-radius: 50%;
+        -webkit-transition: background-color 0.25s ease-in-out;
+        transition: background-color 0.25s ease-in-out;
+    }
+
+    .bgimg {
         position: relative;
-        opacity: 0.8;
         background-position: center;
         background-size: cover;
         background-repeat: no-repeat;
-
+        background-image: url("{% static 'recipes/pizza.jpg' %}");
         background-attachment: fixed;
-        min-height: 100%;
+        min-height: 70%;
+        /* max-width: 100%; */
     }
 
-    .ptext {
+    .trans {
+        opacity: 0.9;
+    }
+
+    .ptext1 {
         position: absolute;
-        font-size: 27px;
         top: 50%;
         width: 100%;
         text-align: center;
         font-weight: bold;
-        opacity: 0.75;
-        letter-spacing: 5px;
     }
 
-    .ptext .border {
-        background-color: #111;
+    .ptext2 {
+        position: absolute;
+        top: 80%;
+        width: 100%;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .parText {
+        font-size: 27px;
+        background-color: rgba(0, 0, 0, 0.5);
         color: white;
         padding: 10px;
+        border-radius: 15%;
+    }
+
+    .arrow {
+        border: solid white;
+        border-width: 0 8px 8px 0;
+        display: inline-block;
+        padding: 3px;
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+        font-size: 0 !important;
+        position: absolute;
+        margin-left: 50%;
+        margin-right: 50%;
+        top: 90%;
+        /* width: 100%; */
+    }
+</style>
+
+<!-- Navbar style -->
+<style>
+    .navbar {
+        /* background: transparent; */
+        background-color: rgba(255, 255, 255, 0.5);
+        color: black;
+    }
+
+    .logo {
+        border-radius: 50%;
+    }
+
+    .profilePic {
+        border-radius: 50%;
+    }
+
+    .navbar-brand {
+        font-weight: bolder;
+        font-size: 1.9em;
+        color: black;
+
+
+    }
+
+    .nav-link {
+        font-weight: bolder;
+        display: block;
+        font-size: 1.9em;
+        font-weight: bold;
+        color: black;
+
+    }
+
+    a {
+        font-weight: bolder;
+        display: block;
+        font-size: 1.9em;
+        font-weight: bold;
+        color: black;
+
     }
 </style>
 

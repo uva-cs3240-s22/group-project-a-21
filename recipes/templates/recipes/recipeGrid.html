@@ -3,6 +3,10 @@
 {% load bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
+{% load static %}
+
+{% load recipe_tags %}
+
 
 <!DOCTYPE html>
 <html>
@@ -14,127 +18,73 @@
 <body>
     <div class="container">
         <div class="row justify-content-center">
+
             {% if latest_recipe_list %}
             {% for recipe in latest_recipe_list %}
-            <!-- <div class="col-md-4">
-                <div class="card text-white card-has-bg click-col">
-                    {% if recipe.images.all|length %}
-                    <img class="card-img-top" src="{{ recipe.images.all.0.image.url }}"
-                        alt="{{ recipe.title }} image not available">
-                    {% endif %}
-                </div>
-            </div> -->
-            <div class="card shadow" style="width: 18rem;">
+            <!-- <div class="card-wrapper"> -->
+
+            <div class="card" style="width: 25rem;">
                 {% if recipe.images.all|length %}
-                <img class="card-img-top img-fluid" src="{{ recipe.images.all.0.image.url }}"
+                <img class="" src="{{ recipe.images.all.0.image.url }}"
+                    style="border-radius: 1em 1em 0 0; width: 100%; height: 30vh; object-fit: cover;"
                     alt="{{ recipe.title }} image not available">
                 {% endif %}
                 <div class="card-body">
                     <a href="{% url 'recipes:recipe' recipe.id %}"
                         class="card-title stretched-link">{{ recipe.title }}</a>
-                    <!-- <h5 class="card-title">{{ recipe.title }}</h5> -->
                     <p class="card-text">{{ recipe.blurb }}</p>
-                    <i class="material-icons" style="float:left;">timer</i>
-                    <span class="card-text deets" style="float:left;">{{ recipe.time }} min</span>
-                    <i class="hat" style="float:right;"></i>
-                    <span class="deets" style="float:right;">Difficulty: </span>
+                </div>
+                <div class="card-footer mt-auto" style="border-radius: 0 0 1em 1em; width: 100%;object-fit: cover;">
+                    <div>
+                        <i class="material-icons" style="float:left;">timer</i>
+                        <span class="deets" style="float:left;"> {{ recipe.time }} min</span>
+                    </div>
+                    <hr>
+                    <div>
+                        <span class="deets" style="float:left;">Difficulty: </span>
+                        {% for i in recipe.difficultyRating|times %}
+                        <i class="hat" style="float:left;"></i>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
+
+            <!-- </div> -->
+
             {% endfor %}
             {% else %}
             <p>No recipes are available.</p>
             {% endif %}
-        </div>
-    </div>
 
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            {% if latest_recipe_list %}
-            {% for recipe in latest_recipe_list %}
-            <!-- Recipe.objects.get(pk=9).images.all()[0].image.url -->
-            <div class="col-3 border m-2 justify-content-center">
-                <h4 class="font-weight-bold mt-1">
-                    <a href="{% url 'recipes:recipe' recipe.id %}" class="text-decoration-none">
-                        {{ recipe.title }}
-                        {% if recipe.images.all|length %}
-                        <img src="{{ recipe.images.all.0.image.url }}" width="300" height="300"
-                            class="image-square mb-3 mt-1">
-                        <!-- https://stackoverflow.com/questions/4286461/django-templates-first-element-of-a-list -->
-                        {% else %}
-                        <div class="image-square no-image justify-content-center mb-3 mt-1">
-                            <p>No Image Available</p>
-                        </div>
-                        {% endif %}
-                    </a>
-                </h4>
 
-            </div>
-            {% endfor %}
-            {% else %}
-            <p>No recipes are available.</p>
-            {% endif %}
         </div>
     </div>
 </body>
 <style>
-    /* body {
-        background-color: rgb(241, 230, 227);
-    } */
-
-    .deets {
-        vertical-align: 6px;
-    }
-
-    .hat {
-        content: url('https://api.iconify.design/mdi/chef-hat.svg?width=26&height=26');
-    }
-
-    .stretched-link {
-        text-decoration: none;
-        color: inherit;
-
-    }
-
-    .image-square {
-        margin: auto;
-        display: flex;
-    }
-
-    .no-image {
-        width: 300px;
-        height: 300px;
-        background-color: gainsboro;
-    }
-
-    .no-image p {
-        align-items: center;
-        display: flex;
-    }
-
-    a:hover {
-        text-decoration: none;
-        color: inherit;
+    .card-wrapper {
+        display: row;
+        justify-content: center;
     }
 
     .card {
-        margin: 10px;
-        border-radius: 10px;
-        background: gainsboro;
-        box-shadow: 0 6px 10px rgba(0, 0, 0, .08), 0 0 6px rgba(0, 0, 0, .05);
+        margin: 15px;
+        border-radius: 5%;
+        /* background: gainsboro; */
+        box-shadow: 0 6px 10px rgba(0, 0, 0, .1), 0 0 6px rgba(0, 0, 0, .1);
         transition: .3s transform cubic-bezier(.155, 1.105, .295, 1.12), .3s box-shadow, .3s -webkit-transform cubic-bezier(.155, 1.105, .295, 1.12);
         cursor: pointer;
-        width: 200px
     }
 
     .card:hover {
         transform: scale(1.05);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, .12), 0 4px 8px rgba(0, 0, 0, .06);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, .15), 0 4px 8px rgba(0, 0, 0, .15);
     }
 
     .card-img-top {
         width: 120%;
         /* height: 15vw; */
         object-fit: cover;
+        padding: 0;
     }
 
     .card-title {
@@ -142,6 +92,37 @@
         display: block;
         font-size: 1.15em;
         font-weight: bold;
+    }
+
+    /* link doesn't turn blue on hover */
+    a:hover {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .stretched-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .card-footer {
+        background-color: rgb(255, 255, 255);
+    }
+
+    /* both time and difficulty */
+    .deets {
+        /* vertical-align: 6px; */
+        font-weight: 600;
+    }
+
+    /* makes both time and difficulty on the cards align correctly */
+    hr {
+        clear: both;
+    }
+
+    /* hat icon */
+    .hat {
+        content: url('https://api.iconify.design/mdi/chef-hat.svg?width=26&height=26');
     }
 </style>
 

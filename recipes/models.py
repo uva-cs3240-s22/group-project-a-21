@@ -19,7 +19,7 @@ class Profile(models.Model):
     email = models.EmailField(max_length=50, blank=True)
     cooking_experience = models.IntegerField(default=0)
     following = models.ManyToManyField("self", blank=True, symmetrical=False)
-    profile_img = models.ImageField(upload_to="profile_img/", storage=gd_storage, default="")
+    profile_img = models.ImageField(upload_to="profile_img/", storage=gd_storage, default="{% static 'recipes/default_chef.png' %}")
 
     def __str__(self):
         return str(self.user)

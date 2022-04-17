@@ -6,144 +6,147 @@
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta>
-        <title>User</title>
-    </head>
-    <body>
-        {% include "recipes/navbar.html" %}
-        <div class="container-fluid">
-            <div class="row">
-                <h1>User Profile Page</h1>
-            </div>
-            <div class="row">
-                <div class="col-8">
-                    <!-- Can change name if this user is self -->
-                    {% if profile.pk == user.pk %}
-                    <form action="/user/update/name/{{ profile.pk }}" method="post">
-                        {% csrf_token %}
-                        Name:
-                        <input type="text" value="{{ profile.name }}" name="name">
-                        <input type="submit" value="Rename">
-                    </form>
-                    {% else %}
-                    <p>Name: {{ profile.name }}</p>
-                    {% endif %}
-                    <p>Email: {{ profile.email }}</p>
-                    <!-- Can change cooking experience if this user is self -->
-                    {% if profile.pk == user.pk %}
-                    <form action="/user/update/cook_exp/{{ profile.pk }}" method="post">
-                        {% csrf_token %}
-                        Cooking experience (Low(1) - High(10)):
-                        <input type="number" max="10" min="1" value="{{ profile.cooking_experience }}" name="cook_exp">
-                        <input type="submit" value="Update cooking experience">
-                    </form>
-                    {% else %}
-                    <p>Cooking experience (Low(1) - High(10)): {{ profile.cooking_experience }}</p>
-                    {% endif %}
 
-                    {% if profile.profile_img %}
-                    <img src="{{ profile.profile_img.url }}" width="200" height="200">
-                    {% else %}
-                    <p>No profile image uploaded</p>
-                    {% endif %}
+<head>
+    <meta>
+    <title>User</title>
+</head>
 
-                    {% if profile.pk == user.pk %}
-                    <form action="/user/update/profile_img/{{ profile.pk }}" method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        Upload new profile image:
-                        <input type="file" id="profile_img" name="profile_img" accept="image/png, image/jpeg"> 
-                        <div id="profile_img_preview" class="mt-3"></div>
-                        <input type="submit" value="Upload">
-                    </form>
-                    <!-- https://ordinarycoders.com/blog/article/django-file-image-uploads -->
-                    {% endif %}
-
-                    <br>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">My Recipes</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for recipe in profile.create.all %}
-                                <tr>
-                                    <td>
-                                        <a href="/recipes/{{ recipe.pk }}">{{ recipe.title }}</a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Favorite Recipes</th>
-                                <th scope="col">Author</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for favorite in profile.favorites.all %}
-                                <tr>
-                                    <td>
-                                        <a href="/recipes/{{ favorite.pk }}">{{ favorite.title }}</a>
-                                    </td>
-                                    <td>
-                                        <a href="/user/{{ favorite.createdBy.pk }}">{{ favorite.createdBy }}</a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-4 border">
-                    <h3>Following</h3>
-                    <table class="table">
-                        <tbody>
-                            {% for following in profile.following.all %}
-                            <tr>
-                                <td><a href="/user/{{ following.pk }}">{{ following.name }}</a></td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Cannot follow yourself (follow button invisible) -->
-                {% if not profile.pk == user.pk %}
-                <form action="/user/follow-user/{{ profile.pk }}/{{ user.pk }}" method="post">
-                    {% csrf_token %}
-                    <input type="submit" value="Follow">
-                </form>
-                {% endif %}
-            </div>
-            
+<body>
+    {% include "recipes/navbar.html" %}
+    <div class="container-fluid">
+        <div class="row">
+            <h1>User Profile Page</h1>
         </div>
-    </body>
-    <script>
-        const input = document.getElementById("profile_img");
-        const preview = document.getElementById("profile_img_preview");
+        <div class="row">
+            <div class="col-8">
+                <!-- Can change name if this user is self -->
+                {% if profile.pk == user.pk %}
+                <form action="/user/update/name/{{ profile.pk }}" method="post">
+                    {% csrf_token %}
+                    Name:
+                    <input type="text" value="{{ profile.name }}" name="name">
+                    <input type="submit" value="Rename">
+                </form>
+                {% else %}
+                <p>Name: {{ profile.name }}</p>
+                {% endif %}
+                <p>Email: {{ profile.email }}</p>
+                <!-- Can change cooking experience if this user is self -->
+                {% if profile.pk == user.pk %}
+                <form action="/user/update/cook_exp/{{ profile.pk }}" method="post">
+                    {% csrf_token %}
+                    Cooking experience (Low(1) - High(10)):
+                    <input type="number" max="10" min="1" value="{{ profile.cooking_experience }}" name="cook_exp">
+                    <input type="submit" value="Update cooking experience">
+                </form>
+                {% else %}
+                <p>Cooking experience (Low(1) - High(10)): {{ profile.cooking_experience }}</p>
+                {% endif %}
 
-        function updateProfileImgPreview() {
-            if(input.files) { // if there is an image selected
-                const file = input.files[0];
-                if(file.type == "image/png" || file.type == "image/jpeg") {
-                    while(preview.firstChild) {
-                        preview.removeChild(preview.firstChild); // remove current preview content, if any
-                    }
-                    const img = document.createElement('img');
-                    img.src = URL.createObjectURL(file);
-                    img.width = 200;
-                    img.height = 200;
-                    img.name = "profile_img_preview"
-                    preview.appendChild(img);
+                {% if profile.profile_img %}
+                <img src="{{ profile.profile_img.url }}" width="200" height="200">
+                {% else %}
+                <p>No profile image uploaded</p>
+                {% endif %}
+
+                {% if profile.pk == user.pk %}
+                <form action="/user/update/profile_img/{{ profile.pk }}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    Upload new profile image:
+                    <input type="file" id="profile_img" name="profile_img" accept="image/png, image/jpeg">
+                    <div id="profile_img_preview" class="mt-3"></div>
+                    <input type="submit" value="Upload">
+                </form>
+                <!-- https://ordinarycoders.com/blog/article/django-file-image-uploads -->
+                {% endif %}
+
+                <br>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">My Recipes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for recipe in profile.create.all %}
+                        <tr>
+                            <td>
+                                <a href="/recipes/{{ recipe.pk }}">{{ recipe.title }}</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Favorite Recipes</th>
+                            <th scope="col">Author</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for favorite in profile.favorites.all %}
+                        <tr>
+                            <td>
+                                <a href="/recipes/{{ favorite.pk }}">{{ favorite.title }}</a>
+                            </td>
+                            <td>
+                                <a href="/user/{{ favorite.createdBy.pk }}">{{ favorite.createdBy }}</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-4 border">
+                <h3>Following</h3>
+                <table class="table">
+                    <tbody>
+                        {% for following in profile.following.all %}
+                        <tr>
+                            <td><a href="/user/{{ following.pk }}">{{ following.name }}</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Cannot follow yourself (follow button invisible) -->
+            {% if not profile.pk == user.pk %}
+            <form action="/user/follow-user/{{ profile.pk }}/{{ user.pk }}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="Follow">
+            </form>
+            {% endif %}
+        </div>
+
+    </div>
+</body>
+<script>
+    const input = document.getElementById("profile_img");
+    const preview = document.getElementById("profile_img_preview");
+
+    function updateProfileImgPreview() {
+        if (input.files) { // if there is an image selected
+            const file = input.files[0];
+            if (file.type == "image/png" || file.type == "image/jpeg") {
+                while (preview.firstChild) {
+                    preview.removeChild(preview.firstChild); // remove current preview content, if any
                 }
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.width = 200;
+                // img.height = 200;
+                img.name = "profile_img_preview"
+                preview.appendChild(img);
             }
-
         }
-        input.addEventListener('change', updateProfileImgPreview);
-        // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file
-    </script>
+
+    }
+    input.addEventListener('change', updateProfileImgPreview);
+    // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file
+</script>
+
 </html>

@@ -3,26 +3,74 @@
 {% load bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
+{% load static %}
+
 <!DOCTYPE html>
 <html>
+
 <body>
-    <header>
-        <nav class="navbar navbar-light bg-light">
-            <div class="container-fluid">
-                <div class="navbar-brand ml-1">Word of Mouth</div>
-                <div class="nav">
-                    <a class="nav-link" href="/">Home</a>
-                    <a class="nav-link" href="/recipes/">Recipes</a>
-                    {% if user.is_authenticated %}
-                    <a class="nav-link" href="/recipes/enter-recipe/">New Recipe</a></p>
-                    <a class="nav-link text-primary text-decoration-none" href="/user/{{ user.pk }}">Logged in as {{ user.username }}</a>
-                    {% else %}
-                    <a class="nav-link text-muted">New Recipe</a></p>
-                    <a class="nav-link" href="{% provider_login_url 'google' %}">Login With Google</a>
+    <!-- <header> -->
+    <!-- <nav class="navbar navbar-light bg-light"> -->
+    <nav class="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/"> <img class="logo" src="{% static 'recipes/wom_logo.png' %}" width="70"
+                    height="70" alt="Logo"> Word of
+                Mouth</a>
+            <div class="nav">
+                <a class="nav-link" href="/recipes/">Recipes</a>
+                {% if user.is_authenticated %}
+                <a class="nav-link" href="/recipes/enter-recipe/">New Recipe</a>
+                <a href="/user/{{ user.pk }}">
+                    {% if profile.profile_img %}
+                    <img class="profilePic" src="{{ profile.profile_img.url }}" width="60" height="60">
                     {% endif %}
-                </div>
+                </a>
+                {% else %}
+                <a class="nav-link text-muted">New Recipe</a>
+                <a class="nav-link" href="{% provider_login_url 'google' %}">Login With Google</a>
+                {% endif %}
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
+    <!-- </header> -->
 </body>
+<style>
+    .navbar {
+        /* background: transparent; */
+        background-color: rgba(0, 0, 0, 0.1);
+        color: aliceblue;
+    }
+
+    .logo {
+        border-radius: 50%;
+    }
+
+    .profilePic {
+        border-radius: 50%;
+    }
+
+    .navbar-brand {
+        font-weight: bolder;
+        font-size: 1.9em;
+        color: aliceblue;
+
+    }
+
+    .nav-link {
+        font-weight: bolder;
+        display: block;
+        font-size: 1.9em;
+        font-weight: bold;
+        color: aliceblue;
+    }
+
+    a {
+        font-weight: bolder;
+        display: block;
+        font-size: 1.9em;
+        font-weight: bold;
+        color: aliceblue;
+    }
+</style>
+
 </html>

@@ -12,3 +12,7 @@ def split(value, arg):
 @register.filter(name='replace')
 def replace(value, arg):
     return value.replace(arg.split(",")[0], arg.split(",")[1])
+
+@register.filter(name='times') 
+def times(number):
+    return range(number)
