@@ -3,6 +3,8 @@
 {% load bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
+{% load static %}
+
 
 <!DOCTYPE html>
 <html>
@@ -10,6 +12,8 @@
 <head>
     <meta>
     <title>Recipes</title>
+    <link rel="icon" href="{% static 'recipes/wom_logo.png' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Encode+Sans:wght@800&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -47,4 +51,31 @@
     </div>
     </div>
 </body>
+
+<style>
+    h1 {
+        text-align: center;
+        font-family: "Encode Sans", sans-serif;
+    }
+
+    a {
+        font-weight: bolder;
+        display: block;
+        font-size: 1.1em;
+        font-weight: bold;
+        color: white;
+    }
+
+    .nav-link {
+        font-weight: bolder;
+        display: block;
+        font-size: 1.1em;
+        font-weight: bold;
+        color: white;
+        padding: 10px;
+        /* border-radius: 15%; */
+        font-family: "Encode Sans", sans-serif;
+    }
+</style>
+
 </html>
