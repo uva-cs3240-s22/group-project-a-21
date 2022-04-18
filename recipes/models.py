@@ -19,7 +19,7 @@ class Profile(models.Model):
     email = models.EmailField(max_length=50, blank=True)
     cooking_experience = models.IntegerField(default=0)
     following = models.ManyToManyField("self", blank=True, symmetrical=False)
-    profile_img = models.ImageField(upload_to="profile_img/", storage=gd_storage, default="")
+    profile_img = models.ImageField(upload_to="profile_img/", storage=gd_storage, default="{% static 'recipes/default_chef.png' %}")
 
     def __str__(self):
         return str(self.user)
@@ -60,6 +60,17 @@ class Recipe(models.Model):
     createdBy = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="create", default=1)
     # https://stackoverflow.com/questions/13918968/multiple-many-to-many-relations-to-the-same-model-in-django
 
+    def get_avg_rating(self):
+        reviews = Review.objects.filter(recipe=self)
+        count = len(reviews)
+        sum = 0
+        if count != 0:
+            for rvw in reviews:
+                sum += rvw.rating
+            return (sum/count)
+        else:
+            return 404
+
     def __str__(self):
         return self.title
 
@@ -69,3 +80,14 @@ class RecipeImage(models.Model):
 
     def __str__(self):
         return self.image
+
+''' 
+Recipe Review
+Links back to specific recipe
+If Recipe is deleted, all related Reviews are deleted as well
+'''
+class Review(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, related_name='reviews', on_delete=models.CASCADE);
+    review_text = models.TextField(blank=True, null=True)
+    rating = models.IntegerField()
