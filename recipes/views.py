@@ -1,5 +1,6 @@
 from distutils.errors import LibError
 from re import template
+import re
 from wsgiref.util import request_uri
 from django.shortcuts import render
 from .models import Recipe, Profile, RecipeImage, Review
@@ -24,13 +25,35 @@ class UserView(generic.DetailView):
         context = super().get_context_data(**kwargs)
         return context
 
-# def RecipeGalleryView(requests):
-#      return render(requests, 'recipes/recipeGallery.html', {})
 class RecipeGalleryView(generic.ListView):
     template_name = 'recipes/recipeGallery.html'
     context_object_name = 'latest_recipe_list'
+
     def get_queryset(self):
         return Recipe.objects.all()
+    
+    def post(self, request):
+        if (len(self.request.POST)) == 0:    
+            self.object_list = Recipe.objects.all()
+            context = self.get_context_data(object_list=self.object_list)
+            return self.render_to_response(context)
+        else:
+            time = request.POST['time']
+            servingSize = request.POST['servingSize']
+            difficultyRating = request.POST['difficultyRating']
+
+            recipes = Recipe.objects.all()
+            if time != "":
+                recipes = recipes.filter(time__lte=time)
+            if servingSize != "":
+                recipes = recipes.filter(servingSize__gte=servingSize)
+            if difficultyRating !="":
+                recipes = recipes.filter(difficultyRating__lte=difficultyRating)
+            self.object_list = recipes
+            context = self.get_context_data(object_list=self.object_list)
+            print(recipes)
+            return self.render_to_response(context)
+
 
 class RecipeView(generic.DetailView):
     model = Recipe
