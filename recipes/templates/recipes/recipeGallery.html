@@ -3,8 +3,6 @@
 {% load bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
-{% load static %}
-
 
 <!DOCTYPE html>
 <html>
@@ -12,68 +10,13 @@
 <head>
     <meta>
     <title>Recipes</title>
-    <link rel="icon" href="{% static 'recipes/wom_logo.png' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Encode+Sans:wght@800&display=swap" rel="stylesheet">
 </head>
 
 <body>
     {% include "recipes/navbar.html" %}
     <div class="container-fluid">
         <h1>Recipe Gallery Page</h1>
-        <div class="container-fluid">
-        <div class="row justify-content-center">
-            {% if latest_recipe_list %}
-            {% for recipe in latest_recipe_list %}
-            <!-- Recipe.objects.get(pk=9).images.all()[0].image.url -->
-            <div class="col-3 border m-2 justify-content-center">
-                <h4 class="font-weight-bold mt-1">
-                    <a href="{% url 'recipes:recipe' recipe.id %}" class="text-decoration-none">
-                        {{ recipe.title }}
-                        {% if recipe.images.all|length %}
-                        <img src="{{ recipe.images.all.0.image.url }}" width="300" height="300" class="image-square mb-3 mt-1">
-                        <!-- https://stackoverflow.com/questions/4286461/django-templates-first-element-of-a-list -->
-                        {% else %}
-                        <div class="image-square no-image justify-content-center mb-3 mt-1">
-                            <p>No Image Available</p>
-                        </div>
-                        {% endif %}
-                    </a>
-                </h4>
-
-            </div>
-            {% endfor %}
-            {% else %}
-            <p>No recipes are available.</p>
-            {% endif %}
-        </div>
-    </div>
+        {% include "recipes/recipeGrid.html" %}
     </div>
 </body>
-
-<style>
-    h1 {
-        text-align: center;
-        font-family: "Encode Sans", sans-serif;
-    }
-
-    a {
-        font-weight: bolder;
-        display: block;
-        font-size: 1.1em;
-        font-weight: bold;
-        color: white;
-    }
-
-    .nav-link {
-        font-weight: bolder;
-        display: block;
-        font-size: 1.1em;
-        font-weight: bold;
-        color: white;
-        padding: 10px;
-        /* border-radius: 15%; */
-        font-family: "Encode Sans", sans-serif;
-    }
-</style>
-
 </html>
