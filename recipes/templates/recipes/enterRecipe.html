@@ -3,37 +3,69 @@
 {% load bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
+{% load static %}
+
 
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta>
-    <title>Recipe</title>
+    <title>Enter Recipe</title>
+    <link rel="icon" href="{% static 'recipes/wom_logo.png' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Encode+Sans:wght@800&display=swap" rel="stylesheet">
+
 </head>
+<style>
+    h4 {
+        font-family: 'Encode Sans', sans-serif;
+    }
+
+    .div1 {
+        margin: auto;
+        width: 50%;
+        border: 2px solid gray;
+        padding: 10px;
+        text-align: left;
+        box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    }
+
+    h1 {
+        color: #213037;
+        margin-left: 40px;
+        font-family: "Georgia";
+        font-weight: bold;
+        text-align: center;
+        font-family: 'Encode Sans', sans-serif;
+        text-transform: uppercase;
+    }
+</style>
 
 <body>
     {% include "recipes/navbar.html" %}
-    <div class="container-fluid">
-        <h1>Enter Recipe Page</h1>
+    <div class="div1">
+        <h1>Recipe Curation</h1>
         <form action="/recipes/new-recipe/{{ user.pk }}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
             <div class="form-group p-3">
                 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-                <label for="title" class="h4">Title:</label>
+                <label for="title" class="h6">Title:</label>
                 <input type="text" name="title">
                 <br>
-                <label for="dietaryRestrictions" class="h4">Dietary Restrictions:</label>
+                <label for="blurb" class="h6">Description:</label>
+                <input type="text" name="blurb">
+                <br>
+                <label for="dietaryRestrictions" class="h6">Dietary Restrictions:</label>
                 <input type="text" name="dietaryRestrictions">
                 <br>
-                <label for="time" class="h4">Time (minutes):</label>
+                <label for="time" class="h6">Time (minutes):</label>
                 <input type="text" name="time">
                 <br>
-                <label for="servingSize" class="h4">Serving Size:</label>
+                <label for="servingSize" class="h6">Serving Size:</label>
                 <input type="text" name="servingSize">
                 <br>
-                <label for="difficultyRating" class="h4">Difficulty Rating (Low(1) - High(10)):</label>
+                <label for="difficultyRating" class="h6">Difficulty Rating (Low(1) - High(10)):</label>
                 <input type="text" name="difficultyRating">
                 <br>
 
@@ -77,13 +109,9 @@
                     <div class="col-4"></div>
                 </div>
                 <button type="button" class="btn btn-primary" onclick="addDirection()">Add direction</button>
-                
+
                 <br>
-                <br>
-                <label for="blurb" class="h4">Blurb:</label>
-                <input type="text" name="blurb">
-                
-                <br>
+
                 <br>
 
                 <label for="recipe_img" class="h4">Upload recipe images:</label>
@@ -98,7 +126,8 @@
                             </thead>
                             <tbody id="img_tb">
                                 <tr>
-                                    <td><input type="file" id="recipe_img" name="recipe_img" accept="image/png, image/jpeg"> </td>
+                                    <td><input type="file" id="recipe_img" name="recipe_img"
+                                            accept="image/png, image/jpeg"> </td>
                                     <td></td>
                                 </tr>
                             </tbody>
@@ -117,7 +146,7 @@
         var ingredientsIndex = 1; // 1 instruction required on default which is index 0
         var directionsIndex = 1; // 1 direction required on default which is index 0
         var imgIndex = 1;
-        
+
         function addIngredient() {
             let ingredients_tb = document.getElementById("ingredients_tb");
             let row = ingredients_tb.insertRow(); // default adds to end
@@ -147,13 +176,13 @@
             btn.type = "button";
             btn.classList = "btn btn-danger ingredients-remove-btn";
             btn.name = ingredientsIndex;
-            btn.onclick = function() { // remove this row
+            btn.onclick = function () { // remove this row
                 ingredientsIndex--;
                 ingredients_tb.deleteRow(this.name);
 
                 removeButtons = document.getElementsByClassName("ingredients-remove-btn");
-                for(var i = 0; i < removeButtons.length; i++)
-                    removeButtons[i].setAttribute("name", i+1);
+                for (var i = 0; i < removeButtons.length; i++)
+                    removeButtons[i].setAttribute("name", i + 1);
             }
             row.insertCell(3).appendChild(btn);
 
@@ -185,13 +214,13 @@
             btn.type = "button";
             btn.classList = "btn btn-danger directions-remove-btn";
             btn.name = directionsIndex;
-            btn.onclick = function() { // remove this row
+            btn.onclick = function () { // remove this row
                 directionsIndex--;
                 directions_tb.deleteRow(this.name);
 
                 removeButtons = document.getElementsByClassName("directions-remove-btn");
-                for(var i = 0; i < removeButtons.length; i++)
-                    removeButtons[i].setAttribute("name", i+1);
+                for (var i = 0; i < removeButtons.length; i++)
+                    removeButtons[i].setAttribute("name", i + 1);
             }
             row.insertCell(1).appendChild(btn);
 
@@ -219,13 +248,13 @@
             btn.type = "button";
             btn.classList = "btn btn-danger img-remove-btn";
             btn.name = imgIndex;
-            btn.onclick = function() { // remove this row
+            btn.onclick = function () { // remove this row
                 imgIndex--;
                 img_tb.deleteRow(this.name);
 
                 removeButtons = document.getElementsByClassName("img-remove-btn");
-                for(var i = 0; i < removeButtons.length; i++)
-                    removeButtons[i].setAttribute("name", i+1);
+                for (var i = 0; i < removeButtons.length; i++)
+                    removeButtons[i].setAttribute("name", i + 1);
             }
             row.insertCell(1).appendChild(btn);
 

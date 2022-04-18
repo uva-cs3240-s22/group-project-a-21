@@ -3,7 +3,7 @@ from re import template
 import re
 from wsgiref.util import request_uri
 from django.shortcuts import render
-from .models import Recipe, Profile, RecipeImage
+from .models import Recipe, Profile, RecipeImage, Review
 from django.views import generic
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.urls import reverse
@@ -59,6 +59,18 @@ class RecipeView(generic.DetailView):
     model = Recipe
     template_name = 'recipes/recipe.html'
     # return render(requests, 'recipes/recipe.html', {})
+    def post(self, request, *args, **kwargs):
+        rating = request.POST.get('rating', 3)
+        rating = rating[0]
+        review_text = request.POST.get('content', '')
+        recipe = self.get_object()
+        user = self.request.user
+
+        review = Review.objects.create(recipe=recipe, rating=rating, review_text=review_text, user=user)
+
+        # returns to recipe gallery
+        # would be useful to redirect to a page which allows the user to share the recipe, since they used it
+        return HttpResponseRedirect(reverse('recipes:recipeGallery'))
 
 class EnterRecipeView(generic.ListView):
     model = Recipe

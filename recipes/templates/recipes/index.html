@@ -3,18 +3,44 @@
 {% load bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta>
-    <title>Home</title>
+    <title>Word of Mouth</title>
+    <link rel="icon" href="{% static 'recipes/wom_logo.png' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Encode+Sans:wght@800&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    {% include "recipes/navbar.html" %}
     <div class="container-fluid">
-        <h1>Home Page</h1>
+        <div class="bgimg trans">
+            {% include "recipes/navbar.html" %}
+
+            <div class="ptext1">
+                <span class="parText">
+                    INSERT CHEESY CATCHPHRASE HERE
+                </span>
+            </div>
+            <div class="ptext2">
+                <span class="parText">
+                    Begin exploring recipes
+                </span>
+                <!-- <a href="#">
+                    <h3>&#129171;</h3>
+                </a> -->
+            </div>
+            <div>
+                <!-- <a href="#">&#129171;</a> -->
+                <!-- <a class="parText"> -->
+                <!-- <a class="arrow" href="#">v</a> -->
+                <!-- </a> -->
+            </div>
+        </div>
+        <!-- <h1>Home Page</h1>
         <div class="row">
             {% if user.is_authenticated %}
             <p><b>Yo {{ user.username }}, you're logged into to our website!</b></p>
@@ -24,11 +50,108 @@
             <p><b>HEY!</b> You're not logged in... but you should because this website is really cool.</p>
             <p><a href="{% provider_login_url 'google' %}">Login With Google</a></p>
             {% endif %}
-        </div>
-        <h3>Begin exploring recipes</h3>
+        </div> -->
         {% include "recipes/recipeGrid.html" %}
     </div>
-    
+
 </body>
+<style>
+    .navbar {
+        background-color: rgba(0, 0, 0, 0.5);
+
+    }
+
+    a {
+        font-weight: bolder;
+        display: block;
+        font-size: 1.1em;
+        font-weight: bold;
+        color: white;
+    }
+
+    .nav-link {
+        font-weight: bolder;
+        display: block;
+        font-size: 1.1em;
+        font-weight: bold;
+        color: white;
+        padding: 10px;
+        /* border-radius: 15%; */
+        font-family: "Encode Sans", sans-serif;
+    }
+
+    .ct-btn-scroll {
+        width: 49px;
+        height: 49px;
+        position: absolute;
+        bottom: 30px;
+        left: 0;
+        right: 0;
+        margin: auto;
+        padding-top: 500px;
+        z-index: 9;
+        border-radius: 50%;
+        -webkit-transition: background-color 0.25s ease-in-out;
+        transition: background-color 0.25s ease-in-out;
+    }
+
+    .bgimg {
+        position: relative;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-image: url("{% static 'recipes/pizza.jpg' %}");
+        background-attachment: fixed;
+        min-height: 70%;
+        /* max-width: 100%; */
+    }
+
+    .trans {
+        opacity: 0.9;
+    }
+
+    .ptext1 {
+        font-size: 1.75em;
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        text-align: center;
+        font-weight: bold;
+        letter-spacing: 5px;
+    }
+
+    .ptext2 {
+        font-size: 1.1em;
+        position: absolute;
+        top: 80%;
+        width: 100%;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .parText {
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        padding: 10px;
+        /* border-radius: 15%; */
+        font-family: "Encode Sans", sans-serif;
+
+    }
+
+    .arrow {
+        border: solid white;
+        border-width: 0 8px 8px 0;
+        display: inline-block;
+        padding: 3px;
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+        font-size: 0 !important;
+        position: absolute;
+        margin-left: 50%;
+        margin-right: 50%;
+        top: 90%;
+        /* width: 100%; */
+    }
+</style>
 
 </html>
