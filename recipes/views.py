@@ -7,6 +7,8 @@ from .models import Recipe, Profile, RecipeImage, Review
 from django.views import generic
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.urls import reverse
+from django.contrib.auth import logout
+
 # Create your views here.
 
 # def IndexView(requests):
@@ -24,6 +26,10 @@ class UserView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+def userLogout(request):
+    logout(request) # https://stackoverflow.com/questions/25251719/how-can-i-logout-a-user-in-django
+    return HttpResponsePermanentRedirect('/')
 
 class RecipeGalleryView(generic.ListView):
     template_name = 'recipes/recipeGallery.html'
