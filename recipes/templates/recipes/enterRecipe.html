@@ -51,22 +51,22 @@
             <div class="form-group p-3">
                 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
                 <label for="title" class="h6">Title:</label>
-                <input type="text" name="title">
+                <input type="text" name="title" placeholder="Ex. Greg's Miso Soup" required>
                 <br>
                 <label for="blurb" class="h6">Description:</label>
-                <input type="text" name="blurb">
+                <input type="text" name="blurb" placeholder="Ex. Go-to comfort food!" required>
                 <br>
                 <label for="dietaryRestrictions" class="h6">Dietary Restrictions:</label>
-                <input type="text" name="dietaryRestrictions">
+                <input type="text" name="dietaryRestrictions" placeholder="Ex: pescatarian" required>
                 <br>
                 <label for="time" class="h6">Time (minutes):</label>
-                <input type="text" name="time">
+                <input type="number" name="time" placeholder="Ex: 35" required min="0">
                 <br>
                 <label for="servingSize" class="h6">Serving Size:</label>
-                <input type="text" name="servingSize">
+                <input type="number" name="servingSize" placeholder="Ex: 4" required min="1">
                 <br>
-                <label for="difficultyRating" class="h6">Difficulty Rating (Low(1) - High(10)):</label>
-                <input type="text" name="difficultyRating">
+                <label for="difficultyRating" class="h6">Difficulty Rating:</label>
+                <input type="number" name="difficultyRating" placeholder="1-10" required min='1' max="10">
                 <br>
 
                 <label for="ingredientsList" class="h4">Ingredient List:</label>
@@ -82,9 +82,9 @@
                     </thead>
                     <tbody id="ingredients_tb">
                         <tr>
-                            <td><input type="text" name="ingredientQuant"></td>
-                            <td><input type="text" name="ingredientUnit"></td>
-                            <td><input type="text" name="ingredientName"></td>
+                            <td><input type="text" name="ingredientQuant" placeholder="Ex. 15" required></td>
+                            <td><input type="text" name="ingredientUnit" placeholder="Ex. grams" required></td>
+                            <td><input type="text" name="ingredientName" placeholder="Ex. silken tofu" required></td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -100,7 +100,7 @@
                         <table class="table table-hover table-striped">
                             <tbody id="directions_tb">
                                 <tr>
-                                    <td><textarea type="text" name="direction" rows="3" cols="50"></textarea></td>
+                                    <td><textarea type="text" name="direction" rows="3" cols="50" placeholder="Ex. Slice the tofu into 1 inch cubes" required></textarea></td>
                                     <td></td>
                                 </tr>
                             </tbody>
@@ -138,7 +138,7 @@
                 <button type="button" class="btn btn-primary" onclick="addImage()">Add image</button>
                 <!-- https://ordinarycoders.com/blog/article/django-file-image-uploads -->
             </div>
-            <input type="submit" value="Create Recipe">
+            <input class="btn btn-primary" type="submit" value="Create Recipe">
         </form>
     </div>
 
