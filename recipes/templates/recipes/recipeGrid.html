@@ -37,14 +37,20 @@
                 <div class="card-footer mt-auto" style="border-radius: 0 0 1em 1em; width: 100%;object-fit: cover;">
                     <div>
                         <i class="material-icons" style="float:left;">timer</i>
-                        <span class="deets" style="float:left;"> {{ recipe.time }} min</span>
+                        <span class="deets" style="float:left;"> {{ recipe.time }} min
+                            {%  if recipe.get_avg_rating != 404 %}
+                            |⭐{{recipe.get_avg_rating|floatformat}}
+                            {% endif %}
+                        </span>
                     </div>
                     <hr>
                     <div>
+                        
                         <span class="deets" style="float:left;">Difficulty: </span>
                         {% for i in recipe.difficultyRating|times %}
                         <i class="hat" style="float:left;"></i>
                         {% endfor %}
+                    
                     </div>
                 </div>
             </div>
