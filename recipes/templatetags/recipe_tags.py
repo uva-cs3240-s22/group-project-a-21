@@ -16,3 +16,15 @@ def replace(value, arg):
 @register.filter(name='times') 
 def times(number):
     return range(number)
+
+@register.simple_tag
+def index(**kwargs):
+    value = kwargs['value']
+    number = kwargs['number']
+    return value.split(" ")[number]
+
+@register.simple_tag
+def indexName(**kwargs):
+    value = kwargs['value']
+    number = kwargs['number']
+    return value.split(" ")[number].replace("*", " ")

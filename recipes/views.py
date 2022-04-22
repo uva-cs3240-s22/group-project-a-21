@@ -2,7 +2,7 @@ from distutils.errors import LibError
 from re import template
 import re
 from wsgiref.util import request_uri
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from .models import Recipe, Profile, RecipeImage, Review
 from django.views import generic
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
@@ -103,7 +103,7 @@ def newRecipe(request, pkUser):
         for d in directions:
             empty = len(d) == 0 or d.isspace()
             if not empty:
-                directionsList += d + ","
+                directionsList += d + "`"
         directionsList = directionsList[:-1] # remove last comma
 
         dietaryRestrictions = request.POST['dietaryRestrictions']
@@ -179,3 +179,11 @@ def updateUserProfileImg(request, pkUser):
         currentUser.profile_img = img_upload
         currentUser.save()
     return HttpResponsePermanentRedirect('/user/' + str(pkUser)) # redirect back
+
+def forkRecipe(request, pk):
+    # Render new recipe into html
+    obj = get_object_or_404(Recipe, id=pk)
+    # newRecipe = Recipe.objects.create(title = obj.title)
+    # context = {'newrecipe': newRecipe}
+    context = {'oldrecipe': obj}
+    return render(request, 'recipes/forkRecipe.html', context)

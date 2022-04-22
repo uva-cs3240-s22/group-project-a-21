@@ -13,6 +13,7 @@ urlpatterns = [
     path('recipes/enter-recipe/', views.EnterRecipeView.as_view(), name='enterRecipe'),
     path('recipes/new-recipe/<int:pkUser>', views.newRecipe, name='newRecipe'),
     path('recipes/<int:pk>/', views.RecipeView.as_view(), name='recipe'),
+    path('recipes/fork/<int:pk>/', views.forkRecipe, name='fork'),
     path('recipes/favorite-recipe/<int:pkRecipe>/<int:pkUser>', views.favoriteRecipe, name='favoriteRecipe'),
     path('user/follow-user/<int:pkFollow>/<int:pkUser>', views.followUser, name='followUser'),
     path('user/update/name/<int:pkUser>', views.updateUserName, name='updateUserName'),
