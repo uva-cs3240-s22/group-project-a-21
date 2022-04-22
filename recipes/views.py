@@ -82,7 +82,7 @@ class EnterRecipeView(generic.ListView):
     model = Recipe
     template_name = 'recipes/enterRecipe.html'
 
-def newRecipe(request, pkUser):
+def newRecipe(request, pkUser, fork, pkRecipe):
     try:
         title = request.POST['title']
         
@@ -137,7 +137,13 @@ def newRecipe(request, pkUser):
                     if(img):
                         recipeImage = RecipeImage(image=img, recipe=recipe)
                         recipeImage.save()
-            
+            if fork: # if applicable, add this new recipe to old recipe's list of inspiredForks
+                recipe.forkedBy = Recipe.objects.get(pk=pkRecipe)
+                recipe.save()
+                # oldRecipe = Recipe.objects.get(pk=pkRecipe)
+                # oldRecipe.inspiredForks.add(recipe)
+                # oldRecipe.save()
+
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.

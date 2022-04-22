@@ -37,7 +37,7 @@
 
     h2 {
         color: #213037;
-        margin-left: 40px;
+        /* margin-left: 40px; */
         font-family: 'Encode Sans', sans-serif;
         font-weight: bold;
     }
@@ -107,19 +107,26 @@
 <body>
     {% include "recipes/navbar.html" %}
     <div class="div1">
-        <h2>{{ recipe.title }}</h2>
-        {%  if recipe.get_avg_rating != 404 %}
-        <p>Average Rating: {{recipe.get_avg_rating|floatformat}} ⭐</p>
-        {% else %}
-        <p>No reviews for this recipe</p>
-        {% endif %}
-        <p>
-            Created by:
-            <a href="/user/{{ recipe.createdBy.pk }}">
-                {{ recipe.createdBy }}
-                <br>
-            </a>
-        </p>
+        <div class="justify-content-center">
+            <h2>{{ recipe.title }}</h2>
+            {% if recipe.forkedBy %}
+                <h6>
+                    Inspired by this recipe: <a href="/recipes/{{ recipe.forkedBy.pk }}" class="text-decoration-none" style="color: darkgray">{{ recipe.forkedBy.title }}</a>
+                </h6>
+            {% endif %}
+            {%  if recipe.get_avg_rating != 404 %}
+            <p>Average Rating: {{recipe.get_avg_rating|floatformat}} ⭐</p>
+            {% else %}
+            <p>No reviews for this recipe</p>
+            {% endif %}
+            <p>
+                Created by:
+                <a href="/user/{{ recipe.createdBy.pk }}">
+                    {{ recipe.createdBy }}
+                    <br>
+                </a>
+            </p>
+        </div>
         <hr class="new1">
         {% if not recipe.images.all|length == 0 %}
         <div class="card">
@@ -267,7 +274,17 @@
                 <input type="submit" value="Fork Recipe">
             </form>
             {% endif %}
-            <div class="row">
+
+            {% if recipe.original.all %}
+                <div>
+                    Check out recipes inspired by this one!
+                    {% for orig in recipe.original.all %} 
+                    <a href="/recipes/{{ orig.pk }}" class="text-decoration-none" style="color: darkgray">{{ orig.title }}</a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="row mt-2">
                 <div>
                     <button class="btn btn-primary" type="button" data-toggle="collapse"
                         data-target="#reviewsCollapsible" aria-expanded="false" aria-controls="reviewsCollapsible">

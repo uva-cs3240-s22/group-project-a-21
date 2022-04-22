@@ -45,7 +45,7 @@
     {% include "recipes/navbar.html" %}
     <div class="div1">
         <h1>Recipe Curation</h1>
-        <form action="/recipes/new-recipe/{{ user.pk }}" method="post" enctype="multipart/form-data">
+        <form action="/recipes/new-recipe/{{ user.pk }}/0/0" method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
             <div class="form-group p-3">

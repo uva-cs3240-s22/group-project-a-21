@@ -47,7 +47,10 @@
     {% include "recipes/navbar.html" %}
     <div class="div1">
         <h1>Recipe Curation</h1>
-        <form action="/recipes/new-recipe/{{ user.pk }}" method="post" enctype="multipart/form-data">
+        <h2>
+            <a href="/recipes/{{ oldrecipe.pk }}" class="text-decoration-none" style="color: darkgray">Forked from: {{ oldrecipe.title }}</a>
+        </h2>
+        <form action="/recipes/new-recipe/{{ user.pk }}/1/{{ oldrecipe.pk }}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
             <div class="form-group p-3">
