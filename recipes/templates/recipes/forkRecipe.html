@@ -1,0 +1,280 @@
+{% load socialaccount %}
+
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% load static %}
+
+{% load recipe_tags %}
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta>
+    <title>Enter Recipe</title>
+    <link rel="icon" href="{% static 'recipes/wom_logo.png' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Encode+Sans:wght@800&display=swap" rel="stylesheet">
+
+</head>
+<style>
+    h4 {
+        font-family: 'Encode Sans', sans-serif;
+    }
+
+    .div1 {
+        margin: auto;
+        width: 50%;
+        border: 2px solid gray;
+        padding: 10px;
+        text-align: left;
+        box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    }
+
+    h1 {
+        color: #213037;
+        margin-left: 40px;
+        font-family: "Georgia";
+        font-weight: bold;
+        text-align: center;
+        font-family: 'Encode Sans', sans-serif;
+        text-transform: uppercase;
+    }
+</style>
+
+<body>
+    {% include "recipes/navbar.html" %}
+    <div class="div1">
+        <h1>Recipe Curation</h1>
+        <form action="/recipes/new-recipe/{{ user.pk }}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-group p-3">
+                {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+                <label for="title" class="h6">Title:</label>
+                <input type="text" name="title" value="{{ oldrecipe.title }}" required pattern=".*\S+.*">
+                <br>
+                <label for="blurb" class="h6">Description:</label>
+                <input type="text" name="blurb" value="{{ oldrecipe.blurb }}" required pattern=".*\S+.*">
+                <br>
+                <label for="dietaryRestrictions" class="h6">Dietary Restrictions:</label>
+                <input type="text" name="dietaryRestrictions" value="{{ oldrecipe.dietaryRestrictions }}" required
+                    pattern=".*\S+.*">
+                <br>
+                <label for="time" class="h6">Time (minutes):</label>
+                <input type="number" name="time" value="{{ oldrecipe.time }}" required min="0">
+                <br>
+                <label for="servingSize" class="h6">Serving Size:</label>
+                <input type="number" name="servingSize" value="{{ oldrecipe.servingSize }}" required min="1">
+                <br>
+                <label for="difficultyRating" class="h6">Difficulty Rating:</label>
+                <input type="number" name="difficultyRating" value="{{ oldrecipe.difficultyRating }}" required min='1'
+                    max="10">
+                <br>
+
+                <label for="ingredientsList" class="h4">Ingredient List:</label>
+                <br>
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr class="table-light">
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Unit</th>
+                            <th scope="col">Ingredient Name</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="ingredients_tb">
+                        {% if oldrecipe.ingredientsList %}
+                        {% for ingredient in oldrecipe.ingredientsList|split:"," %}
+                        <tr>
+                            <td><input type="text" name="ingredientQuant" value="{% index value=ingredient number=0 %}"
+                                    required pattern=".*\S+.*"></td>
+                            <td><input type="text" name="ingredientUnit" value="{% index value=ingredient number=1 %}"
+                                    required pattern=".*\S+.*"></td>
+                            <td><input type="text" name="ingredientName"
+                                    value="{% indexName value=ingredient number=2 %}" required pattern=".*\S+.*"></td>
+                            <td></td>
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-primary" onclick="addIngredient()">Add ingredient</button>
+
+                <br>
+                <br>
+                <label for="directionsList" class="h4">Directions:</label>
+                <br>
+                <div class="row">
+                    <div class="col-8">
+                        <table class="table table-hover table-striped">
+                            <tbody id="directions_tb">
+                                {% for direction in oldrecipe.directionsList|split:"`" %}
+                                <tr>
+                                    <td><textarea type="text" name="direction" rows="3" cols="50"
+                                            required> {{ direction }} </textarea></td>
+                                    <td></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-4"></div>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="addDirection()">Add direction</button>
+
+                <br>
+
+                <br>
+
+                <label for="recipe_img" class="h4">Upload recipe images:</label>
+                <div class="row">
+                    <div class="col-8">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                                <tr class="table-light">
+                                    <th scope="col">Upload</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="img_tb">
+                                <tr>
+                                    <td><input type="file" id="recipe_img" name="recipe_img"
+                                            accept="image/png, image/jpeg"> </td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-4"></div>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="addImage()">Add image</button>
+                <!-- https://ordinarycoders.com/blog/article/django-file-image-uploads -->
+            </div>
+            <input class="btn btn-primary" type="submit" value="Create Recipe">
+        </form>
+    </div>
+
+    <script>
+        var ingredientsIndex = 1; // 1 instruction required on default which is index 0
+        var directionsIndex = 1; // 1 direction required on default which is index 0
+        var imgIndex = 1;
+
+        function addIngredient() {
+            let ingredients_tb = document.getElementById("ingredients_tb");
+            let row = ingredients_tb.insertRow(); // default adds to end
+            row.id = ingredientsIndex;
+
+            // quantity
+            let input = document.createElement("input");
+            input.type = "text";
+            input.name = "ingredientQuant";
+            row.insertCell(0).appendChild(input);
+
+            // unit
+            input = document.createElement("input");
+            input.type = "text";
+            input.name = "ingredientUnit";
+            row.insertCell(1).appendChild(input);
+
+            // name
+            input = document.createElement("input");
+            input.type = "text";
+            input.name = "ingredientName";
+            row.insertCell(2).appendChild(input);
+
+            // remove button
+            let btn = document.createElement("button");
+            btn.innerHTML = "Remove"
+            btn.type = "button";
+            btn.classList = "btn btn-danger ingredients-remove-btn";
+            btn.name = ingredientsIndex;
+            btn.onclick = function () { // remove this row
+                ingredientsIndex--;
+                ingredients_tb.deleteRow(this.name);
+
+                removeButtons = document.getElementsByClassName("ingredients-remove-btn");
+                for (var i = 0; i < removeButtons.length; i++)
+                    removeButtons[i].setAttribute("name", i + 1);
+            }
+            row.insertCell(3).appendChild(btn);
+
+            ingredientsIndex++;
+        }
+
+        function addDirection() {
+            let directions_tb = document.getElementById("directions_tb");
+            let row = directions_tb.insertRow(); // default adds to end
+            row.id = directionsIndex;
+
+            // direction text
+            // let input = document.createElement("input");
+            // input.type = "text";
+            // input.name = "direction";
+            // row.insertCell(0).appendChild(input);
+
+            let input = document.createElement("textarea");
+            input.type = "text";
+            input.name = "direction";
+            input.rows = "3";
+            input.cols = "50";
+            row.insertCell(0).appendChild(input);
+            // <td><textarea type="text" name="direction" rows="3" cols="50"></textarea></td>
+
+            // remove button
+            let btn = document.createElement("button");
+            btn.innerHTML = "Remove"
+            btn.type = "button";
+            btn.classList = "btn btn-danger directions-remove-btn";
+            btn.name = directionsIndex;
+            btn.onclick = function () { // remove this row
+                directionsIndex--;
+                directions_tb.deleteRow(this.name);
+
+                removeButtons = document.getElementsByClassName("directions-remove-btn");
+                for (var i = 0; i < removeButtons.length; i++)
+                    removeButtons[i].setAttribute("name", i + 1);
+            }
+            row.insertCell(1).appendChild(btn);
+
+            directionsIndex++;
+        }
+        // https://www.w3schools.com/jsref/met_table_insertrow.asp
+
+        function addImage() {
+            let img_tb = document.getElementById("img_tb");
+            let row = img_tb.insertRow(); // default adds to end
+            row.id = imgIndex;
+
+            // upload button
+            // <td><input type="file" id="recipe_img" name="recipe_img" accept="image/png, image/jpeg"> </td>
+            let input = document.createElement("input");
+            input.type = "file";
+            input.id = "recipe_img";
+            input.name = "recipe_img";
+            input.accept = "image/png, image/jpeg";
+            row.insertCell(0).appendChild(input);
+
+            // remove button
+            let btn = document.createElement("button");
+            btn.innerHTML = "Remove"
+            btn.type = "button";
+            btn.classList = "btn btn-danger img-remove-btn";
+            btn.name = imgIndex;
+            btn.onclick = function () { // remove this row
+                imgIndex--;
+                img_tb.deleteRow(this.name);
+
+                removeButtons = document.getElementsByClassName("img-remove-btn");
+                for (var i = 0; i < removeButtons.length; i++)
+                    removeButtons[i].setAttribute("name", i + 1);
+            }
+            row.insertCell(1).appendChild(btn);
+
+            imgIndex++;
+        }
+    </script>
+</body>
+
+</html>

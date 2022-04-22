@@ -248,7 +248,7 @@
                     <div id="collapseDirections" class="collapse show" aria-labelledby="collapseDirectionsHeading">
                         <div class="card-body">
                             <ol>
-                                {% for direction in recipe.directionsList|split:"," %}
+                                {% for direction in recipe.directionsList|split:"`" %}
                                 <li>{{ direction }}</li>
                                 {% endfor %}
                             </ol>
@@ -260,6 +260,10 @@
             </div>
             <!-- https://getbootstrap.com/docs/4.0/components/collapse/ -->
             <!-- https://stackoverflow.com/questions/15696365/twitter-bootstrap-collapse-plugin-how-to-enable-multiple-groups-to-be-opened -->
+            <form action="{% url 'recipes:fork' recipe.pk %}">
+                <!-- {% csrf_token %} -->
+                <input type="submit" value="Fork Recipe">
+            </form>
             <div class="row">
                 <div>
                     <button class="btn btn-primary" type="button" data-toggle="collapse"
@@ -294,7 +298,7 @@
                             {% csrf_token %}
                             <div class="form-group">
                                 <textarea type="text" id="formControl" class="form-control w-50" style="display: block;"
-                                    rows="3" name="content" /></textarea>
+                                    rows="3" name="content"></textarea>
                             </div>
                             <div class="form-group">
                                 <select class="form-select w-25" name="rating">
@@ -363,7 +367,7 @@
             <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
                 <h5 class="text-uppercase">Authored by:</h5>
                 <p>
-                    Thumay Huynh, Alex Pfoser, Rishi Mukheree, Alex Taing, Lilian Zhang
+                    Thumay Huynh, Alex Pfoser, Rishi Mukherjee, Alex Taing, Lilian Zhang
                 </p>
             </div>
             <!--Grid column-->
