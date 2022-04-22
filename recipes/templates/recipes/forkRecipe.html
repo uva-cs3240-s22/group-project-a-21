@@ -41,6 +41,10 @@
         font-family: 'Encode Sans', sans-serif;
         text-transform: uppercase;
     }
+
+    .directions-remove-btn {
+        z-index: 100;
+    }
 </style>
 
 <body>
@@ -97,7 +101,7 @@
                                     required pattern=".*\S+.*"></td>
                             <td><input type="text" name="ingredientName"
                                     value="{% indexName value=ingredient number=2 %}" required pattern=".*\S+.*"></td>
-                            <td></td>
+                            <!-- <td></td> -->
                         </tr>
                         {% endfor %}
                         {% endif %}
@@ -110,20 +114,17 @@
                 <label for="directionsList" class="h4">Directions:</label>
                 <br>
                 <div class="row">
-                    <div class="col-8">
-                        <table class="table table-hover table-striped">
-                            <tbody id="directions_tb">
-                                {% for direction in oldrecipe.directionsList|split:"`" %}
-                                <tr>
-                                    <td><textarea type="text" name="direction" rows="3" cols="50"
-                                            required> {{ direction }} </textarea></td>
-                                    <td></td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-4"></div>
+                    <table class="table table-hover table-striped">
+                        <tbody id="directions_tb">
+                            {% for direction in oldrecipe.directionsList|split:"`" %}
+                            <tr>
+                                <td><textarea type="text" name="direction" rows="3" cols="50"
+                                        required> {{ direction }} </textarea></td>
+                                <!-- <td></td> -->
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
                 <button type="button" class="btn btn-primary" onclick="addDirection()">Add direction</button>
 
@@ -160,12 +161,66 @@
     </div>
 
     <script>
-        var ingredientsIndex = 1; // 1 instruction required on default which is index 0
-        var directionsIndex = 1; // 1 direction required on default which is index 0
+        // two differences:
+        // update ingredients/directionsIndex to the true value (probably not 1)
+        // add remove buttons with correct ingredients/directionsIndex
+            
+        var ingredientsIndex = 0; // 1 instruction required on default which is index 0; this is index of next instruction
+        var directionsIndex = 0; // 1 direction required on default which is index 0; this is index of next direction
         var imgIndex = 1;
 
+        const ingredients_tb = document.getElementById("ingredients_tb");  
+        for (const row of ingredients_tb.rows) {  
+            row.id = ingredientsIndex
+            // remove button
+            if(ingredientsIndex > 0) {
+                let btn = document.createElement("button");
+                btn.innerHTML = "Remove"
+                btn.type = "button";
+                btn.classList = "btn btn-danger ingredients-remove-btn";
+                btn.name = ingredientsIndex;
+                btn.onclick = function () { // remove this row
+                    ingredientsIndex--;
+                    ingredients_tb.deleteRow(this.name);
+
+                    removeButtons = document.getElementsByClassName("ingredients-remove-btn");
+                    for (var i = 0; i < removeButtons.length; i++)
+                        removeButtons[i].setAttribute("name", i + 1);
+                }
+                row.insertCell(3).appendChild(btn);
+            }
+
+            console.log("row" + ingredientsIndex);
+            ingredientsIndex ++;
+        }
+
+        const directions_tb = document.getElementById("directions_tb");
+        for (const row of directions_tb.rows) {  
+            row.id = directionsIndex
+            // remove button
+            if(directionsIndex > 0) {
+                let btn = document.createElement("button");
+                btn.innerHTML = "Remove"
+                btn.type = "button";
+                btn.classList = "btn btn-danger directions-remove-btn";
+                btn.name = directionsIndex;
+                btn.onclick = function () { // remove this row
+                    directionsIndex--;
+                    directions_tb.deleteRow(this.name);
+
+                    removeButtons = document.getElementsByClassName("directions-remove-btn");
+                    for (var i = 0; i < removeButtons.length; i++)
+                        removeButtons[i].setAttribute("name", i + 1);
+                }
+                row.insertCell(1).appendChild(btn);
+            }
+
+            console.log("row" + directionsIndex);
+            directionsIndex ++;
+        }
+
         function addIngredient() {
-            let ingredients_tb = document.getElementById("ingredients_tb");
+            // let ingredients_tb = document.getElementById("ingredients_tb");
             let row = ingredients_tb.insertRow(); // default adds to end
             row.id = ingredientsIndex;
 
@@ -207,7 +262,7 @@
         }
 
         function addDirection() {
-            let directions_tb = document.getElementById("directions_tb");
+            // let directions_tb = document.getElementById("directions_tb");
             let row = directions_tb.insertRow(); // default adds to end
             row.id = directionsIndex;
 
