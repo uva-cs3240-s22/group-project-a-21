@@ -7,16 +7,16 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <link href="https://fonts.googleapis.com/css2?family=Encode+Sans:wght@800&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <!-- <header> -->
-    <!-- <nav class="navbar navbar-light bg-light"> -->
     <nav class="navbar">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/" style="color: white;"> <img class="logo" src="{% static 'recipes/wom_logo.png' %}" width="50"
-                    height="50" alt="Logo">
+            <a class="navbar-brand" href="/" style="color: white;"> <img class="logo"
+                    src="{% static 'recipes/wom_logo.png' %}" width="50" height="50" alt="Logo">
                 WORD OF MOUTH
             </a>
             <div class="nav">
@@ -25,13 +25,13 @@
                 <a class="nav-link" href="/recipes/enter-recipe/" style="color: white;">NEW RECIPE</a>
                 <a class="nav-link" href="/user/{{ user.pk }}" style="color: white;">PROFILE</a>
                 <a class="nav-link" href="/user/logout" style="color: white;">LOGOUT</a>
-                <!-- <a href="/user/{{ user.pk }}">
+                <a href="/user/{{ user.pk }}">
                     {% if profile.profile_img %}
                     <img class="profilePic" src="{{ profile.profile_img.url }}" width="60" height="60">
                     {% else %}
                     <img class="profilePic" src="{% static 'recipes/default_chef.png' %}" width="60" height="60">
                     {% endif %}
-                </a> -->
+                </a>
                 {% else %}
                 <a class="nav-link text-muted">NEW RECIPE</a>
                 <a class="nav-link" href="{% provider_login_url 'google' %}" style="color: white;">LOGIN WITH GOOGLE</a>
@@ -39,7 +39,6 @@
             </div>
         </div>
     </nav>
-    <!-- </header> -->
 </body>
 <style>
     .navbar {
