@@ -60,6 +60,7 @@ class Recipe(models.Model):
     favoritedBy = models.ManyToManyField(Profile, related_name="favorites") # a User has many favorite Recipes; a Recipe is favorited by many Users
     createdBy = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="create", default=1)
     # https://stackoverflow.com/questions/13918968/multiple-many-to-many-relations-to-the-same-model-in-django
+    forkedBy = models.ForeignKey('self', on_delete=models.SET_NULL, related_name="original", null=True)
 
     def get_avg_rating(self):
         reviews = Review.objects.filter(recipe=self)
