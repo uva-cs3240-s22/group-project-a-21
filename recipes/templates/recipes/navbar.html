@@ -30,6 +30,7 @@
                     <img class="profilePic" src="{{ profile.profile_img.url }}" width="60" height="60">
                     {% else %}
                     <img class="profilePic" src="{% static 'recipes/default_chef.png' %}" width="60" height="60">
+                    {% endif %}
                 </a>
                 {% else %}
                 <a class="nav-link text-muted">NEW RECIPE</a>
