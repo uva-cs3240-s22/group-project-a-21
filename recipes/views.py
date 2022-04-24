@@ -212,9 +212,10 @@ def recipe_pdf(request, pk):
     canv.setFont("Helvetica-Bold", 28)
     canv.drawCentredString(4.25*inch, 75, recipe.title)
     
-    subtitle = str("Difficulty: " + str(recipe.difficultyRating) + "/10 | Time Required: " + str(recipe.time) + " minutes | Serving Size: " + 
-                   str(recipe.servingSize) + " | Dietary Restrictions: " + recipe.dietaryRestrictions)
-    canv.setFont("Times-Roman", 12)
+    subtitle = str("Time Required: " + str(recipe.time) + " minutes | Serving Size: " + 
+                   str(recipe.servingSize) + " | Dietary Restrictions: " + recipe.dietaryRestrictions + " | Difficulty: " + str(recipe.difficultyRating) + "/10" )
+    
+    canv.setFont("Times-Italic", 12)
     canv.drawCentredString(4.25*inch, 100, subtitle)
     canv.setFont("Helvetica-Bold", 20)
     canv.drawCentredString(4.25*inch, 135, "Ingredients List")
@@ -234,7 +235,8 @@ def recipe_pdf(request, pk):
             canv.drawCentredString(3.25*inch, 158 + 10*i, l[i+1])           
         
     directions = recipe.directionsList.replace("*", " ")
-    l2 = directions.split(",")
+    l2 = directions.split("`")
+    
     
     canv.setFont("Helvetica-Bold", 20)
     canv.drawCentredString(4.25*inch,  158 + 30 + space, "Directions")
@@ -243,10 +245,14 @@ def recipe_pdf(request, pk):
     canv.setFont("Times-Roman", 12)
     
     directionStart = 158 + 30 + space + 23
-    for i in range(0, len(l2), 2):
-        canv.drawCentredString(4.25*inch, directionStart + 10*i, l2[i])
-
-    canv.drawInlineImage("recipes/static/recipes/wom_logo.png", 3.45*inch, 7*inch, 1.8*inch, 1.8*inch)
+    for i in range(len(l2)):
+        canv.drawCentredString(4.25*inch, directionStart + 15*i, str(i+1) + ". " + l2[i])
+        
+        
+        
+    
+    # Footer
+    canv.drawInlineImage("recipes/static/recipes/wom_logo.png", 3.8*inch, 8.45*inch, 1*inch, 1*inch)
     canv.setFont("Times-Italic", 12)
     canv.drawCentredString(4.25*inch, 10.5*inch, "Thank you for using Word of Mouth!") 
     canv.setFont("Times-Italic", 10) 
