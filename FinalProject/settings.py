@@ -34,7 +34,7 @@ DEBUG = False
 ALLOWED_HOSTS = [
     '.localhost',
     '127.0.0.1',
-    '.wordofmoutha21.herokuapp.com',
+    '.wordofmoutha21.herokuapp.com'
 ]
 
 
