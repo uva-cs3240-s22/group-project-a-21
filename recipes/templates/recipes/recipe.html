@@ -53,6 +53,7 @@
         padding: 10px;
         text-align: center;
         box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+        background-color: #e8ddcf;
     }
 
     .checked {
@@ -102,10 +103,49 @@
         cursor: pointer;
         font-family: "Georgia";
     }
+
+    .bgimg {
+        position: relative;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-image: url("{% static 'recipes/food.jpg' %}");
+        background-attachment: fixed;
+        min-height: 70%;
+        /* max-width: 100%; */
+    }
+
+    .trans {
+        opacity: 0.9;
+    }
+    .ptext1 {
+        font-size: 1.75em;
+        position: relative;
+        top: 60%;
+        width: 100%;
+        text-align: center;
+        font-weight: bold;
+        letter-spacing: 5px;
+        font-family: "Encode Sans", sans-serif;
+        color: white;
+        margin-top: 10px;
+
+    }
+    .parText {
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        padding: 10px;
+        /* border-radius: 15%; */
+        font-family: "Encode Sans", sans-serif;
+
+    }
+
+
 </style>
 
 <body>
-    {% include "recipes/navbar.html" %}
+<div class="bgimg trans">
+        {% include "recipes/navbar.html" %}
     <div class="div1">
         <div class="justify-content-center">
             <h2>{{ recipe.title }}</h2>
@@ -267,7 +307,7 @@
             </div>
             <!-- https://getbootstrap.com/docs/4.0/components/collapse/ -->
             <!-- https://stackoverflow.com/questions/15696365/twitter-bootstrap-collapse-plugin-how-to-enable-multiple-groups-to-be-opened -->
-            
+
             {% if request.user.is_authenticated %}
             <form action="{% url 'recipes:fork' recipe.pk %}">
                 <!-- {% csrf_token %} -->
@@ -278,7 +318,7 @@
             {% if recipe.original.all %}
                 <div>
                     Check out recipes inspired by this one!
-                    {% for orig in recipe.original.all %} 
+                    {% for orig in recipe.original.all %}
                     <a href="/recipes/{{ orig.pk }}" class="text-decoration-none" style="color: darkgray">{{ orig.title }}</a>
                     {% endfor %}
                 </div>
@@ -370,6 +410,8 @@
             </div>
         </div>
     </div>
+</div>
+
 </body>
 <footer class="bg-dark text-center text-white">
     <div class="container p-4">
