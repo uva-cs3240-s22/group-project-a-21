@@ -8,6 +8,7 @@ urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     # path('user/', views.UserView, name='user'),
     path('user/<int:pk>/', views.UserView.as_view(), name='user'),
+    path('user/<int:pk>/<tab>/', views.UserView.as_view(), name='userTab'),
     path('user/logout/', views.userLogout, name='userLogout'),
     path('recipes/', views.RecipeGalleryView.as_view(), name='recipeGallery'),
     path('recipes/enter-recipe/', views.EnterRecipeView.as_view(), name='enterRecipe'),

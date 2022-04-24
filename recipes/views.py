@@ -25,11 +25,21 @@ class UserView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # print(context)
+        context['tab'] = self.kwargs['tab'] if ('tab' in self.kwargs) else 'basic'
+        # if 'tab' in self.kwargs:
+        #     context['tab'] = self.kwargs['tab']
+        # else:
+        #     context['tab'] = 'basic'
         return context
 
 def userLogout(request):
     logout(request) # https://stackoverflow.com/questions/25251719/how-can-i-logout-a-user-in-django
     return HttpResponsePermanentRedirect('/')
+
+# def userTab(request, pk, tab):
+#     context = {'tab': tab}
+#     return render(request, 'recipes/user.html', context)
 
 class RecipeGalleryView(generic.ListView):
     template_name = 'recipes/recipeGallery.html'
