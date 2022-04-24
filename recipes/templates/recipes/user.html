@@ -18,9 +18,12 @@
 <body>
     {% include "recipes/navbar.html" %}
     <div class="container-fluid">
-        <div class="row">
+        <div class = "background">
+                <div class="row">
             {% if profile.pk == user.pk %}
-            <h1>My Profile Page</h1>
+            <div class = "h1">
+                My Profile Page
+            </div>
             {% else %}
             <h1>User Profile Page for {{ profile.name }}</h1>
             {% endif %}
@@ -152,26 +155,100 @@
                         </tbody>
                     </table>
                 </div>
-                
+
 
                 <br>
-                
 
-                
+
+
             </div>
-
-            
         </div>
+    </div>
 
     </div>
 </body>
+<footer class="bg-dark text-center text-white">
+    <div class="container p-4">
+        <!--Grid row-->
+        <div class="row">
+            <!--Grid column-->
+            <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+                <h5 class="text-uppercase">Word of Mouth</h5>
+                <p>
+                    Where cooking becomes your cup of tea!
+                </p>
+            </div>
+            <!--Grid column-->
+            <!--Grid column-->
+            <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+                <h5 class="text-uppercase">Authored by:</h5>
+                <p>
+                    Thumay Huynh, Alex Pfoser, Rishi Mukherjee, Alex Taing, Lilian Zhang
+                </p>
+            </div>
+            <!--Grid column-->
+        </div>
+        <!--Grid row-->
+    </div>
+    <!-- Grid container -->
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        © 2022 Copyright:
+        <a class="text-white">CS 3240: Group A-21</a>
+    </div>
+    <!-- Copyright -->
+</footer>
 <style>
+    .background{
+        /*background-color: #3d3838;
+        color: white;*/
+    }
+    .h1{
+        font-family: "Encode Sans", sans-serif;
+    }
     .tablinks {
         height: 50px;
-        background-color: rgb(227, 163, 156);
+        background-color: #b53733;
+        font-family: "Encode Sans", sans-serif;
     }
     .tablinks:hover {
-        background-color: #D98076FF;
+        background-color: #802724;
+        font-family: "Encode Sans", sans-serif;
+    }
+
+    .bgimg {
+        position: relative;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-image: url("{% static 'recipes/food.jpg'%}");
+        background-attachment: fixed;
+        min-height: 70%;
+        /* max-width: 100%; */
+    }
+
+    .trans {
+        opacity: 0.9;
+    }
+
+    .ptext1 {
+        font-size: 1.75em;
+        position: relative;
+        top: 60%;
+        width: 100%;
+        text-align: center;
+        font-weight: bold;
+        letter-spacing: 5px;
+        font-family: "Encode Sans", sans-serif;
+        color: white;
+    }
+    .parText {
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        padding: 10px;
+        /* border-radius: 15%; */
+        font-family: "Encode Sans", sans-serif;
+
     }
 </style>
 <script>
