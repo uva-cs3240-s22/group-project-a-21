@@ -3,6 +3,7 @@
 {% load bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
+{% load static %}
 
 <!DOCTYPE html>
 <html>
@@ -13,25 +14,83 @@
 </head>
 
 <body>
-    {% include "recipes/navbar.html" %}
-    <form action="" method="post">
-        {% csrf_token %}
-        <div class="form-group p-3">
-            <label for="time" class="h4">Time (minutes):</label>
-            <input type="number" name="time" min="1">
-            <br>
-            <label for="servingSize" class="h4">Serving Size:</label>
-            <input type="number" name="servingSize" min="1">
-            <br>
-            <label for="difficultyRating" class="h4">Difficulty Rating:</label>
-            <input type="number" name="difficultyRating" min="1" max="10">
-            <br>
-        </div>
-        <input type="submit" value="Filter">
-    </form>
     <div class="container-fluid">
-        <h1>Recipe Gallery Page</h1>
-        {% include "recipes/recipeGrid.html" %}
+        <div class = "bgimg trans">
+            {% include "recipes/navbar.html" %}
+            <div class = "filter">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="form-group p-3">
+                        <label for="time" class="h4">Time (minutes):</label>
+                        <input type="number" name="time" min="1">
+                        <br>
+                        <label for="servingSize" class="h4">Serving Size:</label>
+                        <input type="number" name="servingSize" min="1">
+                        <br>
+                        <label for="difficultyRating" class="h4">Difficulty Rating:</label>
+                        <input type="number" name="difficultyRating" min="1" max="10">
+                        <br>
+                    </div>
+                    <input type="submit" value="Filter">
+                </form>
+            </div>
+
+            <div>
+                <div class = "ptext1">
+                    <span class="parText">
+                        Recipe Exhibit
+                    </span>
+                </div>
+                {% include "recipes/recipeGrid.html" %}
+            </div>
+        </div>
     </div>
+
+
 </body>
+<style>
+    .body {
+        background-color: #3d3838;;
+    }
+
+    .bgimg {
+        position: relative;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-image: url("{% static 'recipes/food.jpg' %}");
+        background-attachment: fixed;
+        min-height: 70%;
+        /* max-width: 100%; */
+    }
+
+    .trans {
+        opacity: 0.9;
+    }
+
+    .ptext1 {
+        font-size: 1.75em;
+        position: relative;
+        top: 60%;
+        width: 100%;
+        text-align: center;
+        font-weight: bold;
+        letter-spacing: 5px;
+        font-family: "Encode Sans", sans-serif;
+        color: white;
+    }
+    .parText {
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        padding: 10px;
+        /* border-radius: 15%; */
+        font-family: "Encode Sans", sans-serif;
+
+    }
+
+    .filter{
+        font-family: "Encode Sans", sans-serif;
+        color: white;
+    }
+</style>
 </html>

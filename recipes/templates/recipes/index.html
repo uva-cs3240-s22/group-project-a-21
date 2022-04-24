@@ -22,13 +22,14 @@
 
             <div class="ptext1">
                 <span class="parText">
-                    INSERT CHEESY CATCHPHRASE HERE
+                    Making recipes made easy as pie!
                 </span>
             </div>
             <div class="ptext2">
-                <span class="parText">
-                    Begin exploring recipes
-                </span>
+                <div class="parText">
+                    Welcome to our food community! Explore the endless flavors and your cooking potential
+                    as you try different recipes our community has to offer!
+                </div>
                 <!-- <a href="#">
                     <h3>&#129171;</h3>
                 </a> -->
@@ -51,11 +52,16 @@
             <p><a href="{% provider_login_url 'google' %}">Login With Google</a></p>
             {% endif %}
         </div> -->
-        {% include "recipes/recipeGrid.html" %}
+        <div class = "background">
+             {% include "recipes/recipeGrid.html" %}
+        </div>
     </div>
 
 </body>
 <style>
+    .background{
+        background-color: #4a4747;
+    }
     .navbar {
         background-color: rgba(0, 0, 0, 0.5);
 
@@ -100,7 +106,7 @@
         background-position: center;
         background-size: cover;
         background-repeat: no-repeat;
-        background-image: url("{% static 'recipes/pizza.jpg' %}");
+        background-image: url("{% static 'recipes/food.jpg' %}");
         background-attachment: fixed;
         min-height: 70%;
         /* max-width: 100%; */
@@ -122,11 +128,13 @@
 
     .ptext2 {
         font-size: 1.1em;
-        position: absolute;
-        top: 80%;
-        width: 100%;
+        position: relative;
+        top: 40%;
+        width: 50%;
+        height: 20px;
         text-align: center;
         font-weight: bold;
+        margin: 0 auto;
     }
 
     .parText {
