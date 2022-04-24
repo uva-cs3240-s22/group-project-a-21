@@ -231,13 +231,12 @@ def recipe_pdf(request, pk):
         if (i == len(l) - 1):
             canv.drawCentredString(4.25*inch, 158 + 10*i, l[i])
         else:
-            canv.drawCentredString(5.25*inch, 158 + 10*i, l[i])
-            canv.drawCentredString(3.25*inch, 158 + 10*i, l[i+1])           
+            canv.drawCentredString(5.5*inch, 158 + 10*i, l[i])
+            canv.drawCentredString(3.0*inch, 158 + 10*i, l[i+1])           
         
     directions = recipe.directionsList.replace("*", " ")
-    l2 = directions.split("`")
-    
-    
+    l2 = directions.split(".")
+   
     canv.setFont("Helvetica-Bold", 20)
     canv.drawCentredString(4.25*inch,  158 + 30 + space, "Directions")
     print(space)
@@ -246,23 +245,17 @@ def recipe_pdf(request, pk):
     
     directionStart = 158 + 30 + space + 23
     for i in range(len(l2)):
+        print(l2[i])
         canv.drawCentredString(4.25*inch, directionStart + 15*i, str(i+1) + ". " + l2[i])
-        
-        
-        
-    
+      
     # Footer
     canv.drawInlineImage("recipes/static/recipes/wom_logo.png", 3.8*inch, 8.45*inch, 1*inch, 1*inch)
     canv.setFont("Times-Italic", 12)
     canv.drawCentredString(4.25*inch, 10.5*inch, "Thank you for using Word of Mouth!") 
     canv.setFont("Times-Italic", 10) 
     canv.drawCentredString(4.25*inch, 10.75*inch, "Thumay Huynh, Alex Pfoser, Rishi Mukherjee, Alex Taing, Lilian Zhang")  
-    
-
-    
     canv.showPage()
     canv.save()
-    
     
     buf.seek(0)
     file_name = str(recipe.title + "WOM.pdf")

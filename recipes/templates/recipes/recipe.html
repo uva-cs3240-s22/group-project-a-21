@@ -87,7 +87,13 @@
         margin: 3px 2px;
         cursor: pointer;
         font-family: "Georgia";
+        transition-duration: 0.3s;
     }
+
+    .button:hover {
+        background-color: #C61E1E;
+        color: white;
+      }
 
     .dropdown {
         background-color: #D98076FF;
@@ -290,7 +296,7 @@
 
             <div class="row mt-2">
                 <div>
-                    <button class="btn btn-primary" type="button" data-toggle="collapse"
+                    <button class="button" type="button" data-toggle="collapse"
                         data-target="#reviewsCollapsible" aria-expanded="false" aria-controls="reviewsCollapsible">
                         Explore Reviews
                     </button>
@@ -334,7 +340,7 @@
                                 </select>
                             </div>
                             <div class="col text-center">
-                                <button type="submit" class="btn btn-primary mb-2">Submit Review</button>
+                                <button type="submit" class="button">Submit Review</button>
                             </div>
                             <form>
                                 {% else %}
