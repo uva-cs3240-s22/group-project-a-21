@@ -22,19 +22,40 @@
             {% if profile.pk == user.pk %}
             <h1>My Profile Page</h1>
             {% else %}
-            <h1>User Profile Page</h1>
+            <h1>User Profile Page for {{ profile.name }}</h1>
             {% endif %}
         </div>
         <div class="row">
+            <div class="col-3 tabs">
+                <div class="row m-1">
+                    <button class="tablinks{% if tab == 'basic' or tab == NULL %} active{% endif %}" onclick="openTab(event, 'basic')">Basic Information</button>
+                </div>
+                <div class="row m-1">
+                    {% if profile.pk == user.pk %}
+                    <button class="tablinks{% if tab == 'create' %} active{% endif %}" onclick="openTab(event, 'create')">My Recipes</button>
+                    {% else %}
+                    <button class="tablinks{% if tab == 'create' %} active{% endif %}" onclick="openTab(event, 'create')">Created Recipes</button>
+                    {% endif %}
+                </div>
+                <div class="row m-1">
+                    <button class="tablinks{% if tab == 'favorite' %} active{% endif %}" onclick="openTab(event, 'favorite')">Favorite Recipes</button>
+                </div>
+                <div class="row m-1">
+                    <button class="tablinks{% if tab == 'following' %} active{% endif %}" onclick="openTab(event, 'following')">Following</button>
+                </div>
+                <div class="row m-1">
+                    <button class="tablinks{% if tab == 'followers' %} active{% endif %}" onclick="openTab(event, 'followers')">Followers</button>
+                </div>
+            </div>
             <div class="col-8">
-                <div id="tab-title">{{tab}}</div>
-                <div class="tab">
+                <h2 id="tab-title">{{tab}}</h2>
+                <!-- <div class="tab">
                     <button class="tablinks{% if tab == 'basic' or tab == NULL %} active{% endif %}" onclick="openTab(event, 'basic')">Basic Information</button>
                     <button class="tablinks{% if tab == 'create' %} active{% endif %}" onclick="openTab(event, 'create')">Created Recipes</button>
                     <button class="tablinks{% if tab == 'favorite' %} active{% endif %}" onclick="openTab(event, 'favorite')">Favorite Recipes</button>
                     <button class="tablinks{% if tab == 'following' %} active{% endif %}" onclick="openTab(event, 'following')">Following</button>
                     <button class="tablinks{% if tab == 'followers' %} active{% endif %}" onclick="openTab(event, 'followers')">Followers</button>
-                </div>
+                </div> -->
                 <div id="basic" class="tabcontent mt-2">
                     <!-- Can change name if this user is self -->
                     {% if profile.pk == user.pk %}
@@ -59,14 +80,17 @@
                     {% else %}
                     <p>Cooking experience (Low(1) - High(10)): {{ profile.cooking_experience }}</p>
                     {% endif %}
+
+                    <!-- Cannot follow yourself (follow button invisible) -->
+                    {% if not profile.pk == user.pk %}
+                    <form action="/user/follow-user/{{ profile.pk }}/{{ user.pk }}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" value="Follow">
+                    </form>
+                    {% endif %}
                 </div>
                 <div id="create" class="tabcontent">
                     <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Created Recipes</th>
-                            </tr>
-                        </thead>
                         <tbody>
                             {% for recipe in profile.create.all %}
                             <tr>
@@ -82,7 +106,7 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">Favorite Recipes</th>
+                                <th scope="col">Recipe</th>
                                 <th scope="col">Author</th>
                             </tr>
                         </thead>
@@ -135,21 +159,21 @@
 
                 
             </div>
-            <div class="col-4 border">
-                
-            </div>
 
-            <!-- Cannot follow yourself (follow button invisible) -->
-            {% if not profile.pk == user.pk %}
-            <form action="/user/follow-user/{{ profile.pk }}/{{ user.pk }}" method="post">
-                {% csrf_token %}
-                <input type="submit" value="Follow">
-            </form>
-            {% endif %}
+            
         </div>
 
     </div>
 </body>
+<style>
+    .tablinks {
+        height: 50px;
+        background-color: rgb(227, 163, 156);
+    }
+    .tablinks:hover {
+        background-color: #D98076FF;
+    }
+</style>
 <script>
     // basic open to begin with
     tabs = document.getElementsByClassName("tabcontent");
