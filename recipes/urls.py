@@ -20,4 +20,7 @@ urlpatterns = [
     path('user/update/name/<int:pkUser>', views.updateUserName, name='updateUserName'),
     path('user/update/cook_exp/<int:pkUser>', views.updateUserCookExp, name='updateUserCookExp'),
     path('user/update/profile_img/<int:pkUser>', views.updateUserProfileImg, name='updateUserProfileImg'),
+    
+    # pdf generation
+    path("recipes/recipe_pdf/<int:pk>/", views.recipe_pdf, name = 'recipe_pdf')
 ]

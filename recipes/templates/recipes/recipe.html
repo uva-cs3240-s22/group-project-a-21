@@ -114,6 +114,10 @@
                     Inspired by this recipe: <a href="/recipes/{{ recipe.forkedBy.pk }}" class="text-decoration-none" style="color: darkgray">{{ recipe.forkedBy.title }}</a>
                 </h6>
             {% endif %}
+            <form action="{% url 'recipes:recipe_pdf' recipe.pk %}">
+                <!-- {% csrf_token %} -->
+                <input type="submit" value="Print Recipe">
+            </form>
             {%  if recipe.get_avg_rating != 404 %}
             <p>Average Rating: {{recipe.get_avg_rating|floatformat}} ⭐</p>
             {% else %}

@@ -1,14 +1,18 @@
 from distutils.errors import LibError
 from re import template
 import re
+import io
 from wsgiref.util import request_uri
 from django.shortcuts import get_object_or_404, render
 from .models import Recipe, Profile, RecipeImage, Review
 from django.views import generic
-from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
+from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect, FileResponse 
 from django.urls import reverse
 from django.contrib.auth import logout
-
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+from django.templatetags.static import static
 # Create your views here.
 
 # def IndexView(requests):
@@ -193,3 +197,69 @@ def forkRecipe(request, pk):
     # context = {'newrecipe': newRecipe}
     context = {'oldrecipe': obj}
     return render(request, 'recipes/forkRecipe.html', context)
+
+# Generate PDF file of recipe
+def recipe_pdf(request, pk):
+    # create buffer and canvas
+    buf = io.BytesIO()
+    canv = canvas.Canvas(buf, pagesize=letter, bottomup=0)
+    
+    # text object
+    text_ob = canv.beginText()
+    text_ob.setTextOrigin(inch, inch)
+    recipe = get_object_or_404(Recipe, id=pk)
+    # add text
+    canv.setFont("Helvetica-Bold", 28)
+    canv.drawCentredString(4.25*inch, 75, recipe.title)
+    
+    subtitle = str("Difficulty: " + str(recipe.difficultyRating) + "/10 | Time Required: " + str(recipe.time) + " minutes | Serving Size: " + 
+                   str(recipe.servingSize) + " | Dietary Restrictions: " + recipe.dietaryRestrictions)
+    canv.setFont("Times-Roman", 12)
+    canv.drawCentredString(4.25*inch, 100, subtitle)
+    canv.setFont("Helvetica-Bold", 20)
+    canv.drawCentredString(4.25*inch, 135, "Ingredients List")
+    
+    ingredients = recipe.ingredientsList.replace("*", " ")
+    l = ingredients.split(",")
+
+    canv.setFont("Times-Roman", 12)
+    
+    space = 0
+    for i in range(0, len(l), 2):
+        space = i*10
+        if (i == len(l) - 1):
+            canv.drawCentredString(4.25*inch, 158 + 10*i, l[i])
+        else:
+            canv.drawCentredString(5.25*inch, 158 + 10*i, l[i])
+            canv.drawCentredString(3.25*inch, 158 + 10*i, l[i+1])           
+        
+    directions = recipe.directionsList.replace("*", " ")
+    l2 = directions.split(",")
+    
+    canv.setFont("Helvetica-Bold", 20)
+    canv.drawCentredString(4.25*inch,  158 + 30 + space, "Ingredients List")
+    print(space)
+
+    canv.setFont("Times-Roman", 12)
+    
+    directionStart = 158 + 30 + space + 23
+    for i in range(0, len(l2), 2):
+        canv.drawCentredString(4.25*inch, directionStart + 10*i, l2[i])
+
+    canv.drawInlineImage("recipes/static/recipes/wom_logo.png", 3.45*inch, 7*inch, 1.8*inch, 1.8*inch)
+    canv.setFont("Times-Italic", 12)
+    canv.drawCentredString(4.25*inch, 10.5*inch, "Thank you for using Word of Mouth!") 
+    canv.setFont("Times-Italic", 10) 
+    canv.drawCentredString(4.25*inch, 10.75*inch, "Thumay Huynh, Alex Pfoser, Rishi Mukherjee, Alex Taing, Lilian Zhang")  
+    
+
+    
+    canv.showPage()
+    canv.save()
+    
+    
+    buf.seek(0)
+    file_name = str(recipe.title + "WOM.pdf")
+    file_name = file_name.replace(" ", "_")
+    return FileResponse(buf, as_attachment=True, filename=file_name)
+    
