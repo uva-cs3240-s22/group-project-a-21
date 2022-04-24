@@ -19,7 +19,11 @@
     {% include "recipes/navbar.html" %}
     <div class="container-fluid">
         <div class="row">
+            {% if profile.pk == user.pk %}
+            <h1>My Profile Page</h1>
+            {% else %}
             <h1>User Profile Page</h1>
+            {% endif %}
         </div>
         <div class="row">
             <div class="col-8">
@@ -29,6 +33,7 @@
                     <button class="tablinks{% if tab == 'create' %} active{% endif %}" onclick="openTab(event, 'create')">Created Recipes</button>
                     <button class="tablinks{% if tab == 'favorite' %} active{% endif %}" onclick="openTab(event, 'favorite')">Favorite Recipes</button>
                     <button class="tablinks{% if tab == 'following' %} active{% endif %}" onclick="openTab(event, 'following')">Following</button>
+                    <button class="tablinks{% if tab == 'followers' %} active{% endif %}" onclick="openTab(event, 'followers')">Followers</button>
                 </div>
                 <div id="basic" class="tabcontent mt-2">
                     <!-- Can change name if this user is self -->
@@ -103,6 +108,23 @@
                                 <td><a href="/user/{{ following.pk }}"  class="text-decoration-none" style="color: darkgray;">{{ following.name }}</a></td>
                             </tr>
                             {% endfor %}
+                            {% if not profile.following.all %}
+                                There are no following users to display
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+                <div id="followers" class="tabcontent">
+                    <table class="table">
+                        <tbody>
+                            {% for follower in profile.followers.all %}
+                            <tr>
+                                <td><a href="/user/{{ follower.pk }}"  class="text-decoration-none" style="color: darkgray;">{{ follower.name }}</a></td>
+                            </tr>
+                            {% endfor %}
+                            {% if not profile.followers.all %}
+                                There are no followers to display
+                            {% endif %}
                         </tbody>
                     </table>
                 </div>
@@ -114,7 +136,6 @@
                 
             </div>
             <div class="col-4 border">
-                <h3>Following</h3>
                 
             </div>
 
@@ -151,6 +172,7 @@
 
         document.getElementById("tab-title").innerHTML = event.currentTarget.innerHTML;
     }
+    // https://www.w3schools.com/howto/howto_js_tabs.asp
 
 
     // const input = document.getElementById("profile_img");
