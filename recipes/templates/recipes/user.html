@@ -23,80 +23,99 @@
         </div>
         <div class="row">
             <div class="col-8">
-                <!-- Can change name if this user is self -->
-                {% if profile.pk == user.pk %}
-                <form action="/user/update/name/{{ profile.pk }}" method="post">
-                    {% csrf_token %}
-                    Name:
-                    <input type="text" value="{{ profile.name }}" name="name">
-                    <input type="submit" value="Rename">
-                </form>
-                {% else %}
-                <p>Name: {{ profile.name }}</p>
-                {% endif %}
-                <p>Email: {{ profile.email }}</p>
-                <!-- Can change cooking experience if this user is self -->
-                {% if profile.pk == user.pk %}
-                <form action="/user/update/cook_exp/{{ profile.pk }}" method="post">
-                    {% csrf_token %}
-                    Cooking experience (Low(1) - High(10)):
-                    <input type="number" max="10" min="1" value="{{ profile.cooking_experience }}" name="cook_exp">
-                    <input type="submit" value="Update cooking experience">
-                </form>
-                {% else %}
-                <p>Cooking experience (Low(1) - High(10)): {{ profile.cooking_experience }}</p>
-                {% endif %}
+                <div id="tab-title">{{tab}}</div>
+                <div class="tab">
+                    <button class="tablinks{% if tab == 'basic' or tab == NULL %} active{% endif %}" onclick="openTab(event, 'basic')">Basic Information</button>
+                    <button class="tablinks{% if tab == 'create' %} active{% endif %}" onclick="openTab(event, 'create')">Created Recipes</button>
+                    <button class="tablinks{% if tab == 'favorite' %} active{% endif %}" onclick="openTab(event, 'favorite')">Favorite Recipes</button>
+                    <button class="tablinks{% if tab == 'following' %} active{% endif %}" onclick="openTab(event, 'following')">Following</button>
+                </div>
+                <div id="basic" class="tabcontent mt-2">
+                    <!-- Can change name if this user is self -->
+                    {% if profile.pk == user.pk %}
+                    <form action="/user/update/name/{{ profile.pk }}" method="post">
+                        {% csrf_token %}
+                        Name:
+                        <input type="text" value="{{ profile.name }}" name="name">
+                        <input type="submit" value="Rename">
+                    </form>
+                    {% else %}
+                    <p>Name: {{ profile.name }}</p>
+                    {% endif %}
+                    <p>Email: {{ profile.email }}</p>
+                    <!-- Can change cooking experience if this user is self -->
+                    {% if profile.pk == user.pk %}
+                    <form action="/user/update/cook_exp/{{ profile.pk }}" method="post">
+                        {% csrf_token %}
+                        Cooking experience (Low(1) - High(10)):
+                        <input type="number" max="10" min="1" value="{{ profile.cooking_experience }}" name="cook_exp">
+                        <input type="submit" value="Update cooking experience">
+                    </form>
+                    {% else %}
+                    <p>Cooking experience (Low(1) - High(10)): {{ profile.cooking_experience }}</p>
+                    {% endif %}
+                </div>
+                <div id="create" class="tabcontent">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Created Recipes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for recipe in profile.create.all %}
+                            <tr>
+                                <td>
+                                    <a href="/recipes/{{ recipe.pk }}" class="text-decoration-none" style="color: darkgray;">{{ recipe.title }}</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div id="favorite" class="tabcontent">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Favorite Recipes</th>
+                                <th scope="col">Author</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for favorite in profile.favorites.all %}
+                            <tr>
+                                <td>
+                                    <a href="/recipes/{{ favorite.pk }}" class="text-decoration-none" style="color: darkgray;">{{ favorite.title }}</a>
+                                </td>
+                                <td>
+                                    <a href="/user/{{ favorite.createdBy.pk }}" class="text-decoration-none" style="color: darkgray;">{{ favorite.createdBy }}</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div id="following" class="tabcontent">
+                    <table class="table">
+                        <tbody>
+                            {% for following in profile.following.all %}
+                            <tr>
+                                <td><a href="/user/{{ following.pk }}"  class="text-decoration-none" style="color: darkgray;">{{ following.name }}</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
 
                 <br>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Created Recipes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for recipe in profile.create.all %}
-                        <tr>
-                            <td>
-                                <a href="/recipes/{{ recipe.pk }}" class="text-decoration-none" style="color: darkgray;">{{ recipe.title }}</a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                
 
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Favorite Recipes</th>
-                            <th scope="col">Author</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for favorite in profile.favorites.all %}
-                        <tr>
-                            <td>
-                                <a href="/recipes/{{ favorite.pk }}" class="text-decoration-none" style="color: darkgray;">{{ favorite.title }}</a>
-                            </td>
-                            <td>
-                                <a href="/user/{{ favorite.createdBy.pk }}" class="text-decoration-none" style="color: darkgray;">{{ favorite.createdBy }}</a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                
             </div>
             <div class="col-4 border">
                 <h3>Following</h3>
-                <table class="table">
-                    <tbody>
-                        {% for following in profile.following.all %}
-                        <tr>
-                            <td><a href="/user/{{ following.pk }}"  class="text-decoration-none" style="color: darkgray;">{{ following.name }}</a></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                
             </div>
 
             <!-- Cannot follow yourself (follow button invisible) -->
@@ -111,27 +130,50 @@
     </div>
 </body>
 <script>
-    const input = document.getElementById("profile_img");
-    const preview = document.getElementById("profile_img_preview");
+    // basic open to begin with
+    tabs = document.getElementsByClassName("tabcontent");
+    Array.prototype.forEach.call(tabs, function(tab){
+        tab.style.display = "none";
+    });
 
-    function updateProfileImgPreview() {
-        if (input.files) { // if there is an image selected
-            const file = input.files[0];
-            if (file.type == "image/png" || file.type == "image/jpeg") {
-                while (preview.firstChild) {
-                    preview.removeChild(preview.firstChild); // remove current preview content, if any
-                }
-                const img = document.createElement('img');
-                img.src = URL.createObjectURL(file);
-                img.width = 200;
-                // img.height = 200;
-                img.name = "profile_img_preview"
-                preview.appendChild(img);
+    startTabButton = document.getElementsByClassName("active"); // only one active
+    startTabButton[0].click() // activates appropriate openTab()
+
+    function openTab(event, tabID) {
+        tabs = document.getElementsByClassName("tabcontent");
+        Array.prototype.forEach.call(tabs, function(tab){
+            tab.style.display = (tab.id == tabID) ? "block" : "none";
+            if(tab.id != tabID) {
+                tab.className = tab.className.replace(" active", "");
             }
-        }
+        });
+        event.currentTarget.className += " active";
 
+        document.getElementById("tab-title").innerHTML = event.currentTarget.innerHTML;
     }
-    input.addEventListener('change', updateProfileImgPreview);
+
+
+    // const input = document.getElementById("profile_img");
+    // const preview = document.getElementById("profile_img_preview");
+
+    // function updateProfileImgPreview() {
+    //     if (input.files) { // if there is an image selected
+    //         const file = input.files[0];
+    //         if (file.type == "image/png" || file.type == "image/jpeg") {
+    //             while (preview.firstChild) {
+    //                 preview.removeChild(preview.firstChild); // remove current preview content, if any
+    //             }
+    //             const img = document.createElement('img');
+    //             img.src = URL.createObjectURL(file);
+    //             img.width = 200;
+    //             // img.height = 200;
+    //             img.name = "profile_img_preview"
+    //             preview.appendChild(img);
+    //         }
+    //     }
+
+    // }
+    // input.addEventListener('change', updateProfileImgPreview);
     // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file
 </script>
 
