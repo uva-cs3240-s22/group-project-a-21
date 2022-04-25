@@ -22,5 +22,6 @@ urlpatterns = [
     path('user/update/profile_img/<int:pkUser>', views.updateUserProfileImg, name='updateUserProfileImg'),
     
     # pdf generation
-    path("recipes/recipe_pdf/<int:pk>/", views.recipe_pdf, name = 'recipe_pdf')
+    path("recipes/recipe_pdf/<int:pk>/", views.recipe_pdf, name = 'recipe_pdf'),
+    
 ]
