@@ -91,12 +91,9 @@
                         {% if oldrecipe.ingredientsList %}
                         {% for ingredient in oldrecipe.ingredientsList|split:"," %}
                         <tr>
-                            <td><input type="text" name="ingredientQuant" value="{% index value=ingredient number=0 %}"
-                                    required pattern=".*\S+.*"></td>
-                            <td><input type="text" name="ingredientUnit" value="{% index value=ingredient number=1 %}"
-                                    required pattern=".*\S+.*"></td>
-                            <td><input type="text" name="ingredientName"
-                                    value="{% indexName value=ingredient number=2 %}" required pattern=".*\S+.*"></td>
+                            <td><input type="number" name="ingredientQuant" placeholder="Ex. 2.5 (decimal)" value="{% index value=ingredient number=0 %}" required step="0.001"></td>
+                            <td><input type="text" name="ingredientUnit" placeholder="Ex. grams (optional)" value="{% index value=ingredient number=1 %}"></td>
+                            <td><input type="text" name="ingredientName" placeholder="Ex. silken tofu" value="{% indexName value=ingredient number=2 %}" required pattern=".*\S+.*"></td>
                             <!-- <td></td> -->
                         </tr>
                         {% endfor %}
@@ -228,20 +225,26 @@
 
             // quantity
             let input = document.createElement("input");
-            input.type = "text";
+            input.type = "number";
             input.name = "ingredientQuant";
+            input.step = "0.001";
+            input.required = "True";
+            input.placeholder = "(decimal)"
             row.insertCell(0).appendChild(input);
 
             // unit
             input = document.createElement("input");
             input.type = "text";
             input.name = "ingredientUnit";
+            input.placeholder = "(optional)"
             row.insertCell(1).appendChild(input);
 
             // name
             input = document.createElement("input");
             input.type = "text";
             input.name = "ingredientName";
+            input.required = "True";
+            input.placeholder = "(ingredient)"
             row.insertCell(2).appendChild(input);
 
             // remove button
