@@ -130,8 +130,8 @@
                         </thead>
                         <tbody id="ingredients_tb">
                             <tr>
-                                <td><input type="text" name="ingredientQuant" placeholder="Ex. 15" required pattern=".*\S+.*"></td>
-                                <td><input type="text" name="ingredientUnit" placeholder="Ex. grams" required pattern=".*\S+.*"></td>
+                                <td><input type="number" name="ingredientQuant" placeholder="Ex. 2.5 (decimal)" required step="0.001"></td>
+                                <td><input type="text" name="ingredientUnit" placeholder="Ex. grams (optional)"></td>
                                 <td><input type="text" name="ingredientName" placeholder="Ex. silken tofu" required pattern=".*\S+.*"></td>
                                 <td></td>
                             </tr>
@@ -204,20 +204,26 @@
 
             // quantity
             let input = document.createElement("input");
-            input.type = "text";
+            input.type = "number";
             input.name = "ingredientQuant";
+            input.step = "0.001";
+            input.required = "True";
+            input.placeholder = "(decimal)"
             row.insertCell(0).appendChild(input);
 
             // unit
             input = document.createElement("input");
             input.type = "text";
             input.name = "ingredientUnit";
+            input.placeholder = "(optional)"
             row.insertCell(1).appendChild(input);
 
             // name
             input = document.createElement("input");
             input.type = "text";
             input.name = "ingredientName";
+            input.required = "True";
+            input.placeholder = "(ingredient)"
             row.insertCell(2).appendChild(input);
 
             // remove button
