@@ -18,137 +18,285 @@
 <body>
     {% include "recipes/navbar.html" %}
     <div class="container-fluid">
-        <div class="row">
-            <h1>User Profile Page</h1>
-        </div>
-        <div class="row">
-            <div class="col-8">
-                <!-- Can change name if this user is self -->
-                {% if profile.pk == user.pk %}
-                <form action="/user/update/name/{{ profile.pk }}" method="post">
-                    {% csrf_token %}
-                    Name:
-                    <input type="text" value="{{ profile.name }}" name="name">
-                    <input type="submit" value="Rename">
-                </form>
-                {% else %}
-                <p>Name: {{ profile.name }}</p>
-                {% endif %}
-                <p>Email: {{ profile.email }}</p>
-                <!-- Can change cooking experience if this user is self -->
-                {% if profile.pk == user.pk %}
-                <form action="/user/update/cook_exp/{{ profile.pk }}" method="post">
-                    {% csrf_token %}
-                    Cooking experience (Low(1) - High(10)):
-                    <input type="number" max="10" min="1" value="{{ profile.cooking_experience }}" name="cook_exp">
-                    <input type="submit" value="Update cooking experience">
-                </form>
-                {% else %}
-                <p>Cooking experience (Low(1) - High(10)): {{ profile.cooking_experience }}</p>
-                {% endif %}
-
-                {% if profile.profile_img %}
-                <img src="{{ profile.profile_img.url }}" width="200" height="200">
-                {% else %}
-                <p>No profile image uploaded</p>
-                {% endif %}
-
-                {% if profile.pk == user.pk %}
-                <form action="/user/update/profile_img/{{ profile.pk }}" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    Upload new profile image:
-                    <input type="file" id="profile_img" name="profile_img" accept="image/png, image/jpeg">
-                    <div id="profile_img_preview" class="mt-3"></div>
-                    <input type="submit" value="Upload">
-                </form>
-                <!-- https://ordinarycoders.com/blog/article/django-file-image-uploads -->
-                {% endif %}
-
-                <br>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Created Recipes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for recipe in profile.create.all %}
-                        <tr>
-                            <td>
-                                <a href="/recipes/{{ recipe.pk }}" class="text-decoration-none" style="color: darkgray;">{{ recipe.title }}</a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Favorite Recipes</th>
-                            <th scope="col">Author</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for favorite in profile.favorites.all %}
-                        <tr>
-                            <td>
-                                <a href="/recipes/{{ favorite.pk }}" class="text-decoration-none" style="color: darkgray;">{{ favorite.title }}</a>
-                            </td>
-                            <td>
-                                <a href="/user/{{ favorite.createdBy.pk }}" class="text-decoration-none" style="color: darkgray;">{{ favorite.createdBy }}</a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+        <div class = "background">
+                <div class="row">
+            {% if profile.pk == user.pk %}
+            <div class = "h1">
+                My Profile Page
             </div>
-            <div class="col-4 border">
-                <h3>Following</h3>
-                <table class="table">
-                    <tbody>
-                        {% for following in profile.following.all %}
-                        <tr>
-                            <td><a href="/user/{{ following.pk }}"  class="text-decoration-none" style="color: darkgray;">{{ following.name }}</a></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Cannot follow yourself (follow button invisible) -->
-            {% if not profile.pk == user.pk %}
-            <form action="/user/follow-user/{{ profile.pk }}/{{ user.pk }}" method="post">
-                {% csrf_token %}
-                <input type="submit" value="Follow">
-            </form>
+            {% else %}
+            <h1>User Profile Page for {{ profile.name }}</h1>
             {% endif %}
         </div>
+        <div class="row">
+            <div class="col-3 tabs">
+                <div class="row m-1">
+                    <button class="tablinks{% if tab == 'basic' or tab == NULL %} active{% endif %}" onclick="openTab(event, 'basic')">Basic Information</button>
+                </div>
+                <div class="row m-1">
+                    {% if profile.pk == user.pk %}
+                    <button class="tablinks{% if tab == 'create' %} active{% endif %}" onclick="openTab(event, 'create')">My Recipes</button>
+                    {% else %}
+                    <button class="tablinks{% if tab == 'create' %} active{% endif %}" onclick="openTab(event, 'create')">Created Recipes</button>
+                    {% endif %}
+                </div>
+                <div class="row m-1">
+                    <button class="tablinks{% if tab == 'favorite' %} active{% endif %}" onclick="openTab(event, 'favorite')">Favorite Recipes</button>
+                </div>
+                <div class="row m-1">
+                    <button class="tablinks{% if tab == 'following' %} active{% endif %}" onclick="openTab(event, 'following')">Following</button>
+                </div>
+                <div class="row m-1">
+                    <button class="tablinks{% if tab == 'followers' %} active{% endif %}" onclick="openTab(event, 'followers')">Followers</button>
+                </div>
+            </div>
+            <div class="col-8">
+                <h2 id="tab-title">{{tab}}</h2>
+                <!-- <div class="tab">
+                    <button class="tablinks{% if tab == 'basic' or tab == NULL %} active{% endif %}" onclick="openTab(event, 'basic')">Basic Information</button>
+                    <button class="tablinks{% if tab == 'create' %} active{% endif %}" onclick="openTab(event, 'create')">Created Recipes</button>
+                    <button class="tablinks{% if tab == 'favorite' %} active{% endif %}" onclick="openTab(event, 'favorite')">Favorite Recipes</button>
+                    <button class="tablinks{% if tab == 'following' %} active{% endif %}" onclick="openTab(event, 'following')">Following</button>
+                    <button class="tablinks{% if tab == 'followers' %} active{% endif %}" onclick="openTab(event, 'followers')">Followers</button>
+                </div> -->
+                <div id="basic" class="tabcontent mt-2">
+                    <!-- Can change name if this user is self -->
+                    {% if profile.pk == user.pk %}
+                    <form action="/user/update/name/{{ profile.pk }}" method="post">
+                        {% csrf_token %}
+                        Name:
+                        <input type="text" value="{{ profile.name }}" name="name">
+                        <input type="submit" value="Rename">
+                    </form>
+                    {% else %}
+                    <p>Name: {{ profile.name }}</p>
+                    {% endif %}
+                    <p>Email: {{ profile.email }}</p>
+                    <!-- Can change cooking experience if this user is self -->
+                    {% if profile.pk == user.pk %}
+                    <form action="/user/update/cook_exp/{{ profile.pk }}" method="post">
+                        {% csrf_token %}
+                        Cooking experience (Low(1) - High(10)):
+                        <input type="number" max="10" min="1" value="{{ profile.cooking_experience }}" name="cook_exp">
+                        <input type="submit" value="Update cooking experience">
+                    </form>
+                    {% else %}
+                    <p>Cooking experience (Low(1) - High(10)): {{ profile.cooking_experience }}</p>
+                    {% endif %}
+
+                    <!-- Cannot follow yourself (follow button invisible) -->
+                    {% if not profile.pk == user.pk %}
+                    <form action="/user/follow-user/{{ profile.pk }}/{{ user.pk }}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" value="Follow">
+                    </form>
+                    {% endif %}
+                </div>
+                <div id="create" class="tabcontent">
+                    <table class="table">
+                        <tbody>
+                            {% for recipe in profile.create.all %}
+                            <tr>
+                                <td>
+                                    <a href="/recipes/{{ recipe.pk }}" class="text-decoration-none" style="color: darkgray;">{{ recipe.title }}</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div id="favorite" class="tabcontent">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Recipe</th>
+                                <th scope="col">Author</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for favorite in profile.favorites.all %}
+                            <tr>
+                                <td>
+                                    <a href="/recipes/{{ favorite.pk }}" class="text-decoration-none" style="color: darkgray;">{{ favorite.title }}</a>
+                                </td>
+                                <td>
+                                    <a href="/user/{{ favorite.createdBy.pk }}" class="text-decoration-none" style="color: darkgray;">{{ favorite.createdBy }}</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div id="following" class="tabcontent">
+                    <table class="table">
+                        <tbody>
+                            {% for following in profile.following.all %}
+                            <tr>
+                                <td><a href="/user/{{ following.pk }}"  class="text-decoration-none" style="color: darkgray;">{{ following.name }}</a></td>
+                            </tr>
+                            {% endfor %}
+                            {% if not profile.following.all %}
+                                There are no following users to display
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+                <div id="followers" class="tabcontent">
+                    <table class="table">
+                        <tbody>
+                            {% for follower in profile.followers.all %}
+                            <tr>
+                                <td><a href="/user/{{ follower.pk }}"  class="text-decoration-none" style="color: darkgray;">{{ follower.name }}</a></td>
+                            </tr>
+                            {% endfor %}
+                            {% if not profile.followers.all %}
+                                There are no followers to display
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <br>
+
+
+
+            </div>
+        </div>
+    </div>
 
     </div>
 </body>
-<script>
-    const input = document.getElementById("profile_img");
-    const preview = document.getElementById("profile_img_preview");
+<footer class="bg-dark text-center text-white">
+    <div class="container p-4">
+        <!--Grid row-->
+        <div class="row">
+            <!--Grid column-->
+            <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+                <h5 class="text-uppercase">Word of Mouth</h5>
+                <p>
+                    Where cooking becomes your cup of tea!
+                </p>
+            </div>
+            <!--Grid column-->
+            <!--Grid column-->
+            <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+                <h5 class="text-uppercase">Authored by:</h5>
+                <p>
+                    Thumay Huynh, Alex Pfoser, Rishi Mukherjee, Alex Taing, Lilian Zhang
+                </p>
+            </div>
+            <!--Grid column-->
+        </div>
+        <!--Grid row-->
+    </div>
+    <!-- Grid container -->
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        © 2022 Copyright:
+        <a class="text-white">CS 3240: Group A-21</a>
+    </div>
+    <!-- Copyright -->
+</footer>
+<style>
+    .background{
+        /*background-color: #3d3838;
+        color: white;*/
+    }
+    .h1{
+        font-family: "Encode Sans", sans-serif;
+    }
+    .tablinks {
+        height: 50px;
+        background-color: #b53733;
+        font-family: "Encode Sans", sans-serif;
+    }
+    .tablinks:hover {
+        background-color: #802724;
+        font-family: "Encode Sans", sans-serif;
+    }
 
-    function updateProfileImgPreview() {
-        if (input.files) { // if there is an image selected
-            const file = input.files[0];
-            if (file.type == "image/png" || file.type == "image/jpeg") {
-                while (preview.firstChild) {
-                    preview.removeChild(preview.firstChild); // remove current preview content, if any
-                }
-                const img = document.createElement('img');
-                img.src = URL.createObjectURL(file);
-                img.width = 200;
-                // img.height = 200;
-                img.name = "profile_img_preview"
-                preview.appendChild(img);
-            }
-        }
+    .bgimg {
+        position: relative;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-image: url("{% static 'recipes/food.jpg'%}");
+        background-attachment: fixed;
+        min-height: 70%;
+        /* max-width: 100%; */
+    }
+
+    .trans {
+        opacity: 0.9;
+    }
+
+    .ptext1 {
+        font-size: 1.75em;
+        position: relative;
+        top: 60%;
+        width: 100%;
+        text-align: center;
+        font-weight: bold;
+        letter-spacing: 5px;
+        font-family: "Encode Sans", sans-serif;
+        color: white;
+    }
+    .parText {
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        padding: 10px;
+        /* border-radius: 15%; */
+        font-family: "Encode Sans", sans-serif;
 
     }
-    input.addEventListener('change', updateProfileImgPreview);
+</style>
+<script>
+    // basic open to begin with
+    tabs = document.getElementsByClassName("tabcontent");
+    Array.prototype.forEach.call(tabs, function(tab){
+        tab.style.display = "none";
+    });
+
+    startTabButton = document.getElementsByClassName("active"); // only one active
+    startTabButton[0].click() // activates appropriate openTab()
+
+    function openTab(event, tabID) {
+        tabs = document.getElementsByClassName("tabcontent");
+        Array.prototype.forEach.call(tabs, function(tab){
+            tab.style.display = (tab.id == tabID) ? "block" : "none";
+            if(tab.id != tabID) {
+                tab.className = tab.className.replace(" active", "");
+            }
+        });
+        event.currentTarget.className += " active";
+
+        document.getElementById("tab-title").innerHTML = event.currentTarget.innerHTML;
+    }
+    // https://www.w3schools.com/howto/howto_js_tabs.asp
+
+
+    // const input = document.getElementById("profile_img");
+    // const preview = document.getElementById("profile_img_preview");
+
+    // function updateProfileImgPreview() {
+    //     if (input.files) { // if there is an image selected
+    //         const file = input.files[0];
+    //         if (file.type == "image/png" || file.type == "image/jpeg") {
+    //             while (preview.firstChild) {
+    //                 preview.removeChild(preview.firstChild); // remove current preview content, if any
+    //             }
+    //             const img = document.createElement('img');
+    //             img.src = URL.createObjectURL(file);
+    //             img.width = 200;
+    //             // img.height = 200;
+    //             img.name = "profile_img_preview"
+    //             preview.appendChild(img);
+    //         }
+    //     }
+
+    // }
+    // input.addEventListener('change', updateProfileImgPreview);
     // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file
 </script>
 

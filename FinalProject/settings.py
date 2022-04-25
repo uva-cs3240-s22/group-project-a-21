@@ -18,7 +18,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Build paths inside the project like this: BASE_DIR / 'subdir'. 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -28,14 +28,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-hreqeadra52+)pod!&huks1)gx_pki)75k)@pj_*n_3!bt6q)!'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# SECURITY WARNING: don't run with debug turned on in production! 
+
+DEBUG_ENVIRON = os.getenv("DEBUG_ENVIRON")
+
+if DEBUG_ENVIRON == "test":
+    DEBUG = True
+elif DEBUG_ENVIRON == "deployed":
+    DEBUG = False
 
 ALLOWED_HOSTS = [
-    '*',
-    'localhost',
+    '.localhost',
     '127.0.0.1',
-    'wordofmoutha21.herokuapp.com',
+    '.wordofmoutha21.herokuapp.com'
 ]
 
 

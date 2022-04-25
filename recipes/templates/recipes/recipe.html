@@ -308,6 +308,7 @@
             <!-- https://getbootstrap.com/docs/4.0/components/collapse/ -->
             <!-- https://stackoverflow.com/questions/15696365/twitter-bootstrap-collapse-plugin-how-to-enable-multiple-groups-to-be-opened -->
             <button class="button" onclick="location.href = '{% url 'recipes:recipe_pdf' recipe.pk %}'">Generate PDF</button>
+      
             {% if request.user.is_authenticated %}
             <button class="button" onclick="location.href = '{% url 'recipes:fork' recipe.pk %}'">Fork Recipe</button>
             {% endif %}
