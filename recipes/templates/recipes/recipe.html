@@ -310,10 +310,7 @@
             <button class="button" onclick="location.href = '{% url 'recipes:recipe_pdf' recipe.pk %}'">Generate PDF</button>
       
             {% if request.user.is_authenticated %}
-            <form action="{% url 'recipes:fork' recipe.pk %}">
-                <!-- {% csrf_token %} -->
-                <input type="submit" value="Fork Recipe">
-            </form>
+            <button class="button" onclick="location.href = '{% url 'recipes:fork' recipe.pk %}'">Fork Recipe</button>
             {% endif %}
 
             {% if recipe.original.all %}
