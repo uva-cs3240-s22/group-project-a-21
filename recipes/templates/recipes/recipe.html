@@ -309,8 +309,12 @@
             <!-- https://stackoverflow.com/questions/15696365/twitter-bootstrap-collapse-plugin-how-to-enable-multiple-groups-to-be-opened -->
 
             <button class="button" onclick="location.href = '{% url 'recipes:recipe_pdf' recipe.pk %}'">Generate PDF</button>
+
             {% if request.user.is_authenticated %}
-            <button class="button" onclick="location.href = '{% url 'recipes:fork' recipe.pk %}'">Fork Recipe</button>
+            <form action="{% url 'recipes:fork' recipe.pk %}">
+                <!-- {% csrf_token %} -->
+                <input type="submit" value="Fork Recipe">
+            </form>
             {% endif %}
 
             {% if recipe.original.all %}
