@@ -235,11 +235,10 @@ def recipe_pdf(request, pk):
             canv.drawCentredString(3.0*inch, 158 + 10*i, l[i+1])           
         
     directions = recipe.directionsList.replace("*", " ")
-    l2 = directions.split(".")
+    l2 = directions.split("`")
    
     canv.setFont("Helvetica-Bold", 20)
     canv.drawCentredString(4.25*inch,  158 + 30 + space, "Directions")
-    print(space)
 
     canv.setFont("Times-Roman", 12)
     
