@@ -86,11 +86,12 @@ class RecipeView(generic.DetailView):
         recipe = self.get_object()
         user = self.request.user
 
+        pkRecipe = self.kwargs.get('pk')
         review = Review.objects.create(recipe=recipe, rating=rating, review_text=review_text, user=user)
 
         # returns to recipe gallery
         # would be useful to redirect to a page which allows the user to share the recipe, since they used it
-        return HttpResponseRedirect(reverse('recipes:recipeGallery'))
+        return HttpResponsePermanentRedirect('/recipes/' + str(pkRecipe))
 
 class EnterRecipeView(generic.ListView):
     model = Recipe
