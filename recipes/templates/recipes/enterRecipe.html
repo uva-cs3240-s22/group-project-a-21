@@ -119,21 +119,21 @@
 
                     <label for="ingredientsList" class="h4">Ingredient List:</label>
                     <br>
-                    <table class="table table-hover table-striped">
+                    <table class="table table-hover table-striped table-sm">
                         <thead>
-                            <tr class="table-light">
-                                <th scope="col">Quantity</th>
-                                <th scope="col">Unit</th>
-                                <th scope="col">Ingredient Name</th>
-                                <th scope="col"></th>
+                            <tr class="table-light d-flex">
+                                <th scope="col" class="col-3">Quantity</th>
+                                <th scope="col" class="col-3">Unit</th>
+                                <th scope="col" class="col-4">Ingredient Name</th>
+                                <th scope="col" class="col-2"></th>
                             </tr>
                         </thead>
                         <tbody id="ingredients_tb">
-                            <tr>
-                                <td><input type="number" name="ingredientQuant" placeholder="Ex. 2.5 (decimal)" required step="0.001"></td>
-                                <td><input type="text" name="ingredientUnit" placeholder="Ex. grams (optional)"></td>
-                                <td><input type="text" name="ingredientName" placeholder="Ex. silken tofu" required pattern=".*\S+.*"></td>
-                                <td></td>
+                            <tr class="d-flex">
+                                <td class="col-3"><input class="w-100" type="number" name="ingredientQuant" placeholder="Ex. 2.5 (decimal)" required step="0.001"></td>
+                                <td class="col-3"><input class="w-100" type="text" name="ingredientUnit" placeholder="Ex. cups (optional)"></td>
+                                <td class="col-4"><input class="w-100" type="text" name="ingredientName" placeholder="Ex. silken tofu" required pattern=".*\S+.*"></td>
+                                <td class="col-2"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -201,6 +201,7 @@
             let ingredients_tb = document.getElementById("ingredients_tb");
             let row = ingredients_tb.insertRow(); // default adds to end
             row.id = ingredientsIndex;
+            row.classList = "d-flex";
 
             // quantity
             let input = document.createElement("input");
@@ -209,14 +210,18 @@
             input.step = "0.001";
             input.required = "True";
             input.placeholder = "(decimal)"
+            input.classList = "w-100";
             row.insertCell(0).appendChild(input);
+            row.cells[0].classList = "col-3";
 
             // unit
             input = document.createElement("input");
             input.type = "text";
             input.name = "ingredientUnit";
-            input.placeholder = "(optional)"
+            input.placeholder = "(optional)";
+            input.classList = "w-100";
             row.insertCell(1).appendChild(input);
+            row.cells[1].classList = "col-3";
 
             // name
             input = document.createElement("input");
@@ -224,7 +229,9 @@
             input.name = "ingredientName";
             input.required = "True";
             input.placeholder = "(ingredient)"
+            input.classList = "w-100";
             row.insertCell(2).appendChild(input);
+            row.cells[2].classList = "col-4";
 
             // remove button
             let btn = document.createElement("button");
@@ -241,6 +248,7 @@
                     removeButtons[i].setAttribute("name", i + 1);
             }
             row.insertCell(3).appendChild(btn);
+            row.cells[3].classList = "col-2";
 
             ingredientsIndex++;
         }
