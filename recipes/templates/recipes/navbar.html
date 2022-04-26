@@ -26,7 +26,7 @@
                 <!-- <a class="nav-link dropdown" href="/user/{{ user.pk }}" style="color: white;">PROFILE</a> -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" aria-expanded="false" style="color: white;">Profile</a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="/user/{{ user.pk }}/">My Profile</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="/user/{{ user.pk }}/create">My Recipes</a></li>
@@ -34,10 +34,11 @@
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="/user/{{ user.pk }}/following">Following Users</a></li>
                         <li><a class="dropdown-item" href="/user/{{ user.pk }}/followers">Followers</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/user/logout">Logout</a></li>
                     </ul>
                 </li>
                 <!-- https://getbootstrap.com/docs/5.1/components/navs-tabs/#tabs-with-dropdowns -->
-                <a class="nav-link" href="/user/logout" style="color: white;">Logout</a>
                 {% else %}
                 <a class="nav-link text-muted">NEW RECIPE</a>
                 <a class="nav-link" href="{% provider_login_url 'google' %}" style="color: white;">Login With Google</a>
@@ -82,6 +83,11 @@
     .dropdown:hover .dropdown-menu {
         display: block;
         margin-top: 0;
+    }
+
+    .dropdown-menu-end {
+        right: 0;
+        left: auto;
     }
 </style>
 
