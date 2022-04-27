@@ -48,78 +48,120 @@
     <div class="div1">
         <h1>Recipe Curation</h1>
         <h2>
-            <a href="/recipes/{{ oldrecipe.pk }}" class="text-decoration-none" style="color: darkgray">Forked from: {{ oldrecipe.title }}</a>
+            <a href="/recipes/{{ oldrecipe.pk }}" class="text-decoration-none mx-3 px-3" style="color: darkgray">Forked from: {{ oldrecipe.title }}</a>
         </h2>
         <form action="/recipes/new-recipe/{{ user.pk }}/1/{{ oldrecipe.pk }}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
             <div class="form-group p-3">
                 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-                <label for="title" class="h6">Title:</label>
-                <input type="text" name="title" value="{{ oldrecipe.title }}" required pattern=".*\S+.*">
-                <br>
-                <label for="blurb" class="h6">Description:</label>
-                <input type="text" name="blurb" value="{{ oldrecipe.blurb }}" required pattern=".*\S+.*">
-                <br>
-                <label for="dietaryRestrictions" class="h6">Dietary Restrictions:</label>
-                <input type="text" name="dietaryRestrictions" value="{{ oldrecipe.dietaryRestrictions }}" required
-                    pattern=".*\S+.*">
-                <br>
-                <label for="time" class="h6">Time (minutes):</label>
-                <input type="number" name="time" value="{{ oldrecipe.time }}" required min="0">
-                <br>
-                <label for="servingSize" class="h6">Serving Size:</label>
-                <input type="number" name="servingSize" value="{{ oldrecipe.servingSize }}" required min="1">
-                <br>
-                <label for="difficultyRating" class="h6">Difficulty Rating:</label>
-                <input type="number" name="difficultyRating" value="{{ oldrecipe.difficultyRating }}" required min='1'
-                    max="10">
-                <br>
 
-                <label for="ingredientsList" class="h4">Ingredient List:</label>
+                <div class="m-3">
+                    <div class="row mb-1">
+                        <div class="col-auto" style="font-size: 15px;">
+                            All fields marked with
+                            <span style="color: rgb(217, 4, 4);">*</span>
+                            are required.
+                        </div>
+                    </div>
+                    <div class="mb-1 row">
+                        <div class="col-auto">
+                            <label for="title" class="form-control-plaintext h6"><span style="color: rgb(217, 4, 4);">*</span>Title:</label>
+                        </div>
+                        <div class="col">
+                            <input class="form-control" type="text" name="title" value="{{ oldrecipe.title }}" placeholder="Ex. Greg's Miso Soup" required pattern=".*\S+.*">
+                        </div>
+                    </div>
+
+                    <div class="mb-1 row">
+                        <div class="col-auto">
+                            <label for="blurb" class="form-control-plaintext h6"><span style="color: rgb(217, 4, 4);">*</span>Description:</label>
+                        </div>
+                        <div class="col">
+                            <input class="form-control" type="text" name="blurb" value="{{ oldrecipe.blurb }}" placeholder="Ex. This is my go-to comfort food. My Nana loves it, too!" required pattern=".*\S+.*">
+                        </div>
+                    </div>
+
+                    <div class="mb-1 row">
+                        <div class="col-auto">
+                            <label for="dietaryRestrictions" class="form-control-plaintext h6"><span style="color: rgb(217, 4, 4);">*</span>Dietary Restrictions:</label>
+                        </div>
+                        <div class="col">
+                            <input class="form-control" type="text" name="dietaryRestrictions" value="{{ oldrecipe.dietaryRestrictions }}" placeholder="Ex: pescatarian" required pattern=".*\S+.*">
+                        </div>
+                    </div>
+
+                    <div class="mb-1 row">
+                        <div class="col-auto">
+                            <label for="time" class="form-control-plaintext h6"><span style="color: rgb(217, 4, 4);">*</span>Time (minutes):</label>
+                        </div>
+                        <div class="col">
+                            <input class="form-control" type="number" name="time" value="{{ oldrecipe.time }}" placeholder="Ex: 35" required min="0">
+                        </div>
+                    </div>
+
+                    <div class="mb-1 row">
+                        <div class="col-auto">
+                            <label for="servingSize" class="form-control-plaintext h6"><span style="color: rgb(217, 4, 4);">*</span>Serving Size:</label>
+                        </div>
+                        <div class="col">
+                            <input class="form-control" type="number" name="servingSize" value="{{ oldrecipe.servingSize }}" placeholder="Ex: 4" required min="1">
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <div class="col-auto">
+                            <label for="difficultyRating" class="form-control-plaintext h6"><span style="color: rgb(217, 4, 4);">*</span>Difficulty Rating:</label>
+                        </div>
+                        <div class="col">
+                            <input class="form-control" type="number" name="difficultyRating" value="{{ oldrecipe.difficultyRating }}" placeholder="Between 1-10" required min='1' max="10">
+                        </div>
+                    </div>
+
+                <label for="ingredientsList" class="h4"><span style="color: rgb(217, 4, 4);">*</span>Ingredient List:</label>
                 <br>
-                <table class="table table-hover table-striped">
+                <table class="table table-default table-sm table-borderless">
                     <thead>
-                        <tr class="table-light">
-                            <th scope="col">Quantity</th>
-                            <th scope="col">Unit</th>
-                            <th scope="col">Ingredient Name</th>
-                            <th scope="col"></th>
+                        <tr class="table-light d-flex">
+                            <th scope="col" class="col-3" ><span style="color: rgb(217, 4, 4);">*</span>Quantity</th>
+                            <th scope="col" class="col-3">Unit</th>
+                            <th scope="col" class="col-4"><span style="color: rgb(217, 4, 4);">*</span>Ingredient Name</th>
+                            <th scope="col" class="col-2"></th>
                         </tr>
                     </thead>
                     <tbody id="ingredients_tb">
                         {% if oldrecipe.ingredientsList %}
                         {% for ingredient in oldrecipe.ingredientsList|split:"," %}
-                        <tr>
-                            <td><input type="number" name="ingredientQuant" placeholder="Ex. 2.5 (decimal)" value="{% index value=ingredient number=0 %}" required step="0.001"></td>
-                            <td><input type="text" name="ingredientUnit" placeholder="Ex. grams (optional)" value="{% index value=ingredient number=1 %}"></td>
-                            <td><input type="text" name="ingredientName" placeholder="Ex. silken tofu" value="{% indexName value=ingredient number=2 %}" required pattern=".*\S+.*"></td>
-                            <!-- <td></td> -->
+                        <tr class="d-flex">
+                            <td class="col-3"><input type="number" class="w-100 form-control" name="ingredientQuant" placeholder="Ex. 2.5 (decimal)" value="{% index value=ingredient number=0 %}" required step="0.001"></td>
+                            <td class="col-3"><input type="text" class="w-100 form-control" name="ingredientUnit" placeholder="Ex. grams (optional)" value="{% index value=ingredient number=1 %}"></td>
+                            <td class="col-4"><input type="text" class="w-100 form-control" name="ingredientName" placeholder="Ex. silken tofu" value="{% indexName value=ingredient number=2 %}" required pattern=".*\S+.*"></td>
+                            <td class="col-2"></td>
                         </tr>
                         {% endfor %}
                         {% endif %}
                     </tbody>
                 </table>
-                <button type="button" class="btn btn-primary" onclick="addIngredient()">Add ingredient</button>
+                <button type="button" class="btn btn-secondary" onclick="addIngredient()">Add ingredient</button>
 
                 <br>
                 <br>
-                <label for="directionsList" class="h4">Directions:</label>
+                <label for="directionsList" class="h4"><span style="color: rgb(217, 4, 4);">*</span>Directions:</label>
                 <br>
                 <div class="row">
-                    <table class="table table-hover table-striped">
+                    <table class="table table-default table-borderless">
                         <tbody id="directions_tb">
                             {% for direction in oldrecipe.directionsList|split:"`" %}
-                            <tr>
-                                <td><textarea type="text" name="direction" rows="3" cols="50"
-                                        required> {{ direction }} </textarea></td>
-                                <!-- <td></td> -->
+                            <tr class="d-flex">
+                                <td class="col-10"><textarea class="form-control" type="text" name="direction" rows="4" cols="50" placeholder="Ex. Slice the tofu into 1 inch cubes" required>{{ direction }}</textarea></td>
+                                <td class="col-2"></td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
+                    <div class="col-4"></div>
                 </div>
-                <button type="button" class="btn btn-primary" onclick="addDirection()">Add direction</button>
+                <button type="button" class="btn btn-secondary" onclick="addDirection()">Add direction</button>
 
                 <br>
 
@@ -127,18 +169,21 @@
 
                 <label for="recipe_img" class="h4">Upload recipe images:</label>
                 <div class="row">
-                    <div class="col-8">
-                        <table class="table table-hover table-striped">
+                    <div class="col">
+                        <table class="table table-default table-borderless">
                             <thead>
                                 <tr class="table-light">
-                                    <th scope="col">Upload</th>
-                                    <th scope="col"></th>
+                                    <!-- <th scope="col">Upload</th>
+                                    <th scope="col"></th> -->
                                 </tr>
                             </thead>
                             <tbody id="img_tb">
                                 <tr>
-                                    <td><input type="file" id="recipe_img" name="recipe_img"
-                                            accept="image/png, image/jpeg"> </td>
+                                    <td>
+                                        <div>
+                                            <input class="form-control" type="file" id="recipe_img" name="recipe_img" accept="image/png, image/jpeg"> 
+                                        </div>
+                                    </td>
                                     <td></td>
                                 </tr>
                             </tbody>
@@ -146,10 +191,10 @@
                     </div>
                     <div class="col-4"></div>
                 </div>
-                <button type="button" class="btn btn-primary" onclick="addImage()">Add image</button>
+                <button type="button" class="btn btn-secondary" onclick="addImage()">Add image</button>
                 <!-- https://ordinarycoders.com/blog/article/django-file-image-uploads -->
             </div>
-            <input class="btn btn-primary" type="submit" value="Create Recipe">
+            <input class="btn btn-success mx-3" type="submit" value="Create Recipe">
         </form>
     </div>
 
@@ -222,6 +267,7 @@
             // let ingredients_tb = document.getElementById("ingredients_tb");
             let row = ingredients_tb.insertRow(); // default adds to end
             row.id = ingredientsIndex;
+            row.classList = "d-flex";
 
             // quantity
             let input = document.createElement("input");
@@ -230,22 +276,28 @@
             input.step = "0.001";
             input.required = "True";
             input.placeholder = "(decimal)"
+            input.classList = "w-100 form-control";
             row.insertCell(0).appendChild(input);
+            row.cells[0].classList = "col-3";
 
             // unit
             input = document.createElement("input");
             input.type = "text";
             input.name = "ingredientUnit";
             input.placeholder = "(optional)"
+            input.classList = "w-100 form-control";
             row.insertCell(1).appendChild(input);
+            row.cells[1].classList = "col-3";
 
             // name
             input = document.createElement("input");
             input.type = "text";
             input.name = "ingredientName";
             input.required = "True";
-            input.placeholder = "(ingredient)"
+            input.placeholder = "(ingredient name)"
+            input.classList = "w-100 form-control";
             row.insertCell(2).appendChild(input);
+            row.cells[2].classList = "col-4";
 
             // remove button
             let btn = document.createElement("button");
@@ -270,7 +322,7 @@
             // let directions_tb = document.getElementById("directions_tb");
             let row = directions_tb.insertRow(); // default adds to end
             row.id = directionsIndex;
-
+            row.classList = "d-flex";
             // direction text
             // let input = document.createElement("input");
             // input.type = "text";
@@ -280,9 +332,12 @@
             let input = document.createElement("textarea");
             input.type = "text";
             input.name = "direction";
-            input.rows = "3";
+            input.rows = "4";
             input.cols = "50";
+            input.classList = "form-control"
+            input.placeholder = "Next..."
             row.insertCell(0).appendChild(input);
+            row.cells[0].classList = "col-10";
             // <td><textarea type="text" name="direction" rows="3" cols="50"></textarea></td>
 
             // remove button
@@ -317,6 +372,7 @@
             input.id = "recipe_img";
             input.name = "recipe_img";
             input.accept = "image/png, image/jpeg";
+            input.classList = "form-control";
             row.insertCell(0).appendChild(input);
 
             // remove button
