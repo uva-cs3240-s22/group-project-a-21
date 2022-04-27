@@ -102,6 +102,9 @@
                                 </td>
                             </tr>
                             {% endfor %}
+                            {% if not profile.create.all %}
+                                There are no recipes to display.
+                            {% endif %}
                         </tbody>
                     </table>
                 </div>
@@ -124,6 +127,9 @@
                                 </td>
                             </tr>
                             {% endfor %}
+                            {% if not profile.favorites.all %}
+                                There are no recipes to display.
+                            {% endif %}
                         </tbody>
                     </table>
                 </div>
@@ -136,7 +142,7 @@
                             </tr>
                             {% endfor %}
                             {% if not profile.following.all %}
-                                There are no following users to display
+                                There are no following users to display.
                             {% endif %}
                         </tbody>
                     </table>
@@ -150,7 +156,7 @@
                             </tr>
                             {% endfor %}
                             {% if not profile.followers.all %}
-                                There are no followers to display
+                                There are no followers to display.
                             {% endif %}
                         </tbody>
                     </table>
