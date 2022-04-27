@@ -19,18 +19,31 @@
             <div class = "filter">
                 <form action="" method="post">
                     {% csrf_token %}
-                    <div class="form-group p-3">
-                        <label for="time" class="h4">Time (minutes):</label>
-                        <input type="number" name="time" min="1">
-                        <br>
-                        <label for="servingSize" class="h4">Serving Size:</label>
-                        <input type="number" name="servingSize" min="1">
-                        <br>
-                        <label for="difficultyRating" class="h4">Difficulty Rating:</label>
-                        <input type="number" name="difficultyRating" min="1" max="10">
-                        <br>
+                    <div class="m-3">
+                    <div class="mb-3 row">
+                        <label for="time" class="col-sm-3 h4">Max Prep Time (mins):</label>
+                        <div class="col-sm-2">
+                            <input class="form-control" type="number" name="time" min="1" placeholder="Ex. 30">
+                        </div>
                     </div>
-                    <input type="submit" value="Filter">
+                    <div class="mb-3 row">
+                        <label for="servingSize" class="col-sm-3 h4">Minimum Serving Size:</label>
+                        <div class="col-sm-2">
+                            <input class="form-control" type="number" name="servingSize" min="1" placeholder="Ex. 4">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="difficultyRating" class="col-sm-3 h4">Max Difficulty Rating:</label>
+                        <div class="col-sm-2">
+                            <input class="form-control" type="number" name="difficultyRating" min="1" max="10" placeholder="1-10">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <div class="col-sm-5">
+                        <input class="btn btn-secondary float-end" type="submit" value="Filter">                           
+                        </div>
+                    </div>
+                    </div>
                 </form>
             </div>
 
