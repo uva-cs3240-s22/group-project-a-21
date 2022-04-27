@@ -162,7 +162,13 @@
                 </h6>
             {% endif %}
             {%  if recipe.get_avg_rating != 404 %}
-            <p>Average Rating: {{recipe.get_avg_rating|floatformat}} ⭐</p>
+                <p>Average Rating: {{recipe.get_avg_rating|floatformat}} 
+                {% for i in "xxxxx" %}
+                    {% if forloop.counter0 < recipe.get_avg_rating|floatformat|parseInt %}
+                    ⭐
+                    {% endif %}
+                {% endfor %}
+                </p>
             {% else %}
             <p>No reviews for this recipe</p>
             {% endif %}
