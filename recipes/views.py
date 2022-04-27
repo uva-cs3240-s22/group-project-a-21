@@ -13,6 +13,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import letter
 from django.templatetags.static import static
+import textwrap
 # Create your views here.
 
 # def IndexView(requests):
@@ -86,11 +87,12 @@ class RecipeView(generic.DetailView):
         recipe = self.get_object()
         user = self.request.user
 
+        pkRecipe = self.kwargs.get('pk')
         review = Review.objects.create(recipe=recipe, rating=rating, review_text=review_text, user=user)
 
         # returns to recipe gallery
         # would be useful to redirect to a page which allows the user to share the recipe, since they used it
-        return HttpResponseRedirect(reverse('recipes:recipeGallery'))
+        return HttpResponsePermanentRedirect('/recipes/' + str(pkRecipe))
 
 class EnterRecipeView(generic.ListView):
     model = Recipe
@@ -251,11 +253,22 @@ def recipe_pdf(request, pk):
     canv.drawCentredString(4.25*inch,  158 + 30 + space, "Directions")
 
     canv.setFont("Times-Roman", 12)
-    
-    directionStart = 158 + 30 + space + 23
+    directionStart = 158 + 30 + space + 23 # distance between Direction text and actual directions
+    rows = 0
     for i in range(len(l2)):
         print(l2[i])
-        canv.drawCentredString(4.25*inch, directionStart + 15*i, str(i+1) + ". " + l2[i])
+        limit = 95
+        
+        if len(l2[i]) > limit:
+            wraps = textwrap.wrap(l2[i], limit)
+            canv.drawString(1*inch, directionStart + 15*(rows+i), str(i+1) + ". " + wraps[0])
+            for j in range(1, len(wraps)):
+                print("here")
+                canv.drawString(1*inch, directionStart + 15*(i+rows+j), "    " + wraps[j])
+                rows += 1
+        else:
+            canv.drawString(1*inch, directionStart + 15*(rows+i), str(i+1) + ". " + l2[i])
+
       
     # Footer
     canv.drawInlineImage("recipes/static/recipes/wom_logo.png", 3.8*inch, 8.45*inch, 1*inch, 1*inch)
