@@ -22,7 +22,7 @@ class IndexView(generic.ListView):
     template_name='recipes/index.html'
     context_object_name = 'latest_recipe_list'
     def get_queryset(self):
-        return Recipe.objects.all()
+        return Recipe.objects.all().order_by("-id")
 
 class UserView(generic.DetailView):
     model = Profile
