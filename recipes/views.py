@@ -13,6 +13,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import letter
 from django.templatetags.static import static
+import textwrap
 # Create your views here.
 
 # def IndexView(requests):
@@ -254,48 +255,20 @@ def recipe_pdf(request, pk):
     canv.setFont("Times-Roman", 12)
     directionStart = 158 + 30 + space + 23 # distance between Direction text and actual directions
     rows = 0
-    for i in range(0,len(l2)):
+    for i in range(len(l2)):
         print(l2[i])
         limit = 95
+        
         if len(l2[i]) > limit:
-            print("here " + l2[i])
-            print(len(l2[i]))
-            print(len(l2[i])//limit)
-            # first line
-            if l2[i][limit-1] != " ":
-                canv.drawString(1*inch, directionStart + 15*(rows+i), str(i+1) + ". " + l2[i][0:limit])
-            else:
-                canv.drawString(1*inch, directionStart + 15*(rows+i), str(i+1) + ". " + l2[i][0:limit])
-                
-            print("first line: " + l2[i][0:limit])
-            rows += 1
-            lines = len(l2[i])//limit+1
-            # full lines that are not first lines
-            for j in range(2, lines):
-                
-                if l2[i][(limit-1)*j] != " ":
-                    canv.drawString(1*inch, directionStart + 15*(i + rows), "    " + l2[i][limit(j-1):limit*j])
-                else:
-                    canv.drawString(1*inch, directionStart + 15*(i + rows), "    " + l2[i][limit(j-1):limit*j])
+            wraps = textwrap.wrap(l2[i], limit)
+            canv.drawString(1*inch, directionStart + 15*(rows+i), str(i+1) + ". " + wraps[0])
+            for j in range(1, len(wraps)):
+                print("here")
+                canv.drawString(1*inch, directionStart + 15*(i+rows+j), "    " + wraps[j])
                 rows += 1
-                
-            # remaining characters (not full line)
-            canv.drawString(1*inch, directionStart + 15*(i + rows ), "    " + l2[i][limit*(lines-1):])
-            print(lines)
-            
         else:
-            canv.drawString(1*inch, directionStart + 15*(rows+i), str(i+1) + ". " + l2[i][0:])
-               
-                
-            
-                
-                
-            ## rest of string
-                
-            
-                
-           
-        #canv.drawString(1*inch, directionStart + 15*i, str(i+1) + ". " + l2[i][0:110])
+            canv.drawString(1*inch, directionStart + 15*(rows+i), str(i+1) + ". " + l2[i])
+
       
     # Footer
     canv.drawInlineImage("recipes/static/recipes/wom_logo.png", 3.8*inch, 8.45*inch, 1*inch, 1*inch)
