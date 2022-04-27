@@ -161,7 +161,7 @@
                                 <th scope="col" class="col-3">Quantity</th>
                                 <th scope="col" class="col-3">Unit</th>
                                 <th scope="col" class="col-4">Ingredient Name</th>
-                                <th scope="col" class="col-2"></th>
+                                <th scope="col" class="col-2" style="visibility: hidden;"></th>
                             </tr>
                         </thead>
                         <tbody id="ingredients_tb">
@@ -182,9 +182,9 @@
                     <div class="row">
                             <table class="table table-default table-borderless">
                                 <tbody id="directions_tb">
-                                    <tr>
-                                        <td><textarea class="form-control" type="text" name="direction" rows="4" cols="50" placeholder="Ex. Slice the tofu into 1 inch cubes" required></textarea></td>
-                                        <td></td>
+                                    <tr class="d-flex">
+                                        <td class="col-10"><textarea class="form-control" type="text" name="direction" rows="4" cols="50" placeholder="Ex. Slice the tofu into 1 inch cubes" required></textarea></td>
+                                        <td class="col-2"></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -293,6 +293,7 @@
             let directions_tb = document.getElementById("directions_tb");
             let row = directions_tb.insertRow(); // default adds to end
             row.id = directionsIndex;
+            row.classList = "d-flex";
 
             // direction text
             // let input = document.createElement("input");
@@ -303,11 +304,12 @@
             let input = document.createElement("textarea");
             input.type = "text";
             input.name = "direction";
-            input.rows = "3";
+            input.rows = "4";
             input.cols = "50";
             input.classList = "form-control"
             input.placeholder = "Next..."
             row.insertCell(0).appendChild(input);
+            row.cells[0].classList = "col-10";
             // <td><textarea type="text" name="direction" rows="3" cols="50"></textarea></td>
 
             // remove button
@@ -325,6 +327,7 @@
                     removeButtons[i].setAttribute("name", i + 1);
             }
             row.insertCell(1).appendChild(btn);
+            row.cells[1].classList = "col-2";
 
             directionsIndex++;
         }
