@@ -86,11 +86,12 @@ class RecipeView(generic.DetailView):
         recipe = self.get_object()
         user = self.request.user
 
+        pkRecipe = self.kwargs.get('pk')
         review = Review.objects.create(recipe=recipe, rating=rating, review_text=review_text, user=user)
 
         # returns to recipe gallery
         # would be useful to redirect to a page which allows the user to share the recipe, since they used it
-        return HttpResponseRedirect(reverse('recipes:recipeGallery'))
+        return HttpResponsePermanentRedirect('/recipes/' + str(pkRecipe))
 
 class EnterRecipeView(generic.ListView):
     model = Recipe
@@ -251,11 +252,50 @@ def recipe_pdf(request, pk):
     canv.drawCentredString(4.25*inch,  158 + 30 + space, "Directions")
 
     canv.setFont("Times-Roman", 12)
-    
-    directionStart = 158 + 30 + space + 23
-    for i in range(len(l2)):
+    directionStart = 158 + 30 + space + 23 # distance between Direction text and actual directions
+    rows = 0
+    for i in range(0,len(l2)):
         print(l2[i])
-        canv.drawCentredString(4.25*inch, directionStart + 15*i, str(i+1) + ". " + l2[i])
+        limit = 95
+        if len(l2[i]) > limit:
+            print("here " + l2[i])
+            print(len(l2[i]))
+            print(len(l2[i])//limit)
+            # first line
+            if l2[i][limit-1] != " ":
+                canv.drawString(1*inch, directionStart + 15*(rows+i), str(i+1) + ". " + l2[i][0:limit])
+            else:
+                canv.drawString(1*inch, directionStart + 15*(rows+i), str(i+1) + ". " + l2[i][0:limit])
+                
+            print("first line: " + l2[i][0:limit])
+            rows += 1
+            lines = len(l2[i])//limit+1
+            # full lines that are not first lines
+            for j in range(2, lines):
+                
+                if l2[i][(limit-1)*j] != " ":
+                    canv.drawString(1*inch, directionStart + 15*(i + rows), "    " + l2[i][limit(j-1):limit*j])
+                else:
+                    canv.drawString(1*inch, directionStart + 15*(i + rows), "    " + l2[i][limit(j-1):limit*j])
+                rows += 1
+                
+            # remaining characters (not full line)
+            canv.drawString(1*inch, directionStart + 15*(i + rows ), "    " + l2[i][limit*(lines-1):])
+            print(lines)
+            
+        else:
+            canv.drawString(1*inch, directionStart + 15*(rows+i), str(i+1) + ". " + l2[i][0:])
+               
+                
+            
+                
+                
+            ## rest of string
+                
+            
+                
+           
+        #canv.drawString(1*inch, directionStart + 15*i, str(i+1) + ". " + l2[i][0:110])
       
     # Footer
     canv.drawInlineImage("recipes/static/recipes/wom_logo.png", 3.8*inch, 8.45*inch, 1*inch, 1*inch)
