@@ -99,9 +99,16 @@
                 <div class="form-group p-3">
                     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
                     <div class="m-3">
+                        <div class="row mb-1">
+                            <div class="col-auto" style="font-size: 15px;">
+                                All fields marked with
+                                <span style="color: rgb(217, 4, 4);">*</span>
+                                are required.
+                            </div>
+                        </div>
                         <div class="mb-1 row">
                             <div class="col-auto">
-                                <label for="title" class="form-control-plaintext h6">Title:</label>
+                                <label for="title" class="form-control-plaintext h6"><span style="color: rgb(217, 4, 4);">*</span>Title:</label>
                             </div>
                             <div class="col">
                                 <input class="form-control" type="text" name="title" placeholder="Ex. Greg's Miso Soup" required pattern=".*\S+.*">
@@ -110,7 +117,7 @@
     
                         <div class="mb-1 row">
                             <div class="col-auto">
-                                <label for="blurb" class="form-control-plaintext h6">Description:</label>
+                                <label for="blurb" class="form-control-plaintext h6"><span style="color: rgb(217, 4, 4);">*</span>Description:</label>
                             </div>
                             <div class="col">
                                 <input class="form-control" type="text" name="blurb" placeholder="Ex. This is my go-to comfort food. My Nana loves it, too!" required pattern=".*\S+.*">
@@ -119,7 +126,7 @@
     
                         <div class="mb-1 row">
                             <div class="col-auto">
-                                <label for="dietaryRestrictions" class="form-control-plaintext h6">Dietary Restrictions:</label>
+                                <label for="dietaryRestrictions" class="form-control-plaintext h6"><span style="color: rgb(217, 4, 4);">*</span>Dietary Restrictions:</label>
                             </div>
                             <div class="col">
                                 <input class="form-control" type="text" name="dietaryRestrictions" placeholder="Ex: pescatarian" required pattern=".*\S+.*">
@@ -128,7 +135,7 @@
     
                         <div class="mb-1 row">
                             <div class="col-auto">
-                                <label for="time" class="form-control-plaintext h6">Time (minutes):</label>
+                                <label for="time" class="form-control-plaintext h6"><span style="color: rgb(217, 4, 4);">*</span>Time (minutes):</label>
                             </div>
                             <div class="col">
                                 <input class="form-control" type="number" name="time" placeholder="Ex: 35" required min="0">
@@ -137,7 +144,7 @@
     
                         <div class="mb-1 row">
                             <div class="col-auto">
-                                <label for="servingSize" class="form-control-plaintext h6">Serving Size:</label>
+                                <label for="servingSize" class="form-control-plaintext h6"><span style="color: rgb(217, 4, 4);">*</span>Serving Size:</label>
                             </div>
                             <div class="col">
                                 <input class="form-control" type="number" name="servingSize" placeholder="Ex: 4" required min="1">
@@ -146,21 +153,21 @@
     
                         <div class="mb-3 row">
                             <div class="col-auto">
-                                <label for="difficultyRating" class="form-control-plaintext h6">Difficulty Rating:</label>
+                                <label for="difficultyRating" class="form-control-plaintext h6"><span style="color: rgb(217, 4, 4);">*</span>Difficulty Rating:</label>
                             </div>
                             <div class="col">
                                 <input class="form-control" type="number" name="difficultyRating" placeholder="Between 1-10" required min='1' max="10">
                             </div>
                         </div>
 
-                    <label for="ingredientsList" class="h4">Ingredient List:</label>
+                    <label for="ingredientsList" class="h4"><span style="color: rgb(217, 4, 4);">*</span>Ingredient List:</label>
                     <br>
                     <table class="table table-default table-sm table-borderless">
                         <thead>
                             <tr class="table-light d-flex">
-                                <th scope="col" class="col-3">Quantity</th>
+                                <th scope="col" class="col-3"><span style="color: rgb(217, 4, 4);">*</span>Quantity</th>
                                 <th scope="col" class="col-3">Unit</th>
-                                <th scope="col" class="col-4">Ingredient Name</th>
+                                <th scope="col" class="col-4"><span style="color: rgb(217, 4, 4);">*</span>Ingredient Name</th>
                                 <th scope="col" class="col-2" style="visibility: hidden;"></th>
                             </tr>
                         </thead>
@@ -177,7 +184,7 @@
 
                     <br>
                     <br>
-                    <label for="directionsList" class="h4">Directions:</label>
+                    <label for="directionsList" class="h4"><span style="color: rgb(217, 4, 4);">*</span>Directions:</label>
                     <br>
                     <div class="row">
                             <table class="table table-default table-borderless">
