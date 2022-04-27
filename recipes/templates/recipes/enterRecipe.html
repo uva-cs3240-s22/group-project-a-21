@@ -98,28 +98,64 @@
 
                 <div class="form-group p-3">
                     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-                    <label for="title" class="h6">Title:</label>
-                    <input type="text" name="title" placeholder="Ex. Greg's Miso Soup" required pattern=".*\S+.*">
-                    <br>
-                    <label for="blurb" class="h6">Description:</label>
-                    <input type="text" name="blurb" placeholder="Ex. Go-to comfort food!" required pattern=".*\S+.*">
-                    <br>
-                    <label for="dietaryRestrictions" class="h6">Dietary Restrictions:</label>
-                    <input type="text" name="dietaryRestrictions" placeholder="Ex: pescatarian" required pattern=".*\S+.*">
-                    <br>
-                    <label for="time" class="h6">Time (minutes):</label>
-                    <input type="number" name="time" placeholder="Ex: 35" required min="0">
-                    <br>
-                    <label for="servingSize" class="h6">Serving Size:</label>
-                    <input type="number" name="servingSize" placeholder="Ex: 4" required min="1">
-                    <br>
-                    <label for="difficultyRating" class="h6">Difficulty Rating:</label>
-                    <input type="number" name="difficultyRating" placeholder="1-10" required min='1' max="10">
-                    <br>
+                    <div class="m-3">
+                        <div class="mb-1 row">
+                            <div class="col-auto">
+                                <label for="title" class="form-control-plaintext h6">Title:</label>
+                            </div>
+                            <div class="col">
+                                <input class="form-control" type="text" name="title" placeholder="Ex. Greg's Miso Soup" required pattern=".*\S+.*">
+                            </div>
+                        </div>
+    
+                        <div class="mb-1 row">
+                            <div class="col-auto">
+                                <label for="blurb" class="form-control-plaintext h6">Description:</label>
+                            </div>
+                            <div class="col">
+                                <input class="form-control" type="text" name="blurb" placeholder="Ex. This is my go-to comfort food. My Nana loves it, too!" required pattern=".*\S+.*">
+                            </div>
+                        </div>
+    
+                        <div class="mb-1 row">
+                            <div class="col-auto">
+                                <label for="dietaryRestrictions" class="form-control-plaintext h6">Dietary Restrictions:</label>
+                            </div>
+                            <div class="col">
+                                <input class="form-control" type="text" name="dietaryRestrictions" placeholder="Ex: pescatarian" required pattern=".*\S+.*">
+                            </div>
+                        </div>
+    
+                        <div class="mb-1 row">
+                            <div class="col-auto">
+                                <label for="time" class="form-control-plaintext h6">Time (minutes):</label>
+                            </div>
+                            <div class="col">
+                                <input class="form-control" type="number" name="time" placeholder="Ex: 35" required min="0">
+                            </div>
+                        </div>
+    
+                        <div class="mb-1 row">
+                            <div class="col-auto">
+                                <label for="servingSize" class="form-control-plaintext h6">Serving Size:</label>
+                            </div>
+                            <div class="col">
+                                <input class="form-control" type="number" name="servingSize" placeholder="Ex: 4" required min="1">
+                            </div>
+                        </div>
+    
+                        <div class="mb-3 row">
+                            <div class="col-auto">
+                                <label for="difficultyRating" class="form-control-plaintext h6">Difficulty Rating:</label>
+                            </div>
+                            <div class="col">
+                                <input class="form-control" type="number" name="difficultyRating" placeholder="Between 1-10" required min='1' max="10">
+                            </div>
+                        </div>
 
                     <label for="ingredientsList" class="h4">Ingredient List:</label>
                     <br>
-                    <table class="table table-hover table-striped table-sm">
+                    <table class="table table-default table-sm table-borderless">
                         <thead>
                             <tr class="table-light d-flex">
                                 <th scope="col" class="col-3">Quantity</th>
@@ -130,33 +166,31 @@
                         </thead>
                         <tbody id="ingredients_tb">
                             <tr class="d-flex">
-                                <td class="col-3"><input class="w-100" type="number" name="ingredientQuant" placeholder="Ex. 2.5 (decimal)" required step="0.001"></td>
-                                <td class="col-3"><input class="w-100" type="text" name="ingredientUnit" placeholder="Ex. cups (optional)"></td>
-                                <td class="col-4"><input class="w-100" type="text" name="ingredientName" placeholder="Ex. silken tofu" required pattern=".*\S+.*"></td>
+                                <td class="col-3"><input class="w-100 form-control" type="number" name="ingredientQuant" placeholder="Ex. 2.5 (decimal)" required step="0.001"></td>
+                                <td class="col-3"><input class="w-100 form-control" type="text" name="ingredientUnit" placeholder="Ex. cups (optional)"></td>
+                                <td class="col-4"><input class="w-100 form-control" type="text" name="ingredientName" placeholder="Ex. silken tofu" required pattern=".*\S+.*"></td>
                                 <td class="col-2"></td>
                             </tr>
                         </tbody>
                     </table>
-                    <button type="button" class="btn btn-primary" onclick="addIngredient()">Add ingredient</button>
+                    <button type="button" class="btn btn-secondary" onclick="addIngredient()">Add ingredient</button>
 
                     <br>
                     <br>
                     <label for="directionsList" class="h4">Directions:</label>
                     <br>
                     <div class="row">
-                        <div class="col-8">
-                            <table class="table table-hover table-striped">
+                            <table class="table table-default table-borderless">
                                 <tbody id="directions_tb">
                                     <tr>
-                                        <td><textarea type="text" name="direction" rows="3" cols="50" placeholder="Ex. Slice the tofu into 1 inch cubes" required></textarea></td>
+                                        <td><textarea class="form-control" type="text" name="direction" rows="4" cols="50" placeholder="Ex. Slice the tofu into 1 inch cubes" required></textarea></td>
                                         <td></td>
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
                         <div class="col-4"></div>
                     </div>
-                    <button type="button" class="btn btn-primary" onclick="addDirection()">Add direction</button>
+                    <button type="button" class="btn btn-secondary" onclick="addDirection()">Add direction</button>
 
                     <br>
 
@@ -164,29 +198,31 @@
 
                     <label for="recipe_img" class="h4">Upload recipe images:</label>
                     <div class="row">
-                        <div class="col-8">
-                            <table class="table table-hover table-striped">
+                        <div class="col">
+                            <table class="table table-default table-borderless">
                                 <thead>
                                     <tr class="table-light">
-                                        <th scope="col">Upload</th>
-                                        <th scope="col"></th>
+                                        <!-- <th scope="col">Upload</th>
+                                        <th scope="col"></th> -->
                                     </tr>
                                 </thead>
                                 <tbody id="img_tb">
                                     <tr>
-                                        <td><input type="file" id="recipe_img" name="recipe_img"
-                                                accept="image/png, image/jpeg"> </td>
+                                        <td>
+                                            <div>
+                                                <input class="form-control" type="file" id="recipe_img" name="recipe_img" accept="image/png, image/jpeg"> 
+                                            </div>                        
+                                        </td>
                                         <td></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <div class="col-4"></div>
                     </div>
-                    <button type="button" class="btn btn-primary" onclick="addImage()">Add image</button>
+                    <button type="button" class="btn btn-secondary" onclick="addImage()">Add image</button>
                     <!-- https://ordinarycoders.com/blog/article/django-file-image-uploads -->
                 </div>
-                <input class="btn btn-primary" type="submit" value="Create Recipe">
+                <input class="btn btn-success mx-3" type="submit" value="Create Recipe">
             </form>
         </div>
     </div>
@@ -210,7 +246,7 @@
             input.step = "0.001";
             input.required = "True";
             input.placeholder = "(decimal)"
-            input.classList = "w-100";
+            input.classList = "w-100 form-control";
             row.insertCell(0).appendChild(input);
             row.cells[0].classList = "col-3";
 
@@ -219,7 +255,7 @@
             input.type = "text";
             input.name = "ingredientUnit";
             input.placeholder = "(optional)";
-            input.classList = "w-100";
+            input.classList = "w-100 form-control";
             row.insertCell(1).appendChild(input);
             row.cells[1].classList = "col-3";
 
@@ -228,8 +264,8 @@
             input.type = "text";
             input.name = "ingredientName";
             input.required = "True";
-            input.placeholder = "(ingredient)"
-            input.classList = "w-100";
+            input.placeholder = "(ingredient name)"
+            input.classList = "w-100 form-control";
             row.insertCell(2).appendChild(input);
             row.cells[2].classList = "col-4";
 
@@ -269,6 +305,8 @@
             input.name = "direction";
             input.rows = "3";
             input.cols = "50";
+            input.classList = "form-control"
+            input.placeholder = "Next..."
             row.insertCell(0).appendChild(input);
             // <td><textarea type="text" name="direction" rows="3" cols="50"></textarea></td>
 
@@ -304,6 +342,7 @@
             input.id = "recipe_img";
             input.name = "recipe_img";
             input.accept = "image/png, image/jpeg";
+            input.classList = "form-control"
             row.insertCell(0).appendChild(input);
 
             // remove button
