@@ -147,6 +147,38 @@
         max-height: 500px;
     }
 
+    #collapseImagesHeading, 
+    #collapseBlurbHeading, 
+    #collapseIngredientsHeading, 
+    #collapseDirectionsHeading {
+        background-color: #baafa1;
+    }
+
+    #collapseImagesHeading .btn,
+    #collapseBlurbHeading .btn,
+    #collapseIngredientsHeading .btn,
+    #collapseDirectionsHeading .btn {
+        color: white;
+    }
+
+    #collapseImagesHeading .btn:focus,
+    #collapseBlurbHeading .btn:focus,
+    #collapseIngredientsHeading .btn:focus,
+    #collapseDirectionsHeading .btn:focus {
+        box-shadow: none;
+    }
+
+    #collapseImages,
+    #collapseBlurb,
+    #collapseIngredients,
+    #collapseDirections {
+        background-color: #efebe7;
+    }
+
+    /* hat icon */
+    .hat {
+        content: url('https://api.iconify.design/mdi/chef-hat.svg?width=26&height=26');
+    }
 
 </style>
 
@@ -156,10 +188,15 @@
     <div class="div1">
         <div class="justify-content-center">
             <h2>{{ recipe.title }}</h2>
+            <h5>
+                <span style="display:inline-block;">Author:</span>
+                <a href="/user/{{ recipe.createdBy.pk }}" class="text-decoration-none" style="color: #213037; display:inline-block;">{{ recipe.createdBy.name }}</a>
+            </h5>
             {% if recipe.forkedBy %}
-                <h6>
-                    Inspired by this recipe: <a href="/recipes/{{ recipe.forkedBy.pk }}" class="text-decoration-none" style="color: darkgray">{{ recipe.forkedBy.title }}</a>
-                </h6>
+                <h7>
+                    <span style="display:inline-block;">Inspired by:</span>
+                    <a href="/recipes/{{ recipe.forkedBy.pk }}" class="text-decoration-none" style="color: rgb(145, 145, 145); display:inline-block;">{{ recipe.forkedBy.title }}</a>
+                </h7>
             {% endif %}
             {%  if recipe.get_avg_rating != 404 %}
                 <p>Average Rating: {{recipe.get_avg_rating|floatformat}} 
@@ -170,24 +207,69 @@
                 {% endfor %}
                 </p>
             {% else %}
-            <p>No reviews for this recipe</p>
+            <br>
+            This recipe has not been rated yet.
             {% endif %}
-            <p>
-                Created by:
-                <a href="/user/{{ recipe.createdBy.pk }}">
-                    {{ recipe.createdBy.name }}
-                    <br>
-                </a>
-            </p>
+            
         </div>
         <hr class="new1">
+        <div class="row d-flex">
+            <div class="col-1"></div>
+            <div class="col-6 justify-content-start">
+                <div>
+                    <i class="material-icons" style="float:left; margin-right: 15px;">timer</i>
+                    <span class="time" style="float:left;">Time: {{ recipe.time }} min</span>
+                </div>
+                <br>
+                <div>
+                    <i class="hat" style="float:left; margin-right: 15px;"></i>
+                    <span style="float:left;">Difficulty rating: {{ recipe.difficultyRating }}/10</span>
+                </div>
+                <br>
+                <div>
+                    <i style="font-size:24px; float:left; margin-right: 15px;" class="fa">&#xf06c;</i>
+                    <span style="float:left;">Dietary restrictions: {{ recipe.dietaryRestrictions }}</span>
+                </div>
+                
+
+            </div>
+            <div class="col-4">
+                <form action="/recipes/favorite-recipe/{{ recipe.pk }}/{{ user.pk }}" method="post">
+                    {% csrf_token %}
+                    {{ recipe.favoritedBy.all|length }}
+                    {% if recipe.favoritedBy.all|length == 1 %}
+                    favorite
+                    {% else %}
+                    favorites
+                    {% endif %}
+                    <input type="submit" value="Favorite" class="button">
+                </form>
+            </div>
+        </div>
+
+        <div class="card mt-2">
+            <div class="card-header" id="collapseBlurbHeading">
+                <h5 class="mb-0">
+                    <button class="btn btn-link text-decoration-none" data-toggle="collapse"
+                        data-target="#collapseBlurb" aria-expanded="true" aria-controls="collapseBlurb">
+                        Recipe Description &#x25BC;
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseBlurb" class="collapse show" aria-labelledby="blurbCollapseHeading">
+                <div class="card-body">
+                    {{ recipe.blurb }}
+                </div>
+            </div>
+        </div>
+
         {% if not recipe.images.all|length == 0 %}
         <div class="card">
             <div class="card-header" id="collapseImagesHeading">
                 <h5 class="mb-0">
-                    <button class="btn btn-link text-decoration-none" data-toggle="collapse"
+                    <button class="btn text-decoration-none" data-toggle="collapse"
                         data-target="#collapseImages" aria-expanded="true" aria-controls="collapseImages">
-                        Recipe Images
+                        Recipe Images &#x25BC;
                     </button>
                 </h5>
             </div>
@@ -202,137 +284,101 @@
             </div>
         </div>
         {% endif %}
+        
+
         <div class="card">
-            <div class="card-header" id="collapseBlurbHeading">
+            <div class="card-header" id="collapseIngredientsHeading">
                 <h5 class="mb-0">
                     <button class="btn btn-link text-decoration-none" data-toggle="collapse"
-                        data-target="#collapseBlurb" aria-expanded="true" aria-controls="collapseBlurb">
-                        Recipe Description
+                        data-target="#collapseIngredients" aria-expanded="true" aria-controls="collapseIngredients">
+                        Ingredients &#x25BC;
                     </button>
                 </h5>
             </div>
-            <div id="collapseBlurb" class="collapse show" aria-labelledby="blurbCollapseHeading">
+
+            <div id="collapseIngredients" class="collapse show" aria-labelledby="collapseIngredientsHeading">
                 <div class="card-body">
-                    {{ recipe.blurb }}
+                    <button class="button" id="servingSize1" onclick="changeServingSize(1)" disabled>Original size:
+                        ({{ recipe.servingSize }} servings)</button>
+                    <button class="button" id="servingSize2" onclick="changeServingSize(2)">x2
+                        servings</button>
+                    <button class="button" id="servingSize3" onclick="changeServingSize(3)">x3
+                        servings</button>
+                    <button class="button" id="servingSize5" onclick="changeServingSize(5)">x5
+                        servings</button>
+                    <br>
+
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr class="table-light">
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Unit</th>
+                                <th scope="col">Ingredient Name</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ingredients_tb">
+                            {% for ingredient in recipe.ingredientsList|split:"," %}
+                            <tr>
+                                {% for ingredient_parts in ingredient|split:" " %}
+                                <td>{{ ingredient_parts|replace:"*, " }}</td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col">
-
-                <p>Dietary restrictions: {{ recipe.dietaryRestrictions }}</p>
-                <div>
-                    <i class="material-icons" style="float:left;">timer</i>
-                    <span class="time" style="float:left;">Estimated preparation time: {{ recipe.time }} min</span>
-                </div>
-                <br>
-                <p>Difficulty rating: {{ recipe.difficultyRating }}/10</p>
-
+        <div class="card">
+            <div class="card-header" id="collapseDirectionsHeading">
+                <h5 class="mb-0">
+                    <button class="btn btn-link text-decoration-none" data-toggle="collapse"
+                        data-target="#collapseDirections" aria-expanded="true"
+                        aria-controls="collapseDirections">
+                        Directions &#x25BC;
+                    </button>
+                </h5>
             </div>
-            <div class="col">
-                <form action="/recipes/favorite-recipe/{{ recipe.pk }}/{{ user.pk }}" method="post">
-                    {% csrf_token %}
-                    {{ recipe.favoritedBy.all|length }} favorites <input type="submit" value="Favorite">
-                </form>
-
-                <button class="button" id="dropdownSocialMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false">Share this recipe</button>
-                <div class="dropdown-menu" aria-labelledby="dropdownSocialMenuButton">
-                    <div class="dropdown-item text-decoration-none">
-                        {% send_email "{{ recipe.title }} recipe by {{ recipe.createdBy }}" "Check out this {{ recipe.title }} recipe by {{ recipe.createdBy }}!" object_or_url "Email" "text-decoration-none" %}
-                    </div>
-                    <div class="dropdown-item text-decoration-none">
-                        {% post_to_twitter "Check out this {{ recipe.title }} recipe by {{ recipe.createdBy }}!" object_or_url "Twitter" "text-decoration-none" %}
-                    </div>
-                    <div class="dropdown-item text-decoration-none">
-                        {% post_to_reddit "Check out this {{ recipe.title }} recipe by {{ recipe.createdBy }}!" object_or_url "Reddit" "text-decoration-none" %}
-                    </div>
-                    <!-- https://pypi.org/project/django-social-share/ -->
+            <div id="collapseDirections" class="collapse show" aria-labelledby="collapseDirectionsHeading">
+                <div class="card-body">
+                    <ol>
+                        {% for direction in recipe.directionsList|split:"`" %}
+                        <li>{{ direction }}</li>
+                        {% endfor %}
+                    </ol>
+                    <!-- https://stackoverflow.com/questions/45020984/looping-through-csv-string-in-django-template -->
+                    <!-- https://docs.djangoproject.com/en/4.0/howto/custom-template-tags/ -->
                 </div>
             </div>
         </div>
-
-        <br><br>
-
-        <div id="accordion" class="accordion accordion-flush mt-3">
-            <div class="card">
-                <div class="card-header" id="collapseIngredientsHeading">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link text-decoration-none" data-toggle="collapse"
-                            data-target="#collapseIngredients" aria-expanded="true" aria-controls="collapseIngredients">
-                            Ingredients
-                        </button>
-                    </h5>
-                </div>
-
-                <div id="collapseIngredients" class="collapse show" aria-labelledby="collapseIngredientsHeading">
-                    <div class="card-body">
-                        <button class="button" id="servingSize1" onclick="changeServingSize(1)" disabled>Original size:
-                            ({{ recipe.servingSize }} servings)</button>
-                        <button class="button" id="servingSize2" onclick="changeServingSize(2)">x2
-                            servings</button>
-                        <button class="button" id="servingSize3" onclick="changeServingSize(3)">x3
-                            servings</button>
-                        <button class="button" id="servingSize5" onclick="changeServingSize(5)">x5
-                            servings</button>
-                        <br>
-
-                        <table class="table table-hover table-striped">
-                            <thead>
-                                <tr class="table-light">
-                                    <th scope="col">Quantity</th>
-                                    <th scope="col">Unit</th>
-                                    <th scope="col">Ingredient Name</th>
-                                </tr>
-                            </thead>
-                            <tbody id="ingredients_tb">
-                                {% for ingredient in recipe.ingredientsList|split:"," %}
-                                <tr>
-                                    {% for ingredient_parts in ingredient|split:" " %}
-                                    <td>{{ ingredient_parts|replace:"*, " }}</td>
-                                    {% endfor %}
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header" id="collapseDirectionsHeading">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link text-decoration-none" data-toggle="collapse"
-                                data-target="#collapseDirections" aria-expanded="true"
-                                aria-controls="collapseDirections">
-                                Directions
-                            </button>
-                        </h5>
-                    </div>
-                    <div id="collapseDirections" class="collapse show" aria-labelledby="collapseDirectionsHeading">
-                        <div class="card-body">
-                            <ol>
-                                {% for direction in recipe.directionsList|split:"`" %}
-                                <li>{{ direction }}</li>
-                                {% endfor %}
-                            </ol>
-                            <!-- https://stackoverflow.com/questions/45020984/looping-through-csv-string-in-django-template -->
-                            <!-- https://docs.djangoproject.com/en/4.0/howto/custom-template-tags/ -->
-                        </div>
-                    </div>
-                </div>
-            </div>
             <!-- https://getbootstrap.com/docs/4.0/components/collapse/ -->
             <!-- https://stackoverflow.com/questions/15696365/twitter-bootstrap-collapse-plugin-how-to-enable-multiple-groups-to-be-opened -->
-            <button class="button" onclick="location.href = '{% url 'recipes:recipe_pdf' recipe.pk %}'">Generate PDF</button>
+            <button class="button mt-2" onclick="location.href = '{% url 'recipes:recipe_pdf' recipe.pk %}'">Generate PDF</button>
       
             {% if request.user.is_authenticated %}
             <button class="button" onclick="location.href = '{% url 'recipes:fork' recipe.pk %}'">Fork Recipe</button>
             {% endif %}
 
+            <button class="button" id="dropdownSocialMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">Share this recipe</button>
+            <div class="dropdown-menu" aria-labelledby="dropdownSocialMenuButton">
+                <div class="dropdown-item text-decoration-none">
+                    {% send_email "{{ recipe.title }} recipe by {{ recipe.createdBy }}" "Check out this {{ recipe.title }} recipe by {{ recipe.createdBy }}!" object_or_url "Email" "text-decoration-none" %}
+                </div>
+                <div class="dropdown-item text-decoration-none">
+                    {% post_to_twitter "Check out this {{ recipe.title }} recipe by {{ recipe.createdBy }}!" object_or_url "Twitter" "text-decoration-none" %}
+                </div>
+                <div class="dropdown-item text-decoration-none">
+                    {% post_to_reddit "Check out this {{ recipe.title }} recipe by {{ recipe.createdBy }}!" object_or_url "Reddit" "text-decoration-none" %}
+                </div>
+                <!-- https://pypi.org/project/django-social-share/ -->
+            </div>
+
             {% if recipe.original.all %}
-                <div>
+                <div class="mt-3">
                     Check out recipes inspired by this one!
                     {% for orig in recipe.original.all %}
-                    <a href="/recipes/{{ orig.pk }}" class="text-decoration-none" style="color: darkgray">{{ orig.title }}</a>
+                    <a href="/recipes/{{ orig.pk }}" class="text-decoration-none" style="color: rgb(145, 145, 145)">{{ orig.title }}</a>
                     {% endfor %}
                 </div>
             {% endif %}
