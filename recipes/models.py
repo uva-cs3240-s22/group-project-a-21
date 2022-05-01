@@ -37,7 +37,8 @@ class Profile(models.Model):
     profile_img = models.ImageField(upload_to="profile_img/", storage=gd_storage)
 
     def __str__(self):
-        return str(self.user)
+        # return str(self.user)
+        return self.name
 
 
 @receiver(post_save, sender=User)

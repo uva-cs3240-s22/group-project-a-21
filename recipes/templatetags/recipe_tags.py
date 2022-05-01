@@ -1,4 +1,5 @@
 from django import template
+from recipes.models import Profile, Recipe
 
 register = template.Library()
 @register.filter(name='split')
@@ -34,3 +35,17 @@ def parseInt(number):
     if float(number) == 2.5: # python rounds 2.5 to 2; for our purposes, we want 3
         return 3
     return round(float(number))
+
+@register.filter(name='parseIntFiveMinus') 
+def parseInt(number):
+    if float(number) == 2.5: # python rounds 2.5 to 2; for our purposes, we want 3
+        return 3
+    return 5 - round(float(number))
+
+@register.simple_tag
+def follow(follower, followed):
+    return Profile.objects.get(pk=followed) in Profile.objects.get(pk=follower).following.all()
+
+@register.simple_tag
+def favorite(profile, recipe):
+    return Recipe.objects.get(pk=recipe) in Profile.objects.get(pk=profile).favorites.all()
