@@ -205,6 +205,11 @@
         content: url('https://api.iconify.design/mdi/chef-hat.svg?width=26&height=26');
     }
 
+    .btn-function {
+        width: 100%;
+        margin-top: 20px;
+    }
+
 </style>
 
 <body>
@@ -403,9 +408,9 @@
                     {% endif %} -->
     
                     {% if recipe.favoritedBy.all|length == 1 %}
-                    <input type="submit" value="Unfavorite ({{ recipe.favoritedBy.all|length }} favorite)" class="button">
+                    <input type="submit" value="Unfavorite ({{ recipe.favoritedBy.all|length }} favorite)" class="button btn-function">
                     {% else %}
-                    <input type="submit" value="Unfavorite ({{ recipe.favoritedBy.all|length }} favorites)" class="button">
+                    <input type="submit" value="Unfavorite ({{ recipe.favoritedBy.all|length }} favorites)" class="button btn-function">
                     {% endif %}
                     
                 </form>
@@ -421,9 +426,9 @@
                     {% endif %} -->
     
                     {% if recipe.favoritedBy.all|length == 1 %}
-                    <input type="submit" value="Favorite ({{ recipe.favoritedBy.all|length }} favorite)" class="button">
+                    <input type="submit" value="Favorite ({{ recipe.favoritedBy.all|length }} favorite)" class="button btn-function">
                     {% else %}
-                    <input type="submit" value="Favorite ({{ recipe.favoritedBy.all|length }} favorites)" class="button">
+                    <input type="submit" value="Favorite ({{ recipe.favoritedBy.all|length }} favorites)" class="button btn-function">
                     {% endif %}
                 </form>
                 
@@ -434,18 +439,18 @@
             {% endif %}
             
             <div class="col">
-                <button class="button" onclick="location.href = '{% url 'recipes:recipe_pdf' recipe.pk %}'">Generate PDF</button>
+                <button class="button btn-function" onclick="location.href = '{% url 'recipes:recipe_pdf' recipe.pk %}'">Generate PDF</button>
             </div>
             
             {% if request.user.is_authenticated %}
             <div class="col">
-                <button class="button" onclick="location.href = '{% url 'recipes:fork' recipe.pk %}'">Fork Recipe</button>
+                <button class="button btn-function" onclick="location.href = '{% url 'recipes:fork' recipe.pk %}'">Fork Recipe</button>
             </div>
             {% endif %}
             
             <div class="col">
-                <button class="button" id="dropdownSocialMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false">Share this recipe</button>
+                <button class="button btn-function" id="dropdownSocialMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">Share</button>
                 <div class="dropdown-menu" aria-labelledby="dropdownSocialMenuButton">
                     <div class="dropdown-item text-decoration-none">
                         {% send_email "{{ recipe.title }} recipe by {{ recipe.createdBy }}" "Check out this {{ recipe.title }} recipe by {{ recipe.createdBy }}!" object_or_url "Email" "text-decoration-none" %}
