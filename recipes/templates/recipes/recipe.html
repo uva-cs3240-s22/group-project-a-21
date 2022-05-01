@@ -1,3 +1,23 @@
+<!-- /***************************************************************************************
+*  REFERENCES
+*  Title: django-social-share 2.2.1
+*  Author: Flavio Curella
+*  Code version: 2.2.1
+*  URL: https://pypi.org/project/django-social-share/
+*  Software License: MIT License
+
+*  Title: Collapse
+*  Author: Bootstrap team and contributors
+*  Code version: 4.0
+*  URL: https://getbootstrap.com/docs/4.0/components/collapse/
+*  Software License: MIT License
+
+*  Title: Looping through CSV string in Django Template
+*  Author: Justin Braham, Chamath Sandaru
+*  Publication Date: 7/10/2017
+*  URL: https://stackoverflow.com/questions/45020984/looping-through-csv-string-in-django-template
+***************************************************************************************/ -->
+
 {% load socialaccount %}
 {% load social_share %}
 
@@ -346,13 +366,11 @@
                         <li>{{ direction }}</li>
                         {% endfor %}
                     </ol>
-                    <!-- https://stackoverflow.com/questions/45020984/looping-through-csv-string-in-django-template -->
-                    <!-- https://docs.djangoproject.com/en/4.0/howto/custom-template-tags/ -->
+                    <!-- Citation for <Looping through CSV string in Django Template> at top of file -->
                 </div>
             </div>
         </div>
-            <!-- https://getbootstrap.com/docs/4.0/components/collapse/ -->
-            <!-- https://stackoverflow.com/questions/15696365/twitter-bootstrap-collapse-plugin-how-to-enable-multiple-groups-to-be-opened -->
+            <!-- Citation for <Collapse> at top of file -->
             <button class="button mt-2" onclick="location.href = '{% url 'recipes:recipe_pdf' recipe.pk %}'">Generate PDF</button>
       
             {% if request.user.is_authenticated %}
@@ -371,7 +389,7 @@
                 <div class="dropdown-item text-decoration-none">
                     {% post_to_reddit "Check out this {{ recipe.title }} recipe by {{ recipe.createdBy }}!" object_or_url "Reddit" "text-decoration-none" %}
                 </div>
-                <!-- https://pypi.org/project/django-social-share/ -->
+                <!-- Citation for <django-social-share 2.2.1> at top of file -->
             </div>
 
             {% if recipe.original.all %}

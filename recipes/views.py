@@ -1,3 +1,38 @@
+# /***************************************************************************************
+# *  REFERENCES
+# *  Title: Django Google Authentication using django-allauth
+# *  Author: Muhd Rahiman
+# *  Date: Feb 27, 2021 (Last Updated on Oct 28, 2021)
+# *  URL: https://dev.to/mdrhmn/django-google-authentication-using-django-allauth-18f8
+# 
+# *  Title: multiple parameters url pattern django 2.0
+# *  Author: user9723456, philmaweb
+# *  Publication Date: 7/22/2018
+# *  URL: https://stackoverflow.com/questions/51464131/multiple-parameters-url-pattern-django-2-0
+
+
+# *  Title: Django Filter And Pagination Example
+# *  Author: Zhao Song
+# *  Publication Date: N/A 
+# *  URL: https://www.dev2qa.com/django-filter-and-pagination-example/ 
+
+# *  Title: Override get() in Django Class Based View to Filter
+# *  Author: Berislav Lopac
+# *  Publication Date: May 28, 2014
+# *  URL: https://stackoverflow.com/questions/15552267/override-get-in-django-class-based-view-to-filter
+
+# *  Title: Class-based Views
+# *  Author: Chad G Hansen, Greg Reeve
+# *  Publication Date: May 28, 2014
+# *  URL: https://django-advanced-training.readthedocs.io/en/latest/features/class-based-views/ 
+
+# *  Title: Django class based post-only view
+# *  Author: Andreas Schosser
+# *  Publication Date: Apr 26, 2016
+# *  URL: https://stackoverflow.com/questions/36859618/django-class-based-post-only-view 
+
+# ***************************************************************************************/
+
 from distutils.errors import LibError
 from re import template
 import re
@@ -22,7 +57,7 @@ class IndexView(generic.ListView):
     template_name='recipes/index.html'
     context_object_name = 'latest_recipe_list'
     def get_queryset(self):
-        return Recipe.objects.all()
+        return Recipe.objects.all().order_by("-id")
 
 class UserView(generic.DetailView):
     model = Profile
@@ -39,7 +74,7 @@ class UserView(generic.DetailView):
         return context
 
 def userLogout(request):
-    logout(request) # https://stackoverflow.com/questions/25251719/how-can-i-logout-a-user-in-django
+    logout(request)
     return HttpResponsePermanentRedirect('/')
 
 # def userTab(request, pk, tab):
@@ -172,7 +207,7 @@ def favoriteRecipe(request, pkRecipe, pkUser):
     currentRecipe.save()
 
     return HttpResponsePermanentRedirect('/recipes/' + str(pkRecipe)) # redirect back to current recipe
-    # https://stackoverflow.com/questions/51464131/multiple-parameters-url-pattern-django-2-0
+    # Citation for <multiple parameters url pattern django 2.0> at top of file
 
 def followUser(request, pkFollow, pkUser):
     userToFollow = Profile.objects.get(pk=pkFollow)

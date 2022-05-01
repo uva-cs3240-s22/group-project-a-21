@@ -1,3 +1,11 @@
+# /***************************************************************************************
+# *  REFERENCES
+# *  Title: multiple parameters url pattern django 2.0
+# *  Author: user9723456, philmaweb
+# *  Publication Date: 7/22/2018
+# *  URL: https://stackoverflow.com/questions/51464131/multiple-parameters-url-pattern-django-2-0
+# ***************************************************************************************/
+
 from django.contrib import admin
 from django.urls import path, include
 from . import views
@@ -17,6 +25,7 @@ urlpatterns = [
     path('recipes/<int:pk>/', views.RecipeView.as_view(), name='recipe'),
     path('recipes/fork/<int:pk>/', views.forkRecipe, name='fork'),
     path('recipes/favorite-recipe/<int:pkRecipe>/<int:pkUser>', views.favoriteRecipe, name='favoriteRecipe'),
+    # Citation for <multiple parameters url pattern django 2.0> at top of file
     path('user/follow-user/<int:pkFollow>/<int:pkUser>', views.followUser, name='followUser'),
     path('user/update/name/<int:pkUser>', views.updateUserName, name='updateUserName'),
     path('user/update/cook_exp/<int:pkUser>', views.updateUserCookExp, name='updateUserCookExp'),
