@@ -25,6 +25,7 @@ urlpatterns = [
     path('recipes/<int:pk>/', views.RecipeView.as_view(), name='recipe'),
     path('recipes/fork/<int:pk>/', views.forkRecipe, name='fork'),
     path('recipes/favorite-recipe/<int:pkRecipe>/<int:pkUser>', views.favoriteRecipe, name='favoriteRecipe'),
+    path('recipes/unfavorite-recipe/<int:pkRecipe>/<int:pkUser>', views.unfavoriteRecipe, name='unfavoriteRecipe'),
     # Citation for <multiple parameters url pattern django 2.0> at top of file
     path('user/follow-user/<int:pkFollow>/<int:pkUser>', views.followUser, name='followUser'),
     path('user/unfollow-user/<int:pkFollow>/<int:pkUser>', views.unfollowUser, name='unfollowUser'),

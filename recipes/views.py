@@ -209,6 +209,13 @@ def favoriteRecipe(request, pkRecipe, pkUser):
     return HttpResponsePermanentRedirect('/recipes/' + str(pkRecipe)) # redirect back to current recipe
     # Citation for <multiple parameters url pattern django 2.0> at top of file
 
+def unfavoriteRecipe(request, pkRecipe, pkUser):
+    recipeToUnfavorite = Recipe.objects.get(pk=pkRecipe)
+    currentUser = Profile.objects.get(pk=pkUser)
+    currentUser.favorites.remove(recipeToUnfavorite)
+    currentUser.save()
+    return HttpResponsePermanentRedirect('/recipes/' + str(pkRecipe)) # redirect back
+
 def followUser(request, pkFollow, pkUser):
     userToFollow = Profile.objects.get(pk=pkFollow)
     currentUser = Profile.objects.get(pk=pkUser)

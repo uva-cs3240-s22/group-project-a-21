@@ -259,6 +259,21 @@
 
             </div>
             <div class="col-4">
+                {% favorite user.pk recipe.pk as favorite_flag %}
+                {% if favorite_flag %}
+                <form action="/recipes/unfavorite-recipe/{{ recipe.pk }}/{{ user.pk }}" method="post">
+                    {% csrf_token %}
+                    {{ recipe.favoritedBy.all|length }}
+                    {% if recipe.favoritedBy.all|length == 1 %}
+                    favorite
+                    {% else %}
+                    favorites
+                    {% endif %}
+
+                    <input type="submit" value="Unfavorite" class="button">
+                </form>
+                
+                {% else %}
                 <form action="/recipes/favorite-recipe/{{ recipe.pk }}/{{ user.pk }}" method="post">
                     {% csrf_token %}
                     {{ recipe.favoritedBy.all|length }}
@@ -267,8 +282,12 @@
                     {% else %}
                     favorites
                     {% endif %}
+
                     <input type="submit" value="Favorite" class="button">
                 </form>
+                
+                {% endif %}
+                
             </div>
         </div>
 
