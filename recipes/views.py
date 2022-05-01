@@ -1,3 +1,11 @@
+# /***************************************************************************************
+# *  REFERENCES
+# *  Title: multiple parameters url pattern django 2.0
+# *  Author: user9723456, philmaweb
+# *  Publication Date: 7/22/2018
+# *  URL: https://stackoverflow.com/questions/51464131/multiple-parameters-url-pattern-django-2-0
+# ***************************************************************************************/
+
 from distutils.errors import LibError
 from re import template
 import re
@@ -39,7 +47,7 @@ class UserView(generic.DetailView):
         return context
 
 def userLogout(request):
-    logout(request) # https://stackoverflow.com/questions/25251719/how-can-i-logout-a-user-in-django
+    logout(request)
     return HttpResponsePermanentRedirect('/')
 
 # def userTab(request, pk, tab):
@@ -172,7 +180,7 @@ def favoriteRecipe(request, pkRecipe, pkUser):
     currentRecipe.save()
 
     return HttpResponsePermanentRedirect('/recipes/' + str(pkRecipe)) # redirect back to current recipe
-    # https://stackoverflow.com/questions/51464131/multiple-parameters-url-pattern-django-2-0
+    # Citation for <multiple parameters url pattern django 2.0> at top of file
 
 def followUser(request, pkFollow, pkUser):
     userToFollow = Profile.objects.get(pk=pkFollow)

@@ -1,3 +1,11 @@
+# /***************************************************************************************
+# *  REFERENCES
+# *  Title: How to limit the maximum value of a numeric field in a Django model?
+# *  Author: user82216, user1569050
+# *  Publication Date: 5/11/2009
+# *  URL: https://stackoverflow.com/questions/849142/how-to-limit-the-maximum-value-of-a-numeric-field-in-a-django-model
+# ***************************************************************************************/
+
 # from msilib.schema import Directory
 from distutils.command.upload import upload
 from email.policy import default
@@ -55,11 +63,10 @@ class Recipe(models.Model):
             MaxValueValidator(10),
             MinValueValidator(1)
         ]
-        # https://stackoverflow.com/questions/849142/how-to-limit-the-maximum-value-of-a-numeric-field-in-a-django-model
+        # Citation for <How to limit the maximum value of a numeric field in a Django model?> at top of file
     )
     favoritedBy = models.ManyToManyField(Profile, related_name="favorites") # a User has many favorite Recipes; a Recipe is favorited by many Users
     createdBy = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="create", default=1)
-    # https://stackoverflow.com/questions/13918968/multiple-many-to-many-relations-to-the-same-model-in-django
     forkedBy = models.ForeignKey('self', on_delete=models.SET_NULL, related_name="original", null=True)
 
     def get_avg_rating(self):

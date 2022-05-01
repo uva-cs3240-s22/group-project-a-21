@@ -1,3 +1,12 @@
+<!-- /***************************************************************************************
+*  REFERENCES
+*  Title: Nav and tabs: Tabs with dropdowns
+*  Author: Bootstrap team and contributors
+*  Code version: 5.1
+*  URL: https://getbootstrap.com/docs/5.1/components/navs-tabs/#tabs-with-dropdowns
+*  Software License: MIT License
+***************************************************************************************/ -->
+
 {% load socialaccount %}
 
 {% load bootstrap5 %}
@@ -38,7 +47,7 @@
                         <li><a class="dropdown-item" href="/user/logout">Logout</a></li>
                     </ul>
                 </li>
-                <!-- https://getbootstrap.com/docs/5.1/components/navs-tabs/#tabs-with-dropdowns -->
+                <!-- Citation for <Nav and tabs: Tabs with dropdowns> at top of file -->
                 {% else %}
                 <a class="nav-link text-muted">Create Recipe</a>
                 <a class="nav-link" href="{% provider_login_url 'google' %}" style="color: white;">Login With Google</a>
