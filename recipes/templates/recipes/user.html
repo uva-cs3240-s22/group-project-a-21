@@ -17,165 +17,189 @@
 
 <head>
     <meta>
-    <title>User</title>
+    <title>Profile</title>
     <link rel="icon" href="{% static 'recipes/wom_logo.png' %}">
 </head>
 
 <body>
-    {% include "recipes/navbar.html" %}
-    <div class="container-fluid">
-        <div class = "background">
-                <div class="row">
-            {% if profile.pk == user.pk %}
-            <div class = "h1">
-                My Profile Page
+    <div class="bg-image trans" 
+    style="background-image: url('{% static 'recipes/homeBack.jpg'%}');
+    position: relative;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 70%;">
+        {% include "recipes/navbar.html" %}
+        <div class="container-fluid div1">
+            <div class="row">
+                {% if profile.pk == user.pk %}
+                    <div class = "h1">
+                        My Profile Page
+                    </div>
+                    <div class="h6">
+                        {{ profile.name }} | {{ profile.email }}
+                    </div>
+                {% else %}
+                    <h1>{{ profile.name }}'s Profile Page</h1>
+                {% endif %}
             </div>
-            {% else %}
-            <h1>User Profile Page for {{ profile.name }}</h1>
+            <!-- Cannot follow yourself (follow button invisible) -->
+            {% if not profile.pk == user.pk %}
+            <div class="row m-1">
+                <form action="/user/follow-user/{{ profile.pk }}/{{ user.pk }}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-primary btn-follow" value="Follow">
+                </form>
+            </div>
             {% endif %}
-        </div>
-        <div class="row">
-            <div class="col-3 tabs">
-                <div class="row m-1">
-                    <button class="tablinks{% if tab == 'basic' or tab == NULL %} active{% endif %}" onclick="openTab(event, 'basic')">Basic Information</button>
+            <hr>
+            <div class="row">
+                <div class="col-4 tabs">
+                    <div class="row m-1">
+                        <button class="tablinks{% if tab == 'basic' or tab == NULL %} active{% endif %}" onclick="openTab(event, 'basic')">Basic Information</button>
+                    </div>
+                    <div class="row m-1">
+                        {% if profile.pk == user.pk %}
+                        <button class="tablinks{% if tab == 'create' %} active{% endif %}" onclick="openTab(event, 'create')">My Recipes</button>
+                        {% else %}
+                        <button class="tablinks{% if tab == 'create' %} active{% endif %}" onclick="openTab(event, 'create')">Created Recipes</button>
+                        {% endif %}
+                    </div>
+                    <div class="row m-1">
+                        <button class="tablinks{% if tab == 'favorite' %} active{% endif %}" onclick="openTab(event, 'favorite')">Favorite Recipes</button>
+                    </div>
+                    <div class="row m-1">
+                        <button class="tablinks{% if tab == 'following' %} active{% endif %}" onclick="openTab(event, 'following')">Following</button>
+                    </div>
+                    <div class="row m-1">
+                        <button class="tablinks{% if tab == 'followers' %} active{% endif %}" onclick="openTab(event, 'followers')">Followers</button>
+                    </div>
                 </div>
-                <div class="row m-1">
-                    {% if profile.pk == user.pk %}
-                    <button class="tablinks{% if tab == 'create' %} active{% endif %}" onclick="openTab(event, 'create')">My Recipes</button>
-                    {% else %}
-                    <button class="tablinks{% if tab == 'create' %} active{% endif %}" onclick="openTab(event, 'create')">Created Recipes</button>
-                    {% endif %}
-                </div>
-                <div class="row m-1">
-                    <button class="tablinks{% if tab == 'favorite' %} active{% endif %}" onclick="openTab(event, 'favorite')">Favorite Recipes</button>
-                </div>
-                <div class="row m-1">
-                    <button class="tablinks{% if tab == 'following' %} active{% endif %}" onclick="openTab(event, 'following')">Following</button>
-                </div>
-                <div class="row m-1">
-                    <button class="tablinks{% if tab == 'followers' %} active{% endif %}" onclick="openTab(event, 'followers')">Followers</button>
+                <div class="col-8">
+                    <h2 id="tab-title">{{tab}}</h2>
+                    <div id="basic" class="tabcontent mt-2">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <!-- Can change name if this user is self -->
+                                        {% if profile.pk == user.pk %}
+                                        <form action="/user/update/name/{{ profile.pk }}" method="post">
+                                            {% csrf_token %}
+                                            Name:
+                                            <input type="text" value="{{ profile.name }}" name="name">
+                                            <input type="submit" class="btn btn-info text-white" value="Rename">
+                                        </form>
+                                        {% else %}
+                                        <p>Name: {{ profile.name }}</p>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Email: {{ profile.email }}</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <!-- Can change cooking experience if this user is self -->
+                                        {% if profile.pk == user.pk %}
+                                        <form action="/user/update/cook_exp/{{ profile.pk }}" method="post">
+                                            {% csrf_token %}
+                                            Cooking experience:
+                                            <input type="number" max="10" min="1" value="{{ profile.cooking_experience }}" name="cook_exp">
+                                            <input type="submit" class="btn btn-info text-white" value="Update">
+                                            <br><span class="text-muted initialism">Low(1) - High(10)</span>
+                                            
+                                        </form>
+                                        {% else %}
+                                        <p>Cooking experience (Low(1) - High(10)): {{ profile.cooking_experience }}</p>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                    </div>
+                    <div id="create" class="tabcontent">
+                        <table class="table">
+                            <tbody>
+                                {% for recipe in profile.create.all %}
+                                <tr>
+                                    <td>
+                                        <a href="/recipes/{{ recipe.pk }}" class="text-decoration-none" style="color: darkgray;">{{ recipe.title }}</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% if not profile.create.all %}
+                                    There are no recipes to display.
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="favorite" class="tabcontent">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Recipe</th>
+                                    <th scope="col">Author</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for favorite in profile.favorites.all %}
+                                <tr>
+                                    <td>
+                                        <a href="/recipes/{{ favorite.pk }}" class="text-decoration-none" style="color: darkgray;">{{ favorite.title }}</a>
+                                    </td>
+                                    <td>
+                                        <a href="/user/{{ favorite.createdBy.pk }}" class="text-decoration-none" style="color: darkgray;">{{ favorite.createdBy }}</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% if not profile.favorites.all %}
+                                    There are no recipes to display.
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="following" class="tabcontent">
+                        <table class="table">
+                            <tbody>
+                                {% for following in profile.following.all %}
+                                <tr>
+                                    <td><a href="/user/{{ following.pk }}"  class="text-decoration-none" style="color: darkgray;">{{ following.name }}</a></td>
+                                </tr>
+                                {% endfor %}
+                                {% if not profile.following.all %}
+                                    There are no following users to display.
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="followers" class="tabcontent">
+                        <table class="table">
+                            <tbody>
+                                {% for follower in profile.followers.all %}
+                                <tr>
+                                    <td><a href="/user/{{ follower.pk }}"  class="text-decoration-none" style="color: darkgray;">{{ follower.name }}</a></td>
+                                </tr>
+                                {% endfor %}
+                                {% if not profile.followers.all %}
+                                    There are no followers to display.
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <br>
+
+
+
                 </div>
             </div>
-            <div class="col-8">
-                <h2 id="tab-title">{{tab}}</h2>
-                <!-- <div class="tab">
-                    <button class="tablinks{% if tab == 'basic' or tab == NULL %} active{% endif %}" onclick="openTab(event, 'basic')">Basic Information</button>
-                    <button class="tablinks{% if tab == 'create' %} active{% endif %}" onclick="openTab(event, 'create')">Created Recipes</button>
-                    <button class="tablinks{% if tab == 'favorite' %} active{% endif %}" onclick="openTab(event, 'favorite')">Favorite Recipes</button>
-                    <button class="tablinks{% if tab == 'following' %} active{% endif %}" onclick="openTab(event, 'following')">Following</button>
-                    <button class="tablinks{% if tab == 'followers' %} active{% endif %}" onclick="openTab(event, 'followers')">Followers</button>
-                </div> -->
-                <div id="basic" class="tabcontent mt-2">
-                    <!-- Can change name if this user is self -->
-                    {% if profile.pk == user.pk %}
-                    <form action="/user/update/name/{{ profile.pk }}" method="post">
-                        {% csrf_token %}
-                        Name:
-                        <input type="text" value="{{ profile.name }}" name="name">
-                        <input type="submit" class="btn btn-info text-white" value="Rename">
-                    </form>
-                    {% else %}
-                    <p>Name: {{ profile.name }}</p>
-                    {% endif %}
-                    <p>Email: {{ profile.email }}</p>
-                    <!-- Can change cooking experience if this user is self -->
-                    {% if profile.pk == user.pk %}
-                    <form action="/user/update/cook_exp/{{ profile.pk }}" method="post">
-                        {% csrf_token %}
-                        Cooking experience (Low(1) - High(10)):
-                        <input type="number" max="10" min="1" value="{{ profile.cooking_experience }}" name="cook_exp">
-                        <input type="submit" class="btn btn-info text-white" value="Update cooking experience">
-                    </form>
-                    {% else %}
-                    <p>Cooking experience (Low(1) - High(10)): {{ profile.cooking_experience }}</p>
-                    {% endif %}
-
-                    <!-- Cannot follow yourself (follow button invisible) -->
-                    {% if not profile.pk == user.pk %}
-                    <form action="/user/follow-user/{{ profile.pk }}/{{ user.pk }}" method="post">
-                        {% csrf_token %}
-                        <input type="submit" value="Follow">
-                    </form>
-                    {% endif %}
-                </div>
-                <div id="create" class="tabcontent">
-                    <table class="table">
-                        <tbody>
-                            {% for recipe in profile.create.all %}
-                            <tr>
-                                <td>
-                                    <a href="/recipes/{{ recipe.pk }}" class="text-decoration-none" style="color: darkgray;">{{ recipe.title }}</a>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                            {% if not profile.create.all %}
-                                There are no recipes to display.
-                            {% endif %}
-                        </tbody>
-                    </table>
-                </div>
-                <div id="favorite" class="tabcontent">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Recipe</th>
-                                <th scope="col">Author</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for favorite in profile.favorites.all %}
-                            <tr>
-                                <td>
-                                    <a href="/recipes/{{ favorite.pk }}" class="text-decoration-none" style="color: darkgray;">{{ favorite.title }}</a>
-                                </td>
-                                <td>
-                                    <a href="/user/{{ favorite.createdBy.pk }}" class="text-decoration-none" style="color: darkgray;">{{ favorite.createdBy }}</a>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                            {% if not profile.favorites.all %}
-                                There are no recipes to display.
-                            {% endif %}
-                        </tbody>
-                    </table>
-                </div>
-                <div id="following" class="tabcontent">
-                    <table class="table">
-                        <tbody>
-                            {% for following in profile.following.all %}
-                            <tr>
-                                <td><a href="/user/{{ following.pk }}"  class="text-decoration-none" style="color: darkgray;">{{ following.name }}</a></td>
-                            </tr>
-                            {% endfor %}
-                            {% if not profile.following.all %}
-                                There are no following users to display.
-                            {% endif %}
-                        </tbody>
-                    </table>
-                </div>
-                <div id="followers" class="tabcontent">
-                    <table class="table">
-                        <tbody>
-                            {% for follower in profile.followers.all %}
-                            <tr>
-                                <td><a href="/user/{{ follower.pk }}"  class="text-decoration-none" style="color: darkgray;">{{ follower.name }}</a></td>
-                            </tr>
-                            {% endfor %}
-                            {% if not profile.followers.all %}
-                                There are no followers to display.
-                            {% endif %}
-                        </tbody>
-                    </table>
-                </div>
-
-
-                <br>
-
-
-
-            </div>
         </div>
-    </div>
 
     </div>
 </body>
@@ -211,29 +235,27 @@
     <!-- Copyright -->
 </footer>
 <style>
-    .background{
-        /*background-color: #3d3838;
-        color: white;*/
-    }
     .h1{
         font-family: "Encode Sans", sans-serif;
     }
     .tablinks {
-        height: 50px;
-        background-color: #b53733;
+        min-height: 80px;
+        
+        background-color: #925f5d;
         font-family: "Encode Sans", sans-serif;
     }
     .tablinks:hover {
-        background-color: #802724;
+        background-color: #694341;
         font-family: "Encode Sans", sans-serif;
     }
 
-    .bgimg {
+    .bg-img {
+        /* background-color: #802724; */
         position: relative;
         background-position: center;
         background-size: cover;
         background-repeat: no-repeat;
-        background-image: url("{% static 'recipes/food.jpg'%}");
+        background-image: url("{% static 'recipes/homeBack.jpg'%}");
         background-attachment: fixed;
         min-height: 70%;
         /* max-width: 100%; */
@@ -243,24 +265,21 @@
         opacity: 0.9;
     }
 
-    .ptext1 {
-        font-size: 1.75em;
-        position: relative;
-        top: 60%;
-        width: 100%;
-        text-align: center;
-        font-weight: bold;
-        letter-spacing: 5px;
-        font-family: "Encode Sans", sans-serif;
-        color: white;
-    }
-    .parText {
-        background-color: rgba(0, 0, 0, 0.5);
-        color: white;
+    .div1 {
+        margin: auto;
+        width: 50%;
+        border: 2px solid gray;
         padding: 10px;
-        /* border-radius: 15%; */
-        font-family: "Encode Sans", sans-serif;
+        text-align: center;
+        box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+        background-color: #e8ddcf;
+        min-height: 80%;
+    }
 
+    .btn-follow {
+        width: 30%;
+        margin-top: -2%;
+        margin-bottom: -5%;
     }
 </style>
 <script>
