@@ -4,6 +4,12 @@
 # *  Author: user82216, user1569050
 # *  Publication Date: 5/11/2009
 # *  URL: https://stackoverflow.com/questions/849142/how-to-limit-the-maximum-value-of-a-numeric-field-in-a-django-model
+# 
+# *  Title: How to Extend Django User Model
+# *  Author: Vitor Freitas
+# *  Publication Date: Jul 22, 2016 
+# *  URL: https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html#onetoone 
+# 
 # ***************************************************************************************/
 
 # from msilib.schema import Directory
