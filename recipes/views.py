@@ -216,6 +216,13 @@ def followUser(request, pkFollow, pkUser):
     currentUser.save()
     return HttpResponsePermanentRedirect('/user/' + str(pkFollow)) # redirect back
 
+def unfollowUser(request, pkFollow, pkUser):
+    userToUnfollow = Profile.objects.get(pk=pkFollow)
+    currentUser = Profile.objects.get(pk=pkUser)
+    currentUser.following.remove(userToUnfollow)
+    currentUser.save()
+    return HttpResponsePermanentRedirect('/user/' + str(pkFollow)) # redirect back
+
 def updateUserName(request, pkUser):
     currentUser = Profile.objects.get(pk=pkUser)
     currentUser.name = request.POST['name']

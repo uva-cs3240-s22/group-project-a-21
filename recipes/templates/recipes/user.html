@@ -48,10 +48,18 @@
             <!-- Cannot follow yourself (follow button invisible) -->
             {% if not profile.pk == user.pk %}
             <div class="row m-1">
-                <form action="/user/follow-user/{{ profile.pk }}/{{ user.pk }}" method="post">
-                    {% csrf_token %}
-                    <input type="submit" class="btn btn-primary btn-follow" value="Follow">
-                </form>
+                {% follow user.pk profile.pk as follow_flag %}
+                    {% if follow_flag %}
+                        <form action="/user/unfollow-user/{{ profile.pk }}/{{ user.pk }}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-secondary btn-follow" value="Unfollow">
+                        </form>
+                    {% else %}
+                        <form action="/user/follow-user/{{ profile.pk }}/{{ user.pk }}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-primary btn-follow" value="Follow">
+                        </form>
+                    {% endif %}
             </div>
             {% endif %}
             <hr>
