@@ -124,6 +124,9 @@
                         
                     </div>
                     <div id="create" class="tabcontent">
+                        {% if not profile.create.all %}
+                            There are no recipes to display.
+                        {% else %}
                         <table class="table">
                             <tbody>
                                 {% for recipe in profile.create.all %}
@@ -146,13 +149,14 @@
                                     </td>
                                 </tr>
                                 {% endfor %}
-                                {% if not profile.create.all %}
-                                    There are no recipes to display.
-                                {% endif %}
                             </tbody>
                         </table>
+                        {% endif %}
                     </div>
                     <div id="favorite" class="tabcontent">
+                        {% if not profile.favorites.all %}
+                            There are no recipes to display.
+                        {% else %}
                         <table class="table">
                             <thead>
                                 <tr>
@@ -184,13 +188,14 @@
                                     </td>
                                 </tr>
                                 {% endfor %}
-                                {% if not profile.favorites.all %}
-                                    There are no recipes to display.
-                                {% endif %}
                             </tbody>
                         </table>
+                        {% endif %}
                     </div>
                     <div id="following" class="tabcontent">
+                        {% if not profile.following.all %}
+                            There are no following users to display.
+                        {% else %}
                         <table class="table">
                             <tbody>
                                 {% for following in profile.following.all %}
@@ -198,13 +203,14 @@
                                     <td><a href="/user/{{ following.pk }}"  class="text-decoration-none" style="color: darkgray;">{{ following.name }}</a></td>
                                 </tr>
                                 {% endfor %}
-                                {% if not profile.following.all %}
-                                    There are no following users to display.
-                                {% endif %}
                             </tbody>
                         </table>
+                        {% endif %}
                     </div>
                     <div id="followers" class="tabcontent">
+                        {% if not profile.followers.all %}
+                            There are no followers to display.
+                        {% else %}
                         <table class="table">
                             <tbody>
                                 {% for follower in profile.followers.all %}
@@ -212,11 +218,9 @@
                                     <td><a href="/user/{{ follower.pk }}"  class="text-decoration-none" style="color: darkgray;">{{ follower.name }}</a></td>
                                 </tr>
                                 {% endfor %}
-                                {% if not profile.followers.all %}
-                                    There are no followers to display.
-                                {% endif %}
                             </tbody>
                         </table>
+                        {% endif %}
                     </div>
 
 
