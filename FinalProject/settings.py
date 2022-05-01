@@ -8,6 +8,13 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
+
+
+*  REFERENCES
+*  Title: Provisioning a Test PostgreSQL database on Heroku for your Django App
+*  Author: Sola-Aremu 'Pelumi
+*  Date: Apr 15, 2020
+*  URL: https://medium.com/analytics-vidhya/provisioning-a-test-postgresql-database-on-heroku-for-your-django-app-febb2b5d3b29
 """
 import sys
 from pathlib import Path
