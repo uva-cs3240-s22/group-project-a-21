@@ -53,6 +53,7 @@
             <!-- Cannot follow yourself (follow button invisible) -->
             {% if not profile.pk == user.pk %}
             <div class="row m-1">
+                {% if request.user.is_authenticated %}
                 {% follow user.pk profile.pk as follow_flag %}
                 {% if follow_flag %}
                     <form action="/user/unfollow-user/{{ profile.pk }}/{{ user.pk }}" method="post">
@@ -66,6 +67,7 @@
                     </form>
                 {% endif %}
                 <!-- Citation for <Django - How to use custom template tag with 'if' and 'else' checks? [duplicate]> at top of page -->
+                {% endif %}
             </div>
             {% endif %}
             <hr>

@@ -264,35 +264,7 @@
 
             </div>
             <div class="col-4">
-                {% favorite user.pk recipe.pk as favorite_flag %}
-                {% if favorite_flag %}
-                <form action="/recipes/unfavorite-recipe/{{ recipe.pk }}/{{ user.pk }}" method="post">
-                    {% csrf_token %}
-                    {{ recipe.favoritedBy.all|length }}
-                    {% if recipe.favoritedBy.all|length == 1 %}
-                    favorite
-                    {% else %}
-                    favorites
-                    {% endif %}
-
-                    <input type="submit" value="Unfavorite" class="button">
-                </form>
                 
-                {% else %}
-                <form action="/recipes/favorite-recipe/{{ recipe.pk }}/{{ user.pk }}" method="post">
-                    {% csrf_token %}
-                    {{ recipe.favoritedBy.all|length }}
-                    {% if recipe.favoritedBy.all|length == 1 %}
-                    favorite
-                    {% else %}
-                    favorites
-                    {% endif %}
-
-                    <input type="submit" value="Favorite" class="button">
-                </form>
-                
-                {% endif %}
-                <!-- Citation for <Django - How to use custom template tag with 'if' and 'else' checks? [duplicate]> at top of page -->
                 
             </div>
         </div>
@@ -401,26 +373,96 @@
             </div>
         </div>
             <!-- Citation for <Collapse> at top of file -->
-            <button class="button mt-2" onclick="location.href = '{% url 'recipes:recipe_pdf' recipe.pk %}'">Generate PDF</button>
-      
-            {% if request.user.is_authenticated %}
-            <button class="button" onclick="location.href = '{% url 'recipes:fork' recipe.pk %}'">Fork Recipe</button>
+        {% if not request.user.is_authenticated %}
+        <div class="row justify-content-center">
+            {{ recipe.favoritedBy.all|length }}
+            {% if recipe.favoritedBy.all|length == 1 %}
+            favorite
+            {% else %}
+            favorites
             {% endif %}
-
-            <button class="button" id="dropdownSocialMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">Share this recipe</button>
-            <div class="dropdown-menu" aria-labelledby="dropdownSocialMenuButton">
-                <div class="dropdown-item text-decoration-none">
-                    {% send_email "{{ recipe.title }} recipe by {{ recipe.createdBy }}" "Check out this {{ recipe.title }} recipe by {{ recipe.createdBy }}!" object_or_url "Email" "text-decoration-none" %}
-                </div>
-                <div class="dropdown-item text-decoration-none">
-                    {% post_to_twitter "Check out this {{ recipe.title }} recipe by {{ recipe.createdBy }}!" object_or_url "Twitter" "text-decoration-none" %}
-                </div>
-                <div class="dropdown-item text-decoration-none">
-                    {% post_to_reddit "Check out this {{ recipe.title }} recipe by {{ recipe.createdBy }}!" object_or_url "Reddit" "text-decoration-none" %}
-                </div>
-                <!-- Citation for <django-social-share 2.2.1> at top of file -->
+        </div>
+        {% endif %}
+        <div class="row">
+            {% if not request.user.is_authenticated %}
+            <div class="col"></div>
+            {% endif %}
+            
+            {% if request.user.is_authenticated %}
+            <div class="col">
+                
+                {% favorite user.pk recipe.pk as favorite_flag %}
+                {% if favorite_flag %}
+                <form action="/recipes/unfavorite-recipe/{{ recipe.pk }}/{{ user.pk }}" method="post">
+                    {% csrf_token %}
+                    <!-- {{ recipe.favoritedBy.all|length }}
+                    {% if recipe.favoritedBy.all|length == 1 %}
+                    favorite
+                    {% else %}
+                    favorites
+                    {% endif %} -->
+    
+                    {% if recipe.favoritedBy.all|length == 1 %}
+                    <input type="submit" value="Unfavorite ({{ recipe.favoritedBy.all|length }} favorite)" class="button">
+                    {% else %}
+                    <input type="submit" value="Unfavorite ({{ recipe.favoritedBy.all|length }} favorites)" class="button">
+                    {% endif %}
+                    
+                </form>
+                
+                {% else %}
+                <form action="/recipes/favorite-recipe/{{ recipe.pk }}/{{ user.pk }}" method="post">
+                    {% csrf_token %}
+                    <!-- {{ recipe.favoritedBy.all|length }}
+                    {% if recipe.favoritedBy.all|length == 1 %}
+                    favorite
+                    {% else %}
+                    favorites
+                    {% endif %} -->
+    
+                    {% if recipe.favoritedBy.all|length == 1 %}
+                    <input type="submit" value="Favorite ({{ recipe.favoritedBy.all|length }} favorite)" class="button">
+                    {% else %}
+                    <input type="submit" value="Favorite ({{ recipe.favoritedBy.all|length }} favorites)" class="button">
+                    {% endif %}
+                </form>
+                
+                {% endif %}
+                <!-- Citation for <Django - How to use custom template tag with 'if' and 'else' checks? [duplicate]> at top of page -->
+                
             </div>
+            {% endif %}
+            
+            <div class="col">
+                <button class="button" onclick="location.href = '{% url 'recipes:recipe_pdf' recipe.pk %}'">Generate PDF</button>
+            </div>
+            
+            {% if request.user.is_authenticated %}
+            <div class="col">
+                <button class="button" onclick="location.href = '{% url 'recipes:fork' recipe.pk %}'">Fork Recipe</button>
+            </div>
+            {% endif %}
+            
+            <div class="col">
+                <button class="button" id="dropdownSocialMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">Share this recipe</button>
+                <div class="dropdown-menu" aria-labelledby="dropdownSocialMenuButton">
+                    <div class="dropdown-item text-decoration-none">
+                        {% send_email "{{ recipe.title }} recipe by {{ recipe.createdBy }}" "Check out this {{ recipe.title }} recipe by {{ recipe.createdBy }}!" object_or_url "Email" "text-decoration-none" %}
+                    </div>
+                    <div class="dropdown-item text-decoration-none">
+                        {% post_to_twitter "Check out this {{ recipe.title }} recipe by {{ recipe.createdBy }}!" object_or_url "Twitter" "text-decoration-none" %}
+                    </div>
+                    <div class="dropdown-item text-decoration-none">
+                        {% post_to_reddit "Check out this {{ recipe.title }} recipe by {{ recipe.createdBy }}!" object_or_url "Reddit" "text-decoration-none" %}
+                    </div>
+                    <!-- Citation for <django-social-share 2.2.1> at top of file -->
+                </div>
+            </div>
+            
+            {% if not request.user.is_authenticated %}
+            <div class="col"></div>
+            {% endif %}
 
             {% if recipe.original.all %}
                 <div class="mt-3">
