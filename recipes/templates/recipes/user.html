@@ -11,6 +11,7 @@
 {% bootstrap_javascript %}
 {% load static %}
 
+{% load recipe_tags %}
 
 <!DOCTYPE html>
 <html>
@@ -129,6 +130,19 @@
                                 <tr>
                                     <td>
                                         <a href="/recipes/{{ recipe.pk }}" class="text-decoration-none" style="color: darkgray;">{{ recipe.title }}</a>
+                                        {% if recipe.get_avg_rating != 404 %}
+                                            {{recipe.get_avg_rating|floatformat}}
+                                            {% for i in "xxxxx" %}
+                                                {% if forloop.counter0 < recipe.get_avg_rating|floatformat|parseInt %}
+                                                ⭐
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% for i in "xxxxx" %}
+                                                {% if forloop.counter0 < recipe.get_avg_rating|floatformat|parseIntFiveMinus %}
+                                                &star;
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -151,6 +165,19 @@
                                 <tr>
                                     <td>
                                         <a href="/recipes/{{ favorite.pk }}" class="text-decoration-none" style="color: darkgray;">{{ favorite.title }}</a>
+                                        {% if favorite.get_avg_rating != 404 %}
+                                            {{favorite.get_avg_rating|floatformat}}
+                                            {% for i in "xxxxx" %}
+                                                {% if forloop.counter0 < favorite.get_avg_rating|floatformat|parseInt %}
+                                                ⭐
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% for i in "xxxxx" %}
+                                                {% if forloop.counter0 < favorite.get_avg_rating|floatformat|parseIntFiveMinus %}
+                                                &star;
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
                                     </td>
                                     <td>
                                         <a href="/user/{{ favorite.createdBy.pk }}" class="text-decoration-none" style="color: darkgray;">{{ favorite.createdBy }}</a>

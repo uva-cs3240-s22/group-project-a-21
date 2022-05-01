@@ -225,6 +225,11 @@
                     ⭐
                     {% endif %}
                 {% endfor %}
+                {% for i in "xxxxx" %}
+                    {% if forloop.counter0 < recipe.get_avg_rating|floatformat|parseIntFiveMinus %}
+                    &star;
+                    {% endif %}
+                {% endfor %}
                 </p>
             {% else %}
             <br>
@@ -439,11 +444,11 @@
                             </div>
                             <div class="form-group">
                                 <select class="form-select w-25" name="rating">
-                                    <option>1⭐</option>
-                                    <option>2⭐</option>
-                                    <option selected>3⭐</option>
-                                    <option>4⭐</option>
-                                    <option>5⭐</option>
+                                    <option>1⭐&star;&star;&star;&star;</option>
+                                    <option>2⭐⭐&star;&star;&star;</option>
+                                    <option selected>3⭐⭐⭐&star;&star;</option>
+                                    <option>4⭐⭐⭐⭐&star;</option>
+                                    <option>5⭐⭐⭐⭐⭐</option>
                                 </select>
                             </div>
                             <div class="col text-center">
@@ -461,16 +466,27 @@
                                 <div class="container">
                                     {%  for review in recipe.reviews.all  %}
                                     {% if forloop.counter0|divisibleby:3 %} <div class="row text-center"> {%  endif %}
-                                        <div class="col-md-4" style="cursor: pointer">
+                                        <div class="col-md-4">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <h4 class="card-title">{{ review.rating }} ⭐</h4>
+                                                    <!-- <h5 class="card-title">{{ review.rating }}</h5> -->
+                                                    <p>
+                                                        {% for i in "xxxxx" %}
+                                                            {% if forloop.counter0 < review.rating|floatformat|parseInt %}
+                                                            ⭐
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        {% for i in "xxxxx" %}
+                                                            {% if forloop.counter0 < review.rating|floatformat|parseIntFiveMinus %}
+                                                            &star;
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </p>
                                                     <p class="card-text">{{ review.review_text }}<p>
-                                                            <div class="card-footer text-muted">
-                                                                by
-                                                                <a
-                                                                    href="/user/{{ review.user.pk }}">{{ review.user.username }}</a>
-                                                            </div>
+                                                    <div class="card-footer text-muted">
+                                                        by
+                                                        <a href="/user/{{ review.user.pk }}">{{ review.user.username }}</a>
+                                                    </div>
 
 
                                                 </div><!-- card content -->

@@ -34,3 +34,9 @@ def parseInt(number):
     if float(number) == 2.5: # python rounds 2.5 to 2; for our purposes, we want 3
         return 3
     return round(float(number))
+
+@register.filter(name='parseIntFiveMinus') 
+def parseInt(number):
+    if float(number) == 2.5: # python rounds 2.5 to 2; for our purposes, we want 3
+        return 3
+    return 5 - round(float(number))
