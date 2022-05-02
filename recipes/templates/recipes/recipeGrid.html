@@ -23,7 +23,8 @@
             {% if latest_recipe_list %}
             {% for recipe in latest_recipe_list %}
             <!-- <div class="card-wrapper"> -->
-
+            {% if not recipe.title == "[deleted]" %}
+            
             <div class="card" style="width: 25rem;">
                 {% if recipe.images.all|length %}
                 <img class="" src="{{ recipe.images.all.0.image.url }}"
@@ -69,7 +70,7 @@
             </div>
 
             <!-- </div> -->
-
+            {% endif %}
             {% endfor %}
             {% else %}
             <div class="d-flex justify-content-center">

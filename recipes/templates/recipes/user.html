@@ -140,15 +140,28 @@
                         
                     </div>
                     <div id="create" class="tabcontent">
-                        {% if not profile.create.all %}
+                        {% allDeleted profile.pk "create" as allCreatedDeleted %}
+                        <!-- {% allDeleted profile.pk "create" %}
+                        {{ allCreatedDeleted }}
+                        {{ profile.create.all }} -->
+                        <!-- no recipes at all -->
+                        {% if not profile.create.all %} 
+                            There are no recipes to display.
+                        <!-- there are [deleted] recipes -->
+                        {% elif allCreatedDeleted %}
                             There are no recipes to display.
                         {% else %}
-                        <table class="table">
+                        <table>
                             <tbody>
                                 {% for recipe in profile.create.all %}
+                                <!-- if not recipe.forkedBy.title == "[deleted]" and not recipe.title == "[deleted]" -->
+                                {% if not recipe.title == "[deleted]" %}
                                 <tr>
-                                    <td>
+                                    <td class="col-7">
                                         <a href="/recipes/{{ recipe.pk }}" class="text-decoration-none" style="color: darkgray;">{{ recipe.title }}</a>
+                                        
+                                    </td>
+                                    <td class="col-5">
                                         {% if recipe.get_avg_rating != 404 %}
                                             {{recipe.get_avg_rating|floatformat}}
                                             {% for i in "xxxxx" %}
@@ -164,14 +177,22 @@
                                         {% endif %}
                                     </td>
                                 </tr>
+                                {% endif %}
                                 {% endfor %}
                             </tbody>
                         </table>
                         {% endif %}
                     </div>
                     <div id="favorite" class="tabcontent">
-                        {% if not profile.favorites.all %}
+                        {% allDeleted profile.pk "favorite" as allFavoritedDeleted %}
+                        <!-- {{ allFavoritedDeleted }}
+                        {{ profile.favorites.all }} -->
+                        <!-- no recipes at all -->
+                        {% if not profile.favorites.all %} 
                             There are no recipes to display.
+                        <!-- there are [deleted] recipes -->
+                        {% elif allFavoritedDeleted %}
+                            There are no recipes to display..
                         {% else %}
                         <table class="table">
                             <thead>

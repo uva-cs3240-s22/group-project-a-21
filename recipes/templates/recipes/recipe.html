@@ -225,7 +225,11 @@
             {% if recipe.forkedBy %}
                 <h7>
                     <span style="display:inline-block;">Inspired by:</span>
+                    {% if recipe.forkedBy.title == "[deleted]" %}
+                    [deleted]
+                    {% else %}
                     <a href="/recipes/{{ recipe.forkedBy.pk }}" class="text-decoration-none" style="color: rgb(145, 145, 145); display:inline-block;">{{ recipe.forkedBy.title }}</a>
+                    {% endif %}
                 </h7>
             {% endif %}
             {%  if recipe.get_avg_rating != 404 %}
@@ -476,6 +480,12 @@
                     <a href="/recipes/{{ orig.pk }}" class="text-decoration-none" style="color: rgb(145, 145, 145)">{{ orig.title }}</a>
                     {% endfor %}
                 </div>
+            {% endif %}
+
+            {% if request.user.is_authenticated and recipe.createdBy.pk == user.pk %}
+            <div>
+                <a href="/recipes/delete/{{ recipe.pk }}" class="btn btn-danger">Delete Recipe</a>
+            </div>
             {% endif %}
 
             <div class="row mt-2">
