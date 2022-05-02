@@ -617,9 +617,9 @@
         let ingredients_tb = document.getElementById("ingredients_tb");
         for (r of ingredients_tb.rows) {
             if (ingredientQuantitiesChanged) {
-                r.children[0].innerHTML = parseInt(r.children[0].innerHTML) / ingredientQuantitiesChangedLastFactor;
+                r.children[0].innerHTML = parseFloat(r.children[0].innerHTML) / ingredientQuantitiesChangedLastFactor;
             }
-            r.children[0].innerHTML = parseInt(r.children[0].innerHTML) * factor;
+            r.children[0].innerHTML = Math.round(parseFloat(r.children[0].innerHTML) * factor*1000)/1000;
         }
 
         // update buttons

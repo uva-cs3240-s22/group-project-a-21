@@ -32,15 +32,15 @@ def indexName(**kwargs):
 
 @register.filter(name='parseInt') 
 def parseInt(number):
-    if float(number) == 2.5: # python rounds 2.5 to 2; for our purposes, we want 3
-        return 3
-    return round(float(number))
+    # if float(number) == 2.5: # python rounds 2.5 to 2; for our purposes, we want 3
+    #     return 3
+    return float(number)//1
 
 @register.filter(name='parseIntFiveMinus') 
 def parseInt(number):
-    if float(number) == 2.5: # python rounds 2.5 to 2; for our purposes, we want 3
-        return 3
-    return 5 - round(float(number))
+    # if float(number) == 2.5: # python rounds 2.5 to 2; for our purposes, we want 3
+    #     return 3
+    return 5 - float(number)//1
 
 @register.simple_tag
 def follow(follower, followed):
