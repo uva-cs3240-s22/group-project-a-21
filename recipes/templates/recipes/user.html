@@ -39,7 +39,7 @@
         {% include "recipes/navbar.html" %}
         <div class="container-fluid div1">
             <div class="row">
-                {% if profile.pk == user.pk %}
+                {% if request.user.is_authenticated and profile.pk == user.pk %}
                     <div class = "h1">
                         My Profile Page
                     </div>
@@ -51,7 +51,7 @@
                 {% endif %}
             </div>
             <!-- Cannot follow yourself (follow button invisible) -->
-            {% if not profile.pk == user.pk %}
+            {% if request.user.is_authenticated and not profile.pk == user.pk %}
             <div class="row m-1">
                 {% if request.user.is_authenticated %}
                 {% follow user.pk profile.pk as follow_flag %}
@@ -77,7 +77,7 @@
                         <button class="tablinks{% if tab == 'basic' or tab == NULL %} active{% endif %}" onclick="openTab(event, 'basic')">Basic Information</button>
                     </div>
                     <div class="row m-1">
-                        {% if profile.pk == user.pk %}
+                        {% if request.user.is_authenticated and profile.pk == user.pk %}
                         <button class="tablinks{% if tab == 'create' %} active{% endif %}" onclick="openTab(event, 'create')">My Recipes</button>
                         {% else %}
                         <button class="tablinks{% if tab == 'create' %} active{% endif %}" onclick="openTab(event, 'create')">Created Recipes</button>
@@ -101,7 +101,7 @@
                                 <tr>
                                     <td>
                                         <!-- Can change name if this user is self -->
-                                        {% if profile.pk == user.pk %}
+                                        {% if request.user.is_authenticated and profile.pk == user.pk %}
                                         <form action="/user/update/name/{{ profile.pk }}" method="post">
                                             {% csrf_token %}
                                             Name:
@@ -121,7 +121,7 @@
                                 <tr>
                                     <td>
                                         <!-- Can change cooking experience if this user is self -->
-                                        {% if profile.pk == user.pk %}
+                                        {% if request.user.is_authenticated and profile.pk == user.pk %}
                                         <form action="/user/update/cook_exp/{{ profile.pk }}" method="post">
                                             {% csrf_token %}
                                             Cooking experience:
