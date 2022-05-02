@@ -96,7 +96,7 @@
                 <div class="col-8">
                     <h2 id="tab-title">{{tab}}</h2>
                     <div id="basic" class="tabcontent mt-2">
-                        <table class="table">
+                        <table class="table table-borderless">
                             <tbody>
                                 <tr>
                                     <td>
@@ -158,7 +158,7 @@
                                 {% if not recipe.title == "[deleted]" %}
                                 <tr>
                                     <td class="col-7">
-                                        <a href="/recipes/{{ recipe.pk }}" class="text-decoration-none" style="color: darkgray;">{{ recipe.title }}</a>
+                                        <a href="/recipes/{{ recipe.pk }}" class="text-decoration-none" style="color: rgb(100, 100, 100);">{{ recipe.title }}</a>
                                         
                                     </td>
                                     <td class="col-5">
@@ -194,7 +194,7 @@
                         {% elif allFavoritedDeleted %}
                             There are no recipes to display..
                         {% else %}
-                        <table class="table">
+                        <table class="table table-borderless">
                             <thead>
                                 <tr>
                                     <th scope="col">Recipe</th>
@@ -205,7 +205,7 @@
                                 {% for favorite in profile.favorites.all %}
                                 <tr>
                                     <td>
-                                        <a href="/recipes/{{ favorite.pk }}" class="text-decoration-none" style="color: darkgray;">{{ favorite.title }}</a>
+                                        <a href="/recipes/{{ favorite.pk }}" class="text-decoration-none" style="color: rgb(100, 100, 100);">{{ favorite.title }}</a>
                                         {% if favorite.get_avg_rating != 404 %}
                                             {{favorite.get_avg_rating|floatformat}}
                                             {% for i in "xxxxx" %}
@@ -221,7 +221,7 @@
                                         {% endif %}
                                     </td>
                                     <td>
-                                        <a href="/user/{{ favorite.createdBy.pk }}" class="text-decoration-none" style="color: darkgray;">{{ favorite.createdBy }}</a>
+                                        <a href="/user/{{ favorite.createdBy.pk }}" class="text-decoration-none" style="color: rgb(100, 100, 100);">{{ favorite.createdBy }}</a>
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -233,11 +233,11 @@
                         {% if not profile.following.all %}
                             There are no following users to display.
                         {% else %}
-                        <table class="table">
+                        <table class="table table-borderless">
                             <tbody>
                                 {% for following in profile.following.all %}
                                 <tr>
-                                    <td><a href="/user/{{ following.pk }}"  class="text-decoration-none" style="color: darkgray;">{{ following.name }}</a></td>
+                                    <td><a href="/user/{{ following.pk }}"  class="text-decoration-none" style="color: rgb(100, 100, 100);">{{ following.name }}</a></td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -248,11 +248,11 @@
                         {% if not profile.followers.all %}
                             There are no followers to display.
                         {% else %}
-                        <table class="table">
+                        <table class="table table-borderless">
                             <tbody>
                                 {% for follower in profile.followers.all %}
                                 <tr>
-                                    <td><a href="/user/{{ follower.pk }}"  class="text-decoration-none" style="color: darkgray;">{{ follower.name }}</a></td>
+                                    <td><a href="/user/{{ follower.pk }}"  class="text-decoration-none" style="color: rgb(100, 100, 100);">{{ follower.name }}</a></td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
