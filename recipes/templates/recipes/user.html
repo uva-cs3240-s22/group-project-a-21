@@ -142,6 +142,7 @@
                     <div id="create" class="tabcontent">
                         {% if request.user.is_authenticated %}
                         {% allDeleted profile.pk "create" as allCreatedDeleted %}
+                        <!-- current fix to allDeleted should work but might be better to make if else for profile.create.all, then have separate if else for allCreatedDeleted -->
                         <!-- {% allDeleted profile.pk "create" %}
                         {{ allCreatedDeleted }}
                         {{ profile.create.all }} -->

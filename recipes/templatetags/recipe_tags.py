@@ -53,7 +53,7 @@ def favorite(profile, recipe):
 @register.simple_tag
 def allDeleted(profilePK, category):
     profile = Profile.objects.get(pk=profilePK)
-    if category == "create":
+    if category == "create" and profile.create.all():
         return profile.create.all()[0].title == "[deleted]" and len(profile.create.all()) == 1
         # return "aaa"
         #     return True
