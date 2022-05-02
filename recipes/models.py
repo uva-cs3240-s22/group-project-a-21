@@ -55,6 +55,10 @@ Note for future development:
     Separate models for Ingredients and Directions lists
     (i.e. a model linking ingredients to recipes, so that ingredients )
 '''
+
+def getDeletedRecipe():
+    return Recipe.objects.get_or_create(title = "[deleted]")[0]
+
 class Recipe(models.Model):
     title = models.CharField(max_length=200)
     # post_date = models.DateTimeField('date published')
@@ -74,7 +78,8 @@ class Recipe(models.Model):
     )
     favoritedBy = models.ManyToManyField(Profile, related_name="favorites") # a User has many favorite Recipes; a Recipe is favorited by many Users
     createdBy = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="create", default=1)
-    forkedBy = models.ForeignKey('self', on_delete=models.SET_NULL, related_name="original", null=True)
+    # forkedBy = models.ForeignKey('self', on_delete=models.SET_NULL, related_name="original", null=True)
+    forkedBy = models.ForeignKey('self', on_delete=models.SET(getDeletedRecipe), related_name="original", null=True)
 
     def get_avg_rating(self):
         reviews = Review.objects.filter(recipe=self)

@@ -216,6 +216,10 @@ def unfavoriteRecipe(request, pkRecipe, pkUser):
     currentUser.save()
     return HttpResponsePermanentRedirect('/recipes/' + str(pkRecipe)) # redirect back
 
+def deleteRecipe(request, pk):
+    Recipe.objects.get(pk=pk).delete()
+    return HttpResponsePermanentRedirect('/recipes')
+
 def followUser(request, pkFollow, pkUser):
     userToFollow = Profile.objects.get(pk=pkFollow)
     currentUser = Profile.objects.get(pk=pkUser)
