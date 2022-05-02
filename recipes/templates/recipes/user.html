@@ -140,6 +140,7 @@
                         
                     </div>
                     <div id="create" class="tabcontent">
+                        {% if request.user.is_authenticated %}
                         {% allDeleted profile.pk "create" as allCreatedDeleted %}
                         <!-- {% allDeleted profile.pk "create" %}
                         {{ allCreatedDeleted }}
@@ -181,6 +182,10 @@
                                 {% endfor %}
                             </tbody>
                         </table>
+                        {% endif %}
+                        
+                        {% else %}
+                        This feature is unavailable to guest users.
                         {% endif %}
                     </div>
                     <div id="favorite" class="tabcontent">
