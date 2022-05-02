@@ -38,31 +38,76 @@
 
     .div1 {
         margin: auto;
-        width: 70%;
+        margin-top: 10px;
+        width: 55%;
         border: 2px solid gray;
         padding: 10px;
         text-align: left;
         box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+        background-color: #e8ddcf;
     }
 
     h1 {
         color: #213037;
         margin-left: 40px;
-        font-family: "Georgia";
         font-weight: bold;
         text-align: center;
         font-family: 'Encode Sans', sans-serif;
         text-transform: uppercase;
     }
+
+    .bgimg {
+        position: relative;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-image: url("{% static 'recipes/food.jpg' %}");
+        background-attachment: fixed;
+        min-height: 70%;
+        /* max-width: 100%; */
+    }
+
+    .trans {
+        opacity: 0.9;
+    }
+    .ptext1 {
+        font-size: 1.75em;
+        position: relative;
+        top: 60%;
+        width: 100%;
+        text-align: center;
+        font-weight: bold;
+        letter-spacing: 5px;
+        font-family: "Encode Sans", sans-serif;
+        color: white;
+        margin-top: 10px;
+
+    }
+    .parText {
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        padding: 10px;
+        /* border-radius: 15%; */
+        font-family: "Encode Sans", sans-serif;
+
+    }
+
+    .filter{
+        font-family: "Encode Sans", sans-serif;
+        color: white;
+    }
 </style>
 
 <body>
+<div class = "bgimg trans">
     {% include "recipes/navbar.html" %}
+    <div class = "ptext1">
+                    <span class="parText">
+                        RECIPE CURATION
+                    </span>
+                </div>
     <div class="div1">
-        <h1>Recipe Curation</h1>
-        <h2>
-            <a href="/recipes/{{ oldrecipe.pk }}" class="text-decoration-none mx-3 px-3" style="color: darkgray">Forked from: {{ oldrecipe.title }}</a>
-        </h2>
+        <a href="/recipes/{{ oldrecipe.pk }}" class="text-center" style="color: black">Forked from: {{ oldrecipe.title }}</a>
         <form action="/recipes/new-recipe/{{ user.pk }}/1/{{ oldrecipe.pk }}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
@@ -194,7 +239,7 @@
                                 <tr>
                                     <td>
                                         <div>
-                                            <input class="form-control" type="file" id="recipe_img" name="recipe_img" accept="image/png, image/jpeg"> 
+                                            <input class="form-control" type="file" id="recipe_img" name="recipe_img" accept="image/png, image/jpeg">
                                         </div>
                                     </td>
                                     <td></td>
@@ -210,6 +255,8 @@
             <input class="btn btn-success mx-3" type="submit" value="Create Recipe">
         </form>
     </div>
+</div>
+
 
     <script>
         // two differences:
