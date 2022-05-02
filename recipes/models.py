@@ -10,6 +10,9 @@
 # *  Publication Date: Jul 22, 2016 
 # *  URL: https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html#onetoone 
 # 
+# *  Title: Function of On_delete Parameter in Django Models
+# *  Publication Date: 5/7/2021
+# *  URL: https://www.delftstack.com/howto/django/django-on_delete-parameter/
 # ***************************************************************************************/
 
 # from msilib.schema import Directory
