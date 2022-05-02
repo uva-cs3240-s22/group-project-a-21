@@ -39,10 +39,12 @@ SECRET_KEY = 'django-insecure-hreqeadra52+)pod!&huks1)gx_pki)75k)@pj_*n_3!bt6q)!
 
 DEBUG_ENVIRON = os.getenv("DEBUG_ENVIRON")
 
-if DEBUG_ENVIRON == "test":
-    DEBUG = True
-elif DEBUG_ENVIRON == "deployed":
-    DEBUG = False
+# if DEBUG_ENVIRON == "test":
+#     DEBUG = True
+# elif DEBUG_ENVIRON == "deployed":
+#     DEBUG = False
+
+DEBUG = True
 
 ALLOWED_HOSTS = [
     '.localhost',
