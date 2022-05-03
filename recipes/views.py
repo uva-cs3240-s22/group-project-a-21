@@ -309,16 +309,15 @@ def recipe_pdf(request, pk):
     directionStart = 158 + 30 + space + 23 # distance between Direction text and actual directions
     rows = 0
     for i in range(len(l2)):
-        print(l2[i])
         limit = 95
         
         if len(l2[i]) > limit:
             wraps = textwrap.wrap(l2[i], limit)
             canv.drawString(1*inch, directionStart + 15*(rows+i), str(i+1) + ". " + wraps[0])
             for j in range(1, len(wraps)):
-                print("here")
                 canv.drawString(1*inch, directionStart + 15*(i+rows+j), "    " + wraps[j])
-                rows += 1
+            rows += len(wraps) - 1
+
         else:
             canv.drawString(1*inch, directionStart + 15*(rows+i), str(i+1) + ". " + l2[i])
 
