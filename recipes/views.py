@@ -260,7 +260,6 @@ def recipe_pdf(request, pk):
         
         if len(l2[i]) > limit:
             wraps = textwrap.wrap(l2[i], limit)
-            print(wraps)
             canv.drawString(1*inch, directionStart + 15*(rows+i), str(i+1) + ". " + wraps[0])
             for j in range(1, len(wraps)):
                 canv.drawString(1*inch, directionStart + 15*(i+rows+j), "    " + wraps[j])
